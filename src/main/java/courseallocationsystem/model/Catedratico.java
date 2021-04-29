@@ -3,18 +3,18 @@ package courseallocationsystem.model;
 /**
  *
  * @date 29/04/2021
- * @time 04:39:11
+ * @time 04:47:23
  * @author asael
  */
-public class Estudiante extends Objeto {
-    
+public class Catedratico extends Objeto {
+
     private String nombre;
     private String direccion;
 
-    public Estudiante() {
+    public Catedratico() {
     }
 
-    public Estudiante(String nombre, String direccion, int id) {
+    public Catedratico(String nombre, String direccion, int id) {
         super(id);
         this.nombre = nombre;
         this.direccion = direccion;

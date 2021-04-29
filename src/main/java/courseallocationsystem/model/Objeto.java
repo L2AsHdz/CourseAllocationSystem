@@ -6,12 +6,15 @@ package courseallocationsystem.model;
  * @time 04:12:33
  * @author asael
  */
-public class Objeto {
-    
+public abstract class Objeto {
+
     private int id;
 
     public Objeto(int id) {
         this.id = id;
+    }
+
+    public Objeto() {
     }
 
     public int getId() {

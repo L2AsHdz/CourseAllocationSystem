@@ -18,43 +18,74 @@ public class BTree {
     }
 
     public void add(Horario h) {
-        BTreeNode currentRoot = root;
+        insertarKey(root, h);
+    }
 
-        if (currentRoot.getKey(0) == null) {
-            currentRoot.setKey(h, 0);
-            currentRoot.increaseNumKeys();
+    private void insertarKey(BTreeNode root, Horario h) {
+        BTreeNode currentNode = root;
+
+        if (currentNode.isIsLeaf()) {
+            if (!itsRepeated(currentNode, h)) {
+                insercionOrdenada(currentNode, h, null);
+            } else {
+                System.out.println("Dato repetido");
+            }
         } else {
-            add(root, h);
+            int indexChild = findChildOrIndex(currentNode, h);
+            if (!itsRepeated(currentNode, h)) {
+                insertarKey(currentNode.getChild(indexChild), h);
+            } else {
+                System.out.println("Dato repetido");
+            }
+        }
+
+        if (currentNode.getNumtKeys() == 5) {
+            //dividir();    ````````````````````````````````````````````````````````````````````````````
+            System.out.println("dividir");
         }
     }
 
-    private void add(BTreeNode root, Horario h) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private void insercionOrdenada(BTreeNode currentNode, Horario h, BTreeNode rightChild) {
+        int indexNewKey = findChildOrIndex(currentNode, h);
+
+        for (int i = currentNode.getNumtKeys() - 1; i >= indexNewKey; i--) {
+            currentNode.setKey(currentNode.getKey(i), i + 1);
+        }
+
+        currentNode.setKey(h, indexNewKey);
+
+        currentNode.increaseNumKeys();
     }
 
-    private void add(BTreeNode currentRoot, Horario h, BTreeNode rightChild) {
-        int indexNewKey = 0;
-
-        while (currentRoot.getKey(indexNewKey).getId() < h.getId()) {
-            indexNewKey++;
+    private int findChildOrIndex(BTreeNode currentNode, Horario h) {
+        int indexChild = 0;
+        while (currentNode.getKey(indexChild) != null && currentNode.getKey(indexChild).getId() < h.getId()) {
+            indexChild++;
         }
 
-        for (int i = currentRoot.getNumtKeys() - 1; i >= indexNewKey; i--) {
-            currentRoot.setKey(currentRoot.getKey(i), i + 1);
+        return indexChild;
+    }
+
+    private boolean itsRepeated(BTreeNode currentNode, Horario h) {
+
+        for (int i = 0; i < 5; i++) {
+            if (currentNode.getKey(i) != null) {
+                if (currentNode.getKey(i).getId() == h.getId()) {
+                    return true;
+                }
+            }
         }
-        
-        for (int i = currentRoot.getNumChilds() - 1; i >= indexNewKey; i--) {
-            
-        }
+
+        return false;
     }
 
     public void printTree() {
         StringBuilder tree = new StringBuilder();
         tree.append("[");
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             if (root.getKey(i) != null) {
-                tree.append(root.getKey(i).getCodCurso()).append("|");
+                tree.append(root.getKey(i).getId()).append("|");
             }
         }
         tree.append("]");

@@ -2,6 +2,7 @@ package courseallocationsystem.edd.tree;
 
 import courseallocationsystem.edd.BTreeNode;
 import courseallocationsystem.model.Horario;
+import java.util.Arrays;
 
 /**
  *
@@ -11,7 +12,7 @@ import courseallocationsystem.model.Horario;
  */
 public class BTree {
 
-    private final BTreeNode root;
+    private BTreeNode root;
 
     public BTree() {
         root = new BTreeNode();
@@ -42,6 +43,7 @@ public class BTree {
         if (currentNode.getNumtKeys() == 5) {
             //dividir();    ````````````````````````````````````````````````````````````````````````````
             System.out.println("dividir");
+            this.root = splitNode(currentNode);
         }
     }
 
@@ -78,17 +80,47 @@ public class BTree {
 
         return false;
     }
+    
+    private BTreeNode splitNode(BTreeNode currentNode) {
+        BTreeNode left = new BTreeNode();
+        BTreeNode right = new BTreeNode();
+        
+        left.setKeys(Arrays.copyOf(Arrays.copyOfRange(currentNode.getKeys(), 0, 2), 5));
+        left.setChilds(Arrays.copyOf(Arrays.copyOfRange(currentNode.getChilds(), 0, 3), 6));
+        right.setKeys(Arrays.copyOf(Arrays.copyOfRange(currentNode.getKeys(), 3, 5), 5));
+        right.setChilds(Arrays.copyOf(Arrays.copyOfRange(currentNode.getChilds(), 3, 6), 6));
+        
+        BTreeNode temp = new BTreeNode();
+        temp.setKey(currentNode.getKey(2), 0);
+        temp.setChild(left, 0);
+        temp.setChild(right, 1);
+        
+        
+        return temp;
+    }
 
-    public void printTree() {
+    public void printTree(BTreeNode currentNode) {
         StringBuilder tree = new StringBuilder();
         tree.append("[");
 
         for (int i = 0; i < 5; i++) {
-            if (root.getKey(i) != null) {
-                tree.append(root.getKey(i).getId()).append("|");
+            if (currentNode.getKey(i) != null) {
+                tree.append(currentNode.getKey(i).getId()).append("|");
             }
         }
         tree.append("]");
         System.out.println(tree.toString());
+        
+        for (int i = 0; i < 5; i++) {
+            if (currentNode.getChild(i) != null) {
+                System.out.print("Hijo " + i + ":");
+                printTree(currentNode.getChild(i));
+            }
+        }
     }
+
+    public BTreeNode getRoot() {
+        return root;
+    }
+    
 }

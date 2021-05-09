@@ -18,7 +18,7 @@ public class BTreeNode {
 
     public BTreeNode() {
         this.childs = new BTreeNode[5];
-        this.keys = new Horario[5];
+        this.keys = new Horario[6];
         this.isLeaf = true;
         this.numKeys = 0;
         this.numChilds = 0;

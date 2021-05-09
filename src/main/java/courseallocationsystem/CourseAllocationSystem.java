@@ -29,6 +29,6 @@ public class CourseAllocationSystem {
         arbolB.add(horario3);
         arbolB.add(horario4);
         arbolB.add(horario5);
-        arbolB.printTree();
+        arbolB.printTree(arbolB.getRoot());
     }
 }

@@ -11,17 +11,22 @@ import courseallocationsystem.model.Horario;
 public class BTreeNode {
 
     private int numKeys;
-    private int numChilds;
     private boolean isLeaf;
     private Horario[] keys;
     private BTreeNode[] childs;
 
     public BTreeNode() {
-        this.childs = new BTreeNode[5];
-        this.keys = new Horario[6];
+        this.childs = new BTreeNode[6];
+        this.keys = new Horario[5];
         this.isLeaf = true;
         this.numKeys = 0;
-        this.numChilds = 0;
+    }
+    
+    public BTreeNode(boolean isLeaf) {
+        this.childs = new BTreeNode[6];
+        this.keys = new Horario[5];
+        this.isLeaf = isLeaf;
+        this.numKeys = 0;
     }
 
     public int getNumtKeys() {
@@ -31,24 +36,12 @@ public class BTreeNode {
     public void setNumKeys(int cantKeys) {
         this.numKeys = cantKeys;
     }
-
-    public int getNumChilds() {
-        return numChilds;
-    }
-
-    public void setNumChilds(int numChilds) {
-        this.numChilds = numChilds;
-    }
     
     public void increaseNumKeys() {
         this.numKeys++;
     }
-    
-    public void increaseNumChilds() {
-        this.numChilds++;
-    }
 
-    public boolean isIsLeaf() {
+    public boolean isLeaf() {
         return isLeaf;
     }
 

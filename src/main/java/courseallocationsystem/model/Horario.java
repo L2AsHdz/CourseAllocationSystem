@@ -18,6 +18,10 @@ public class Horario extends Objeto {
     public Horario() {
     }
 
+    public Horario(int id) {
+        super(id);
+    }
+
     public Horario(String periodo, String dia, int codCurso, int codSalon, int codEdificio, int idCatedratico, int id) {
         super(id);
         this.periodo = periodo;

@@ -13,22 +13,20 @@ public class CourseAllocationSystem {
 
     public static void main(String[] args) {
         BTree arbolB = new BTree();
-        Horario horario1 = new Horario();
-        horario1.setId(8);
-        Horario horario2 = new Horario();
-        horario2.setId(13);
-        Horario horario3 = new Horario();
-        horario3.setId(25);
-        Horario horario4 = new Horario();
-        horario4.setId(15);
-        Horario horario5 = new Horario();
-        horario5.setId(1);
         
-        arbolB.add(horario1);
-        arbolB.add(horario2);
-        arbolB.add(horario3);
-        arbolB.add(horario4);
-        arbolB.add(horario5);
+        arbolB.add(new Horario(8));
+        arbolB.add(new Horario(13));
+        arbolB.add(new Horario(25));
+        arbolB.add(new Horario(15));
+        arbolB.add(new Horario(1));
+        arbolB.add(new Horario(31));
+        arbolB.add(new Horario(50));
+        arbolB.add(new Horario(14));
+        arbolB.add(new Horario(12));
+        arbolB.add(new Horario(2));
+        arbolB.add(new Horario(16));
+        arbolB.add(new Horario(10));
+        arbolB.add(new Horario(1));
         arbolB.printTree(arbolB.getRoot());
     }
 }

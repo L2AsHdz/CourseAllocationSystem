@@ -54,7 +54,7 @@ public class BTree {
                 }
 
                 if (currentNode.getNumtKeys() == 5) {
-                    verifyNumKeys(currentNode);
+                    checkMaxKeys(currentNode);
                 }
             } else {
                 System.out.println("Dato repetido");
@@ -125,7 +125,7 @@ public class BTree {
         child.setKey(null, 2);
     }
 
-    private void verifyNumKeys(BTreeNode currentNode) {
+    private void checkMaxKeys(BTreeNode currentNode) {
 
         if (currentNode == this.root) {
             BTreeNode newRoot = new BTreeNode(false);
@@ -143,7 +143,7 @@ public class BTree {
             splitChild(parent, currentNode, indexMiddleKey);
 
             if (parent.getNumtKeys() == 5) {
-                verifyNumKeys(parent);
+                checkMaxKeys(parent);
             }
         }
     }
@@ -185,6 +185,55 @@ public class BTree {
         }
 
         return horario;
+    }
+
+    public void remove(int id) {
+        delete(root, id);
+    }
+
+    private void delete(BTreeNode currentNode, int id) {
+        int indexKey = findIndexKey(currentNode, id);
+
+        if (indexKey != -1) {
+            if (currentNode.isLeaf()) {
+                removeFromLeaf(currentNode, indexKey);
+            } else {
+                //remover de nodo que no es hoja
+            }
+            
+            checkMinKeys(currentNode);
+        } else {
+            if (currentNode.isLeaf()) {
+                System.out.println("Horario no existe en el arbol");
+            } else {
+                int indexChild = findChildOrIndex(currentNode, id);
+
+                delete(currentNode.getChild(indexChild), id);
+            }
+        }
+    }
+
+    private int findIndexKey(BTreeNode currentNode, int id) {
+        for (int i = 0; i < 5; i++) {
+            Horario tempKey = currentNode.getKey(i);
+            if (tempKey != null) {
+                if (tempKey.getId() == id) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private void removeFromLeaf(BTreeNode currentNode, int index) {
+        for (int i = index + 1; i <= currentNode.getNumtKeys(); i++) {
+            currentNode.setKey(currentNode.getKey(i), i - 1);
+        }
+        currentNode.decreaseNumKeys();
+    }
+    
+    private void checkMinKeys(BTreeNode currentNode) {
+        
     }
 
     public void printTree(BTreeNode currentNode, int contador) {

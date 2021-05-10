@@ -40,6 +40,10 @@ public class BTreeNode {
     public void increaseNumKeys() {
         this.numKeys++;
     }
+    
+    public void decreaseNumKeys() {
+        this.numKeys--;
+    }
 
     public boolean isLeaf() {
         return isLeaf;

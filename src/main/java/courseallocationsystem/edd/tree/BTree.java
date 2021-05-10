@@ -2,7 +2,6 @@ package courseallocationsystem.edd.tree;
 
 import courseallocationsystem.edd.BTreeNode;
 import courseallocationsystem.model.Horario;
-import java.util.Arrays;
 
 /**
  *
@@ -19,12 +18,13 @@ public class BTree {
     }
 
     public void add(Horario h) {
-        if (root.getNumtKeys() == 4) {
+        if (root.getNumtKeys() == 4 && root.isLeaf()) {
             BTreeNode newRoot = new BTreeNode(false);
 
             newRoot.setChild(root, 0);
 
-            splitChild(newRoot, root, 0, h);
+            insercionOrdenada(root, h);
+            splitChild(newRoot, root, 0);
 
             this.root = newRoot;
         } else {
@@ -46,15 +46,19 @@ public class BTree {
             if (!itsRepeated(currentNode.getChild(indexChild), h)) {
                 if (currentNode.getChild(indexChild).getNumtKeys() == 4) {
                     System.out.println("Dividiendo nodo");
-                    splitChild(currentNode, currentNode.getChild(indexChild), indexChild, h);
+                    insercionOrdenada(currentNode.getChild(indexChild), h);
+                    splitChild(currentNode, currentNode.getChild(indexChild), indexChild);
                 } else {
                     insertarKey(root.getChild(indexChild), h);
+                }
+
+                if (currentNode.getNumtKeys() == 5) {
+                    verifyNumKeys(currentNode);
                 }
             } else {
                 System.out.println("Dato repetido");
             }
         }
-
     }
 
     private void insercionOrdenada(BTreeNode currentNode, Horario h) {
@@ -80,7 +84,7 @@ public class BTree {
 
     private boolean itsRepeated(BTreeNode currentNode, Horario h) {
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             if (currentNode.getKey(i) != null) {
                 if (currentNode.getKey(i).getId() == h.getId()) {
                     return true;
@@ -91,19 +95,21 @@ public class BTree {
         return false;
     }
 
-    private void splitChild(BTreeNode currentNode, BTreeNode child, int index, Horario h) {
-        insercionOrdenada(child, h);
-        
+    private void splitChild(BTreeNode currentNode, BTreeNode child, int index) {
         BTreeNode right = new BTreeNode(child.isLeaf());
         right.setNumKeys(2);
 
         //Mover elementos 3 y 4 de child a right
-        right.setKeys(Arrays.copyOf(Arrays.copyOfRange(child.getKeys(), 3, 5), 5));
-        child.setKey(null, 3);
-        child.setKey(null, 4);
+        for (int i = 3; i < 5; i++) {
+            right.setKey(child.getKey(i), i - 3);
+            child.setKey(null, i);
+        }
         //Si no es hoja copiar childs tambien
         if (!child.isLeaf()) {
-            right.setChilds(Arrays.copyOf(Arrays.copyOfRange(child.getChilds(), 3, 6), 6));
+            for (int i = 3; i < 6; i++) {
+                right.setChild(child.getChild(i), i - 3);
+                child.setChild(null, i);
+            }
         }
         child.setNumKeys(2);
 
@@ -113,16 +119,51 @@ public class BTree {
         }
         currentNode.setChild(right, index + 1);
 
+        //Insertar dato medio de hijo en current node
         insercionOrdenada(currentNode, child.getKey(2));
         child.setKey(null, 2);
-
     }
 
-    public void printTree(BTreeNode currentNode) {
-        StringBuilder tree = new StringBuilder();
-        tree.append("[");
+    private void verifyNumKeys(BTreeNode currentNode) {
 
-        for (int i = 0; i < 4; i++) {
+        if (currentNode == this.root) {
+            if (currentNode.getNumtKeys() >= 4) {
+                BTreeNode newRoot = new BTreeNode(false);
+
+                newRoot.setChild(root, 0);
+
+                splitChild(newRoot, root, 0);
+
+                this.root = newRoot;
+                System.out.println("Se dividio el nodo root");
+            }
+        } else {
+            System.out.println("Verificar hojas");
+            /*BTreeNode node = null;
+
+        if (currentNode.getNumtKeys() >= 4) {
+            node = currentNode;
+        }
+
+        for (int i = 0; i < 6; i++) {
+            BTreeNode child = currentNode.getChild(i);
+            if (child != null) {
+                BTreeNode nodeToSplit = verifyNumKeys(currentNode.getChild(i));
+                if (nodeToSplit != null) {
+                    System.out.println("Hacer split en hijo");
+                }
+            }
+        }
+
+        return node;*/
+        }
+    }
+    
+    public void printTree(BTreeNode currentNode, int contador) {
+        StringBuilder tree = new StringBuilder();
+        tree.append(contador).append(" -> [");
+
+        for (int i = 0; i < 5; i++) {
             if (currentNode.getKey(i) != null) {
                 tree.append(currentNode.getKey(i).getId()).append("|");
             }
@@ -130,11 +171,31 @@ public class BTree {
         tree.append("]");
         System.out.println(tree.toString());
 
-        for (int i = 0; i < 5; i++) {
+        contador++;
+        for (int i = 0; i < 6; i++) {
             if (currentNode.getChild(i) != null) {
-                System.out.print("Hijo " + i + ":");
-                printTree(currentNode.getChild(i));
+                printTree(currentNode.getChild(i), contador);
             }
+        }
+    }
+
+    public void showTree() {
+        if (root != null) {
+            traverse(root);
+        }
+    }
+
+    private void traverse(BTreeNode currentNode) {
+        int i;
+        for (i = 0; i < currentNode.getNumtKeys(); i++) {
+            if (!currentNode.isLeaf()) {
+                traverse(currentNode.getChild(i));
+            }
+            System.out.printf(" %d", currentNode.getKey(i).getId());
+        }
+
+        if (!currentNode.isLeaf()) {
+            traverse(currentNode.getChild(i));
         }
     }
 

@@ -14,19 +14,30 @@ public class CourseAllocationSystem {
     public static void main(String[] args) {
         BTree arbolB = new BTree();
         
-        arbolB.add(new Horario(8));
-        arbolB.add(new Horario(13));
-        arbolB.add(new Horario(25));
-        arbolB.add(new Horario(15));
-        arbolB.add(new Horario(1));
-        arbolB.add(new Horario(31));
         arbolB.add(new Horario(50));
-        arbolB.add(new Horario(14));
-        arbolB.add(new Horario(12));
-        arbolB.add(new Horario(2));
-        arbolB.add(new Horario(16));
-        arbolB.add(new Horario(10));
-        arbolB.add(new Horario(1));
-        arbolB.printTree(arbolB.getRoot());
+        arbolB.add(new Horario(100));
+        arbolB.add(new Horario(150));
+        arbolB.add(new Horario(200));
+        arbolB.add(new Horario(250));
+        
+        arbolB.add(new Horario(25));
+        arbolB.add(new Horario(75));
+        arbolB.add(new Horario(125));
+
+        arbolB.add(new Horario(175));
+        arbolB.add(new Horario(225));
+        arbolB.add(new Horario(275));
+        
+        arbolB.add(new Horario(35));
+        arbolB.add(new Horario(15));
+        arbolB.add(new Horario(60));
+        
+        arbolB.add(new Horario(230));
+        arbolB.add(new Horario(260));
+        arbolB.add(new Horario(290));
+        
+        arbolB.printTree(arbolB.getRoot(), 0);
+        System.out.println("\n");
+        arbolB.showTree();
     }
 }

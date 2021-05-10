@@ -44,7 +44,8 @@ public class BTree {
         } else {
             int indexChild = findChildOrIndex(currentNode, h);
             if (!itsRepeated(currentNode.getChild(indexChild), h)) {
-                if (currentNode.getChild(indexChild).getNumtKeys() == 4) {
+                BTreeNode child = currentNode.getChild(indexChild);
+                if (child.getNumtKeys() == 4 && child.isLeaf()) {
                     System.out.println("Dividiendo nodo");
                     insercionOrdenada(currentNode.getChild(indexChild), h);
                     splitChild(currentNode, currentNode.getChild(indexChild), indexChild);
@@ -104,7 +105,7 @@ public class BTree {
             right.setKey(child.getKey(i), i - 3);
             child.setKey(null, i);
         }
-        //Si no es hoja copiar childs tambien
+        //Si no es hoja mover childs tambien
         if (!child.isLeaf()) {
             for (int i = 3; i < 6; i++) {
                 right.setChild(child.getChild(i), i - 3);
@@ -127,38 +128,42 @@ public class BTree {
     private void verifyNumKeys(BTreeNode currentNode) {
 
         if (currentNode == this.root) {
-            if (currentNode.getNumtKeys() >= 4) {
-                BTreeNode newRoot = new BTreeNode(false);
+            BTreeNode newRoot = new BTreeNode(false);
 
-                newRoot.setChild(root, 0);
+            newRoot.setChild(root, 0);
 
-                splitChild(newRoot, root, 0);
+            splitChild(newRoot, root, 0);
 
-                this.root = newRoot;
-                System.out.println("Se dividio el nodo root");
-            }
+            this.root = newRoot;
+            System.out.println("Se dividio el nodo root");
         } else {
-            System.out.println("Verificar hojas");
-            /*BTreeNode node = null;
+            BTreeNode parent = findParent(root, currentNode);
 
-        if (currentNode.getNumtKeys() >= 4) {
-            node = currentNode;
+            int indexMiddleKey = findChildOrIndex(parent, currentNode.getKey(2));
+            splitChild(parent, currentNode, indexMiddleKey);
+            
+            if (parent .getNumtKeys() == 5) {
+                verifyNumKeys(parent);
+            }
         }
+    }
 
+    private BTreeNode findParent(BTreeNode possibleParent, BTreeNode child) {
+        BTreeNode parent = null;
         for (int i = 0; i < 6; i++) {
-            BTreeNode child = currentNode.getChild(i);
-            if (child != null) {
-                BTreeNode nodeToSplit = verifyNumKeys(currentNode.getChild(i));
-                if (nodeToSplit != null) {
-                    System.out.println("Hacer split en hijo");
+            BTreeNode tempChild = possibleParent.getChild(i);
+            if (possibleParent.getChild(i) == child) {
+                parent = possibleParent;
+            }
+            if (tempChild != null) {
+                if (parent == null) {
+                    parent = findParent(possibleParent.getChild(i), child);
                 }
             }
         }
-
-        return node;*/
-        }
+        return parent;
     }
-    
+
     public void printTree(BTreeNode currentNode, int contador) {
         StringBuilder tree = new StringBuilder();
         tree.append(contador).append(" -> [");
@@ -174,6 +179,7 @@ public class BTree {
         contador++;
         for (int i = 0; i < 6; i++) {
             if (currentNode.getChild(i) != null) {
+                System.out.print(i + "-");
                 printTree(currentNode.getChild(i), contador);
             }
         }

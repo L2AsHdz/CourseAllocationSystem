@@ -65,8 +65,15 @@ public class CourseAllocationSystem {
         arbolB.add(new Horario(320));
         arbolB.add(new Horario(325));
         
-        arbolB.remove(75);
+        //Operaciones para probar merge con hermano izquierdo
+        /*arbolB.remove(75);
         arbolB.remove(200);
+        arbolB.remove(290);*/
+        
+        //Operaciones para probar merge con hermano derecho
+        arbolB.remove(290);
+        arbolB.remove(200);
+        arbolB.remove(75);
         
         
         System.out.println("");

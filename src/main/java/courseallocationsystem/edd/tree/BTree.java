@@ -202,7 +202,7 @@ public class BTree {
             }
 
             //posiblemente haya que validar que no sea el root
-            if (currentNode.getNumtKeys() < 2) {
+            if (currentNode != root && currentNode.getNumtKeys() < 2) {
                 checkMinKeys(currentNode);
             }
         } else {
@@ -249,7 +249,7 @@ public class BTree {
                 if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
                     borrowFromNext(parent, currentNode, rightBrother, indexCurrentChild);
                 } else {
-                    merge(parent, currentNode, rightBrother, indexCurrentChild + 1);
+                    merge(parent, currentNode, rightBrother, indexCurrentChild + 1, 1);
                 }
             }
             case 5 -> {
@@ -258,7 +258,7 @@ public class BTree {
                 if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
                     borrowFromPrev(parent, currentNode, leftBrother, indexCurrentChild);
                 } else {
-                    merge(parent, currentNode, leftBrother, indexCurrentChild);
+                    merge(parent, currentNode, leftBrother, indexCurrentChild, 0);
                 }
             }
             default -> {
@@ -271,12 +271,12 @@ public class BTree {
                     borrowFromNext(parent, currentNode, rightBrother, indexCurrentChild);
                     System.out.println("Balanceo realizado");
                 } else {
-                    merge(parent, currentNode, leftBrother, indexCurrentChild);
+                    merge(parent, currentNode, leftBrother, indexCurrentChild, 0);
                 }
             }
         }
 
-        if (parent.getNumtKeys() < 2) {
+        if (parent != root && parent.getNumtKeys() < 2) {
             System.out.println("Balance recursivo");
             checkMinKeys(parent);
         }
@@ -324,7 +324,15 @@ public class BTree {
         removeFromLeaf(leftBrother, leftBrother.getNumtKeys() - 1);
     }
 
-    private void merge(BTreeNode parent, BTreeNode currentNode, BTreeNode sibling, int indexCurrentNode) {
+    /**
+     * 
+     * @param parent -> Padre del nodo actual
+     * @param currentNode -> Nodo en el cual las llaves son menores a dos
+     * @param sibling -> Hermano del nodo actual
+     * @param indexCurrentNode -> Indice del nodo actual en el padre
+     * @param type -> 0 si es hermano izquierdo y 1 si es hermano derecho
+     */
+    private void merge(BTreeNode parent, BTreeNode currentNode, BTreeNode sibling, int indexCurrentNode, int type) {
         BTreeNode mergedNode = new BTreeNode(currentNode.isLeaf());
 
         insercionOrdenada(mergedNode, currentNode.getKey(0));
@@ -343,6 +351,26 @@ public class BTree {
         }
 
         parent.decreaseNumKeys();
+        
+        if (!currentNode.isLeaf()) {
+            if (type == 0) {
+                for (int i = 0; i < 3; i++) {
+                    mergedNode.setChild(sibling.getChild(i), i);
+                }
+                
+                for (int i = 0; i < 2; i++) {
+                    mergedNode.setChild(currentNode.getChild(i), i + 3);
+                }
+            } else {
+                for (int i = 0; i < 2; i++) {
+                    mergedNode.setChild(currentNode.getChild(i), i);
+                }
+                
+                for (int i = 0; i < 3; i++) {
+                    mergedNode.setChild(sibling.getChild(i), i + 2);
+                }
+            }
+        }
     }
 
     public void printTree(BTreeNode currentNode, int contador) {

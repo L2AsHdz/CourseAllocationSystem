@@ -57,6 +57,18 @@ public class CourseAllocationSystem {
         arbolB.add(new Horario(30));
         arbolB.remove(60);
         
+        arbolB.add(new Horario(5));
+        arbolB.add(new Horario(10));
+        arbolB.add(new Horario(20));
+        
+        arbolB.add(new Horario(315));
+        arbolB.add(new Horario(320));
+        arbolB.add(new Horario(325));
+        
+        arbolB.remove(20);
+        arbolB.remove(325);
+        arbolB.remove(250);
+        
         System.out.println("");
         arbolB.printTree(arbolB.getRoot(), 0);
         arbolB.showTree();

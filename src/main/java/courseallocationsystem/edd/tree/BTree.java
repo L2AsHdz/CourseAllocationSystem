@@ -245,7 +245,7 @@ public class BTree {
                     rightBrother = parent.getChild(indexCurrentChild + 1);
 
                     if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
-                        borrowFromNext(parent, currentNode, rightBrother);
+                        borrowFromNext(parent, currentNode, rightBrother, indexCurrentChild);
                     } else {
                         //Unir con hijo derecho
                     }
@@ -254,7 +254,7 @@ public class BTree {
                     leftBrother = parent.getChild(indexCurrentChild - 1);
 
                     if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
-                        //Prestar de hijo izquierdo
+                        borrowFromPrev(parent, currentNode, leftBrother, indexCurrentChild);
                     } else {
                         //Unir con hijo izquierdo
                     }
@@ -264,21 +264,13 @@ public class BTree {
                     rightBrother = parent.getChild(indexCurrentChild + 1);
 
                     if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
-                        //Prestar de izquierdo
+                        borrowFromPrev(parent, currentNode, leftBrother, indexCurrentChild);
                     } else if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
-                        borrowFromNext(parent, currentNode, rightBrother);
+                        borrowFromNext(parent, currentNode, rightBrother, indexCurrentChild);
                         System.out.println("Balanceo realizado");
                     } else {
                         //Unir con hijo izquierdo
                     }
-
-                    System.out.println("\n\n");
-                    System.out.println("LeftBro:");
-                    printTree(leftBrother, 0);
-                    System.out.println("RightBro:");
-                    printTree(rightBrother, 0);
-                    System.out.println("\n\n");
-
                 }
             }
         }
@@ -293,16 +285,24 @@ public class BTree {
         return -1;
     }
 
-    private void borrowFromNext(BTreeNode parent, BTreeNode currentNode, BTreeNode rightBrother) {
-        int indexCurrentNode = getIndexChild(parent, currentNode);
-
+    private void borrowFromNext(BTreeNode parent, BTreeNode currentNode, BTreeNode rightBrother, int indexCurrentNode) {
         currentNode.setKey(parent.getKey(indexCurrentNode), 1);
         currentNode.increaseNumKeys();
         parent.setKey(rightBrother.getKey(0), indexCurrentNode);
         delete(rightBrother, rightBrother.getKey(0).getId());
         
-        if (currentNode.isLeaf()) {
+        if (!currentNode.isLeaf()) {
             System.out.println("Mover punteros tambien");
+        }
+    }
+    
+    private void borrowFromPrev(BTreeNode parent, BTreeNode currentNode, BTreeNode leftBrother, int indexCurrentNode) {
+        insercionOrdenada(currentNode, parent.getKey(indexCurrentNode - 1));
+        parent.setKey(leftBrother.getKey(leftBrother.getNumtKeys() - 1), indexCurrentNode - 1);
+        delete(leftBrother, leftBrother.getKey(leftBrother.getNumtKeys() - 1).getId());
+        
+        if (!currentNode.isLeaf()) {
+            System.out.println("Mover childs tambien");
         }
     }
 

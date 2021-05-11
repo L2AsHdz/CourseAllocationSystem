@@ -47,16 +47,18 @@ public class CourseAllocationSystem {
         arbolB.add(new Horario(265));
         arbolB.add(new Horario(282));
         arbolB.add(new Horario(310));
+        arbolB.add(new Horario(115));
         
-        arbolB.printTree(arbolB.getRoot(), 0);
         System.out.println("\n");
-        arbolB.showTree();
-        
         Horario horarioRecuperado = arbolB.get(265);
         
         System.out.println("\n\nDato recuperado del arbol:  " + horarioRecuperado.getId());
         
-        arbolB.remove(100);
+        arbolB.remove(50);
+        arbolB.add(new Horario(30));
+        arbolB.remove(60);
+        
         arbolB.printTree(arbolB.getRoot(), 0);
+        arbolB.showTree();
     }
 }

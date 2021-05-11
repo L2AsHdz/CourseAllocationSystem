@@ -114,7 +114,7 @@ public class BTree {
         }
         child.setNumKeys(2);
 
-        //Insertar child en current node
+        //Insertar right en current node
         for (int i = currentNode.getNumtKeys(); i >= index + 1; i--) {
             currentNode.setChild(currentNode.getChild(i), i + 1);
         }
@@ -200,7 +200,7 @@ public class BTree {
             } else {
                 //remover de nodo que no es hoja
             }
-            
+
             checkMinKeys(currentNode);
         } else {
             if (currentNode.isLeaf()) {
@@ -231,9 +231,79 @@ public class BTree {
         }
         currentNode.decreaseNumKeys();
     }
-    
+
     private void checkMinKeys(BTreeNode currentNode) {
+        if (currentNode.getNumtKeys() < 2) {
+            BTreeNode parent = findParent(root, currentNode);
+            int indexCurrentChild = getIndexChild(parent, currentNode);
+
+            BTreeNode leftBrother;
+            BTreeNode rightBrother;
+
+            switch (indexCurrentChild) {
+                case 0 -> {
+                    rightBrother = parent.getChild(indexCurrentChild + 1);
+
+                    if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
+                        borrowFromNext(parent, currentNode, rightBrother);
+                    } else {
+                        //Unir con hijo derecho
+                    }
+                }
+                case 5 -> {
+                    leftBrother = parent.getChild(indexCurrentChild - 1);
+
+                    if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
+                        //Prestar de hijo izquierdo
+                    } else {
+                        //Unir con hijo izquierdo
+                    }
+                }
+                default -> {
+                    leftBrother = parent.getChild(indexCurrentChild - 1);
+                    rightBrother = parent.getChild(indexCurrentChild + 1);
+
+                    if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
+                        //Prestar de izquierdo
+                    } else if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
+                        borrowFromNext(parent, currentNode, rightBrother);
+                        System.out.println("Balanceo realizado");
+                    } else {
+                        //Unir con hijo izquierdo
+                    }
+
+                    System.out.println("\n\n");
+                    System.out.println("LeftBro:");
+                    printTree(leftBrother, 0);
+                    System.out.println("RightBro:");
+                    printTree(rightBrother, 0);
+                    System.out.println("\n\n");
+
+                }
+            }
+        }
+    }
+
+    private int getIndexChild(BTreeNode parent, BTreeNode child) {
+        for (int i = 0; i < 6; i++) {
+            if (parent.getChild(i) == child) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void borrowFromNext(BTreeNode parent, BTreeNode currentNode, BTreeNode rightBrother) {
+        int indexCurrentNode = getIndexChild(parent, currentNode);
+
+        currentNode.setKey(parent.getKey(indexCurrentNode), 1);
+        currentNode.increaseNumKeys();
+        parent.setKey(rightBrother.getKey(0), indexCurrentNode);
+        delete(rightBrother, rightBrother.getKey(0).getId());
         
+        if (currentNode.isLeaf()) {
+            System.out.println("Mover punteros tambien");
+        }
     }
 
     public void printTree(BTreeNode currentNode, int contador) {

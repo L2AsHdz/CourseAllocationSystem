@@ -1,7 +1,9 @@
 package courseallocationsystem;
 
+import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.tree.BTree;
 import courseallocationsystem.model.Horario;
+import courseallocationsystem.model.Usuario;
 
 /**
  *
@@ -12,6 +14,10 @@ import courseallocationsystem.model.Horario;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
+        testList();
+    }
+    
+    private static void testBTree() {
         BTree arbolB = new BTree();
         
         arbolB.add(new Horario(50));
@@ -84,5 +90,14 @@ public class CourseAllocationSystem {
         System.out.println("");
         arbolB.printTree(arbolB.getRoot(), 0);
         arbolB.showTree();
+    }
+    
+    private static void testList() {
+        List<Usuario, Integer> listU = new List();
+        
+        listU.add(new Usuario("asael", "123", "estudiante", 201730192));
+        listU.add(new Usuario("abner", "123", "estudiante", 201730191));
+        
+        listU.show();
     }
 }

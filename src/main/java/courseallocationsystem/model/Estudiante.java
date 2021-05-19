@@ -6,7 +6,7 @@ package courseallocationsystem.model;
  * @time 04:39:11
  * @author asael
  */
-public class Estudiante extends Objeto {
+public class Estudiante extends Entidad<Integer> {
     
     private String nombre;
     private String direccion;

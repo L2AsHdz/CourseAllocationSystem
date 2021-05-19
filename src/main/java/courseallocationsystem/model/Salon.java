@@ -6,16 +6,18 @@ package courseallocationsystem.model;
  * @time 04:46:07
  * @author asael
  */
-public class Salon extends Objeto {
+public class Salon extends Entidad<Integer> {
     
     private int cantEstudiantes;
+    private String edificio;
 
     public Salon() {
     }
 
-    public Salon(int cantEstudiantes, int id) {
+    public Salon(int cantEstudiantes, String edificio, Integer id) {
         super(id);
         this.cantEstudiantes = cantEstudiantes;
+        this.edificio = edificio;
     }
 
     public int getCantEstudiantes() {
@@ -24,5 +26,13 @@ public class Salon extends Objeto {
 
     public void setCantEstudiantes(int cantEstudiantes) {
         this.cantEstudiantes = cantEstudiantes;
+    }
+
+    public String getEdificio() {
+        return edificio;
+    }
+
+    public void setEdificio(String edificio) {
+        this.edificio = edificio;
     }
 }

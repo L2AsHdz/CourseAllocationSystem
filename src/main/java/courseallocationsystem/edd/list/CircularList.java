@@ -1,7 +1,7 @@
 package courseallocationsystem.edd.list;
 
 import courseallocationsystem.edd.Nodo;
-import courseallocationsystem.model.Objeto;
+import courseallocationsystem.model.Entidad;
 
 /**
  *
@@ -12,16 +12,16 @@ import courseallocationsystem.model.Objeto;
  */
 public class CircularList {
 
-    private Nodo<Objeto> primero;
-    private Nodo<Objeto> ultimo;
+    private Nodo<Entidad> primero;
+    private Nodo<Entidad> ultimo;
     private int size;
 
     public CircularList() {
         this.size = 0;
     }
 
-    public void add(Objeto i) {
-        Nodo<Objeto> nuevo = new Nodo(i);
+    public void add(Entidad i) {
+        Nodo<Entidad> nuevo = new Nodo(i);
 
         if (primero == null) {
             nuevo.setNext(nuevo);
@@ -37,9 +37,9 @@ public class CircularList {
         size++;
         ultimo = nuevo;
     }
-    
-    public Objeto get(int id) {
-        Nodo<Objeto> actual = primero;
+    /*
+    public Entidad get(int id) {
+        Nodo<Entidad> actual = primero;
 
         do {
             if (actual.getDato().getId() == id) {
@@ -51,8 +51,8 @@ public class CircularList {
         return null;
     }
 
-    public Objeto remove(int id) {
-        Nodo<Objeto> actual = primero;
+    public Entidad remove(int id) {
+        Nodo<Entidad> actual = primero;
 
         if (actual.getDato().getId() == id) {
             primero = actual.getNext();
@@ -85,7 +85,7 @@ public class CircularList {
     }
 
     public void show() {
-        Nodo<Objeto> actual = primero;
+        Nodo<Entidad> actual = primero;
 
         if (actual == null) {
             System.out.println("Lista vacia");
@@ -99,9 +99,9 @@ public class CircularList {
     }
 
     public void sort() {
-        Nodo<Objeto> actual;
-        Nodo<Objeto> next;
-        Objeto temp;
+        Nodo<Entidad> actual;
+        Nodo<Entidad> next;
+        Entidad temp;
         
         if (size > 1) {
             for (int i = 0; i < size; i++) {
@@ -129,7 +129,7 @@ public class CircularList {
         return primero == null;
     }
 
-    public Nodo<Objeto> getPrimero() {
+    public Nodo<Entidad> getPrimero() {
         return primero;
-    }
+    }*/
 }

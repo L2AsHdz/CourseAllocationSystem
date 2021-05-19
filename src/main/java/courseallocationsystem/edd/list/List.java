@@ -1,30 +1,35 @@
 package courseallocationsystem.edd.list;
 
+import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.Nodo;
-import courseallocationsystem.model.Objeto;
+import courseallocationsystem.model.Entidad;
 
 /**
  *
+ * @param <T>
+ * @param <I>
  * @date 4/04/2021
  * @time 13:27:55
  * @author asael
  */
-public class Lista {
+public class List<T extends Entidad, I> {
     
-    protected Nodo<Objeto> inicio;
-    protected int size;
+    IdentifierComparator<I> comparator = new IdentifierComparator();
+    
+    private Nodo<T> inicio;
+    private int size;
 
-    public Lista() {
+    public List() {
         this.size = 0;
     }
     
-    public void add(Objeto t) {
-        Nodo<Objeto> nuevo = new Nodo(t);
+    public void add(T t) {
+        Nodo<T> nuevo = new Nodo(t);
         
         if (inicio == null) {
             inicio = nuevo;
         } else {
-            Nodo<Objeto> temp = inicio;
+            Nodo<T> temp = inicio;
             
             while (temp.getNext() != null) {
                 temp = temp.getNext();
@@ -43,11 +48,11 @@ public class Lista {
         return inicio == null;
     }
     
-    public Objeto get(int id) {
-        Nodo<Objeto> actual = inicio;
+    public T get(I id) {
+        Nodo<T>actual = inicio;
         
         while (actual != null) {
-            if (actual.getDato().getId() == id) {
+            if (comparator.compare(actual.getDato(), id) == 0) {
                 return actual.getDato();
             }
             actual = actual.getNext();
@@ -56,17 +61,17 @@ public class Lista {
         return null;
     }
     
-    public Objeto remove(int id) {
-        Nodo<Objeto> actual = inicio;
+    public T remove(I id) {
+        Nodo<T> actual = inicio;
         
-        if (actual.getDato().getId() == id) {
+        if (comparator.compare(actual.getDato(), id) == 0) {
             inicio = actual.getNext();
             size--;
             return actual.getDato();
         } else {
-            Nodo<Objeto> temp;
+            Nodo<T> temp;
             while (actual.getNext() != null) {
-                if (actual.getNext().getDato().getId() == id) {
+                if (comparator.compare(actual.getNext().getDato(), id) == 0) {
                     temp = actual.getNext();
                     actual.setNext(temp.getNext());
                     size--;
@@ -80,23 +85,23 @@ public class Lista {
     }
     
     public void show() {
-        Nodo<Objeto> actual = inicio;
+        Nodo<T>actual = inicio;
         
         if (actual == null) {
             System.out.println("Lista vacia");
         } else {
             while (actual != null) {
                 if (actual.getNext() != null) {
-                    System.out.print(actual.getDato().getId() + "->");
+                    System.out.print((actual.getDato()).getId() + "->");
                 } else {
-                    System.out.print(actual.getDato().getId());
+                    System.out.print((actual.getDato()).getId());
                 }
                 actual = actual.getNext();
             }
         }
     }
 
-    public Nodo<Objeto> getInicio() {
+    public Nodo<T> getInicio() {
         return inicio;
     }
 }

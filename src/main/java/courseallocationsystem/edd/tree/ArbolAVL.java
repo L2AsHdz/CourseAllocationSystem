@@ -1,7 +1,7 @@
 package courseallocationsystem.edd.tree;
 
 import courseallocationsystem.edd.TreeNode;
-import courseallocationsystem.model.Objeto;
+import courseallocationsystem.model.Entidad;
 
 /**
  *
@@ -11,26 +11,26 @@ import courseallocationsystem.model.Objeto;
  */
 public class ArbolAVL {
 
-    private TreeNode<Objeto> root;
+    private TreeNode<Entidad> root;
     
-    private TreeNode<Objeto> rightRotation(TreeNode<Objeto> oldRoot) {
-        TreeNode<Objeto> newRoot = oldRoot.getLeft();
+    private TreeNode<Entidad> rightRotation(TreeNode<Entidad> oldRoot) {
+        TreeNode<Entidad> newRoot = oldRoot.getLeft();
         oldRoot.setLeft(newRoot.getRight());
         newRoot.setRight(oldRoot);
 
         return newRoot;
     }
 
-    private TreeNode<Objeto> leftRotation(TreeNode<Objeto> oldRoot) {
-        TreeNode<Objeto> newRoot = oldRoot.getRight();
+    private TreeNode<Entidad> leftRotation(TreeNode<Entidad> oldRoot) {
+        TreeNode<Entidad> newRoot = oldRoot.getRight();
         oldRoot.setRight(newRoot.getLeft());
         newRoot.setLeft(oldRoot);
 
         return newRoot;
     }
 
-    private TreeNode<Objeto> rightDoubleRotation(TreeNode<Objeto> oldRoot) {
-        TreeNode<Objeto> newRoot;
+    private TreeNode<Entidad> rightDoubleRotation(TreeNode<Entidad> oldRoot) {
+        TreeNode<Entidad> newRoot;
         oldRoot.setLeft(leftRotation(oldRoot.getLeft()));
         newRoot = rightRotation(oldRoot);
 
@@ -38,15 +38,15 @@ public class ArbolAVL {
 
     }
 
-    private TreeNode<Objeto> leftDoubleRotation(TreeNode<Objeto> oldRoot) {
-        TreeNode<Objeto> newRoot;
+    private TreeNode<Entidad> leftDoubleRotation(TreeNode<Entidad> oldRoot) {
+        TreeNode<Entidad> newRoot;
         oldRoot.setRight(rightRotation(oldRoot.getRight()));
         newRoot = leftRotation(oldRoot);
 
         return newRoot;
     }
 
-    public void inOrden(TreeNode<Objeto> root) {
+    public void inOrden(TreeNode<Entidad> root) {
         if (root != null) {
             inOrden(root.getLeft());
             System.out.print(root.getDato().getId() + ", ");
@@ -54,7 +54,7 @@ public class ArbolAVL {
         }
     }
 
-    public void preOrden(TreeNode<Objeto> root) {
+    public void preOrden(TreeNode<Entidad> root) {
         if (root != null) {
             System.out.print(root.getDato().getId() + ", ");
             preOrden(root.getLeft());
@@ -62,7 +62,7 @@ public class ArbolAVL {
         }
     }
 
-    public void postOrden(TreeNode<Objeto> root) {
+    public void postOrden(TreeNode<Entidad> root) {
         if (root != null) {
             postOrden(root.getLeft());
             postOrden(root.getRight());
@@ -70,11 +70,11 @@ public class ArbolAVL {
         }
     }
 
-    public TreeNode<Objeto> getRaiz() {
+    public TreeNode<Entidad> getRaiz() {
         return root;
     }
 
-    public int getBalanceFactor(TreeNode<Objeto> root) {
+    public int getBalanceFactor(TreeNode<Entidad> root) {
         if (root == null) {
             return 0;
         } else if (root.getRight() == null & root.getLeft() != null) {
@@ -88,14 +88,14 @@ public class ArbolAVL {
         }
     }
 
-    private int getHeight(TreeNode<Objeto> root) {
+    private int getHeight(TreeNode<Entidad> root) {
         int Altder = ((root.getRight() == null) ? 0 : 1 + getHeight(root.getRight()));
         int Altizq = ((root.getLeft() == null) ? 0 : 1 + getHeight(root.getLeft()));
         return Math.max(Altder, Altizq);
-    }
+    }/*
 
-    private TreeNode<Objeto> insert(TreeNode<Objeto> nuevo, TreeNode<Objeto> root) {
-        TreeNode<Objeto> newRoot = root;
+    private TreeNode<Entidad> insert(TreeNode<Entidad> nuevo, TreeNode<Entidad> root) {
+        TreeNode<Entidad> newRoot = root;
 
         if (nuevo.getDato().getId() < root.getDato().getId()) {
             if (root.getLeft() == null) {
@@ -132,8 +132,8 @@ public class ArbolAVL {
         return newRoot;
     }
 
-    public void add(Objeto o) {
-        TreeNode<Objeto> nuevo = new TreeNode(o);
+    public void add(Entidad o) {
+        TreeNode<Entidad> nuevo = new TreeNode(o);
 
         if (root == null) {
             root = nuevo;
@@ -142,7 +142,7 @@ public class ArbolAVL {
         }
     }
     
-    private TreeNode<Objeto> get(int id, TreeNode<Objeto> root) {
+    private TreeNode<Entidad> get(int id, TreeNode<Entidad> root) {
         
         if (root == null) {
             return null;
@@ -155,12 +155,12 @@ public class ArbolAVL {
         }
     }
     
-    public Objeto get(int id) {
+    public Entidad get(int id) {
         return get(id, root).getDato();
     }
     
-    private TreeNode<Objeto> remove(int id, TreeNode<Objeto> root) {
-        TreeNode<Objeto> actual = root;
+    private TreeNode<Entidad> remove(int id, TreeNode<Entidad> root) {
+        TreeNode<Entidad> actual = root;
         
         if (actual == null) {
             return actual;
@@ -173,7 +173,7 @@ public class ArbolAVL {
         } else {
             
             if (actual.getLeft() == null | actual.getRight() == null) {
-                TreeNode<Objeto> aux = null;
+                TreeNode<Entidad> aux = null;
                 if (aux == actual.getLeft()) {
                     aux = actual.getRight();
                 } else {
@@ -186,7 +186,7 @@ public class ArbolAVL {
                     actual = aux;
                 }
             } else {
-                TreeNode<Objeto> reemplazo = getReemplazo(actual.getLeft());
+                TreeNode<Entidad> reemplazo = getReemplazo(actual.getLeft());
                 actual.setDato(reemplazo.getDato());
                 actual.setLeft(remove(reemplazo.getDato().getId(), actual.getLeft()));
             }
@@ -213,17 +213,17 @@ public class ArbolAVL {
         return actual;
     }
     
-    public Objeto remove(int id) {
+    public Entidad remove(int id) {
         return remove(id, root).getDato();
     }
 
-    private TreeNode<Objeto> getReemplazo(TreeNode<Objeto> root) {
-        TreeNode<Objeto> actual = root;
+    private TreeNode<Entidad> getReemplazo(TreeNode<Entidad> root) {
+        TreeNode<Entidad> actual = root;
         
         while (actual.getRight()!= null) {
             actual = actual.getRight();
         }
         
         return actual;
-    }
+    }*/
 }

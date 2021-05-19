@@ -2,26 +2,27 @@ package courseallocationsystem.model;
 
 /**
  *
+ * @param <I>
  * @date 29/04/2021
  * @time 04:12:33
  * @author asael
  */
-public abstract class Objeto {
+public abstract class Entidad<I> {
 
-    private int id;
+    private I id;
 
-    public Objeto(int id) {
+    public Entidad(I id) {
         this.id = id;
     }
 
-    public Objeto() {
+    public Entidad() {
     }
 
-    public int getId() {
+    public I getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(I id) {
         this.id = id;
     }
 }

@@ -1,39 +1,45 @@
 package courseallocationsystem.edd.tree;
 
+import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.BTreeNode;
-import courseallocationsystem.model.Horario;
+import courseallocationsystem.model.Entidad;
 
 /**
  *
+ * @param <T>
+ * @param <I>
  * @date 6/05/2021
  * @time 22:38:12
  * @author asael
  */
-public class BTree {
+public class BTree<T extends Entidad, I> {
 
-    private BTreeNode root;
+    private final IdentifierComparator<I> comparator;
+    
+    private BTreeNode<T> root;
 
     public BTree() {
         root = new BTreeNode();
+        comparator = new IdentifierComparator();
     }
 
     /**
      * Si el nodo root tiene 4 claves divide el nodo root si no
      * envia el horario al metodo insertarKey
-     * @param h -> Horario que se agregara en arbol b
+     * @param t -> T que se agregara en arbol b
      */
-    public void add(Horario h) {
-        if (root.getNumtKeys() == 4 && root.isLeaf()) {
-            BTreeNode newRoot = new BTreeNode(false);
+    public void add(T t) {
+        if (root.getNumKeys() == 4 && root.isLeaf()) {
+            BTreeNode<T> newRoot = new BTreeNode(false);
 
             newRoot.setChild(root, 0);
 
-            insercionOrdenada(root, h);
+            insercionOrdenada(root, t);
             splitChild(newRoot, root, 0);
 
             this.root = newRoot;
         } else {
-            insertarKey(root, h);
+            insertarKey(root, t);
         }
     }
 
@@ -44,30 +50,29 @@ public class BTree {
      * con el nodo hijo como parametro.
      * Si el nodo actual queda con 5 claves se realiza una division.
      * @param root -> Nodo raiz
-     * @param h -> Horario a agregar
+     * @param t -> T a agregar
      */
-    private void insertarKey(BTreeNode root, Horario h) {
-        BTreeNode currentNode = root;
+    private void insertarKey(BTreeNode<T> root, T t) {
+        BTreeNode<T> currentNode = root;
 
         if (currentNode.isLeaf()) {
-            if (!itsRepeated(currentNode, h.getId())) {
-                insercionOrdenada(currentNode, h);
+            if (!itsRepeated(currentNode, (I)t.getId())) {
+                insercionOrdenada(currentNode, t);
             } else {
                 System.out.println("Dato repetido");
             }
         } else {
-            int indexChild = findChildOrIndex(currentNode, h.getId());
-            if (!itsRepeated(currentNode.getChild(indexChild), h.getId())) {
-                BTreeNode child = currentNode.getChild(indexChild);
-                if (child.getNumtKeys() == 4 && child.isLeaf()) {
-                    System.out.println("Dividiendo nodo");
-                    insercionOrdenada(currentNode.getChild(indexChild), h);
+            int indexChild = findChildOrIndex(currentNode, (I)t.getId());
+            if (!itsRepeated(currentNode.getChild(indexChild), (I)t.getId())) {
+                BTreeNode<T> child = currentNode.getChild(indexChild);
+                if (child.getNumKeys() == 4 && child.isLeaf()) {
+                    insercionOrdenada(currentNode.getChild(indexChild), t);
                     splitChild(currentNode, currentNode.getChild(indexChild), indexChild);
                 } else {
-                    insertarKey(root.getChild(indexChild), h);
+                    insertarKey(root.getChild(indexChild), t);
                 }
 
-                if (currentNode.getNumtKeys() == 5) {
+                if (currentNode.getNumKeys() == 5) {
                     checkMaxKeys(currentNode);
                 }
             } else {
@@ -79,16 +84,16 @@ public class BTree {
     /**
      * Inserta el horario en el lugar correcto ordenado de menor a mayor
      * @param currentNode -> Nodo en el cual se quiere ingresar el horario
-     * @param h 
+     * @param t 
      */
-    private void insercionOrdenada(BTreeNode currentNode, Horario h) {
-        int indexNewKey = findChildOrIndex(currentNode, h.getId());
+    private void insercionOrdenada(BTreeNode<T> currentNode, T t) {
+        int indexNewKey = findChildOrIndex(currentNode, (I)t.getId());
 
-        for (int i = currentNode.getNumtKeys() - 1; i >= indexNewKey; i--) {
+        for (int i = currentNode.getNumKeys() - 1; i >= indexNewKey; i--) {
             currentNode.setKey(currentNode.getKey(i), i + 1);
         }
 
-        currentNode.setKey(h, indexNewKey);
+        currentNode.setKey(t, indexNewKey);
 
         currentNode.increaseNumKeys();
     }
@@ -99,9 +104,9 @@ public class BTree {
      * @param id -> Id del horario que se quiere agregar al nodo
      * @return -> Retorna el indice donde se debe agregar el horario (Aplica para array de llaves y arrays de hijos)
      */
-    private int findChildOrIndex(BTreeNode currentNode, int id) {
+    private int findChildOrIndex(BTreeNode<T> currentNode, I id) {
         int indexChild = 0;
-        while (currentNode.getKey(indexChild) != null && currentNode.getKey(indexChild).getId() < id) {
+        while (currentNode.getKey(indexChild) != null && comparator.compare(currentNode.getKey(indexChild), id) < 0) {
             indexChild++;
         }
 
@@ -114,11 +119,11 @@ public class BTree {
      * @param id -> Id del horario
      * @return 
      */
-    private boolean itsRepeated(BTreeNode currentNode, int id) {
+    private boolean itsRepeated(BTreeNode<T> currentNode, I id) {
 
         for (int i = 0; i < 5; i++) {
             if (currentNode.getKey(i) != null) {
-                if (currentNode.getKey(i).getId() == id) {
+                if (comparator.compare(currentNode.getKey(i), id) == 0) {
                     return true;
                 }
             }
@@ -133,8 +138,8 @@ public class BTree {
      * @param child -> Nodo hijo, es el que contiene llaves de mas
      * @param index -> Indice donde se ingreso el nuevo dato
      */
-    private void splitChild(BTreeNode currentNode, BTreeNode child, int index) {
-        BTreeNode right = new BTreeNode(child.isLeaf());
+    private void splitChild(BTreeNode<T> currentNode, BTreeNode<T> child, int index) {
+        BTreeNode<T> right = new BTreeNode(child.isLeaf());
         right.setNumKeys(2);
 
         //Mover elementos 3 y 4 de child a right
@@ -152,7 +157,7 @@ public class BTree {
         child.setNumKeys(2);
 
         //Insertar right en current node
-        for (int i = currentNode.getNumtKeys(); i >= index + 1; i--) {
+        for (int i = currentNode.getNumKeys(); i >= index + 1; i--) {
             currentNode.setChild(currentNode.getChild(i), i + 1);
         }
         currentNode.setChild(right, index + 1);
@@ -167,24 +172,23 @@ public class BTree {
      * mas llaves de las permitidas.
      * @param currentNode -> Nodo actual donde hay mas llaves de las permitidas
      */
-    private void checkMaxKeys(BTreeNode currentNode) {
+    private void checkMaxKeys(BTreeNode<T> currentNode) {
 
         if (currentNode == this.root) {
-            BTreeNode newRoot = new BTreeNode(false);
+            BTreeNode<T> newRoot = new BTreeNode(false);
 
             newRoot.setChild(root, 0);
 
             splitChild(newRoot, root, 0);
 
             this.root = newRoot;
-            System.out.println("Se dividio el nodo root");
         } else {
-            BTreeNode parent = findParent(root, currentNode);
+            BTreeNode<T> parent = findParent(root, currentNode);
 
-            int indexMiddleKey = findChildOrIndex(parent, currentNode.getKey(2).getId());
+            int indexMiddleKey = findChildOrIndex(parent, (I)currentNode.getKey(2).getId());
             splitChild(parent, currentNode, indexMiddleKey);
 
-            if (parent.getNumtKeys() == 5) {
+            if (parent.getNumKeys() == 5) {
                 checkMaxKeys(parent);
             }
         }
@@ -196,10 +200,10 @@ public class BTree {
      * @param child -> Nodo hijo
      * @return 
      */
-    private BTreeNode findParent(BTreeNode possibleParent, BTreeNode child) {
-        BTreeNode parent = null;
+    private BTreeNode<T> findParent(BTreeNode<T> possibleParent, BTreeNode<T> child) {
+        BTreeNode<T> parent = null;
         for (int i = 0; i < 6; i++) {
-            BTreeNode tempChild = possibleParent.getChild(i);
+            BTreeNode<T> tempChild = possibleParent.getChild(i);
             if (possibleParent.getChild(i) == child) {
                 parent = possibleParent;
             }
@@ -212,30 +216,30 @@ public class BTree {
         return parent;
     }
 
-    public Horario get(int id) {
+    public T get(I id) {
         return (root == null) ? null : search(root, id);
     }
 
-    private Horario search(BTreeNode currentNode, int id) {
-        Horario horario = null;
+    private T search(BTreeNode<T> currentNode, I id) {
+        T t = null;
         for (int i = 0; i < 5; i++) {
-            Horario tempKey = currentNode.getKey(i);
+            T tempKey = currentNode.getKey(i);
             if (tempKey != null) {
-                if (tempKey.getId() == id) {
-                    horario = tempKey;
+                if (comparator.compare(tempKey, id) == 0) {
+                    t = tempKey;
                 }
             }
         }
 
-        if (horario == null) {
+        if (t == null) {
             int indexChild = findChildOrIndex(currentNode, id);
-            horario = search(currentNode.getChild(indexChild), id);
+            t = search(currentNode.getChild(indexChild), id);
         }
 
-        return horario;
+        return t;
     }
 
-    public void remove(int id) {
+    public void remove(I id) {
         delete(root, id);
     }
 
@@ -244,7 +248,7 @@ public class BTree {
      * @param currentNode -> Nodo actual
      * @param id -> Id del horario a eliminar del arbol
      */
-    private void delete(BTreeNode currentNode, int id) {
+    private void delete(BTreeNode<T> currentNode, I id) {
         int indexKey = findIndexKey(currentNode, id);
 
         if (indexKey != -1) {
@@ -255,12 +259,12 @@ public class BTree {
                 removeFromNonLeaf(currentNode, indexKey);
             }
 
-            if (currentNode != root && currentNode.getNumtKeys() < 2) {
+            if (currentNode != root && currentNode.getNumKeys() < 2) {
                 checkMinKeys(currentNode);
             }
         } else {
             if (currentNode.isLeaf()) {
-                System.out.println("Horario no existe en el arbol");
+                System.out.println("No existe en el arbol");
             } else {
                 int indexChild = findChildOrIndex(currentNode, id);
 
@@ -275,11 +279,11 @@ public class BTree {
      * @param id -> Id del horario
      * @return -> Devuelve -1 si el nodo no contiene el horario buscado
      */
-    private int findIndexKey(BTreeNode currentNode, int id) {
+    private int findIndexKey(BTreeNode<T> currentNode, I id) {
         for (int i = 0; i < 5; i++) {
-            Horario tempKey = currentNode.getKey(i);
+            T tempKey = currentNode.getKey(i);
             if (tempKey != null) {
-                if (tempKey.getId() == id) {
+                if (comparator.compare(tempKey, id) == 0) {
                     return i;
                 }
             }
@@ -292,32 +296,28 @@ public class BTree {
      * @param currentNode -> Nodo hoja actual
      * @param index -> Indice donde se encuentra el horario
      */
-    private void removeFromLeaf(BTreeNode currentNode, int index) {
-        for (int i = index + 1; i <= currentNode.getNumtKeys(); i++) {
+    private void removeFromLeaf(BTreeNode<T> currentNode, int index) {
+        for (int i = index + 1; i <= currentNode.getNumKeys(); i++) {
             currentNode.setKey(currentNode.getKey(i), i - 1);
         }
         currentNode.decreaseNumKeys();
     }
     
-    private void removeFromNonLeaf(BTreeNode currentNode, int index) {
-        BTreeNode rightmost = findRightmostNode(currentNode.getChild(index));
+    private void removeFromNonLeaf(BTreeNode<T> currentNode, int index) {
+        BTreeNode<T> rightmost = findRightmostNode(currentNode.getChild(index));
         
-        System.out.println("El mas a la derecha");
-        printTree(rightmost, 0);
+        currentNode.setKey(rightmost.getKey(rightmost.getNumKeys() - 1), index);
+        removeFromLeaf(rightmost, rightmost.getNumKeys() - 1);
         
-        currentNode.setKey(rightmost.getKey(rightmost.getNumtKeys() - 1), index);
-        removeFromLeaf(rightmost, rightmost.getNumtKeys() - 1);
-        
-        System.out.println(rightmost.getNumtKeys());
-        if (rightmost.getNumtKeys() < 2) {
+        if (rightmost.getNumKeys() < 2) {
             checkMinKeys(rightmost);
         }
     }
     
-    private BTreeNode findRightmostNode(BTreeNode currentNode) {
-        BTreeNode node = currentNode;
+    private BTreeNode<T> findRightmostNode(BTreeNode<T> currentNode) {
+        BTreeNode<T> node = currentNode;
         while (!node.isLeaf()) {
-            node = node.getChild(node.getNumtKeys());
+            node = node.getChild(node.getNumKeys());
         }
         return node;
     }
@@ -327,12 +327,12 @@ public class BTree {
      * tenga menos llaves de las requeridas.
      * @param currentNode -> Nodo actual que tiene menos de 2 llaves
      */
-    private void checkMinKeys(BTreeNode currentNode) {
-        BTreeNode parent = findParent(root, currentNode);
+    private void checkMinKeys(BTreeNode<T> currentNode) {
+        BTreeNode<T> parent = findParent(root, currentNode);
         int indexCurrentChild = getIndexChild(parent, currentNode);
 
-        BTreeNode leftBrother;
-        BTreeNode rightBrother;
+        BTreeNode<T> leftBrother;
+        BTreeNode<T> rightBrother;
 
         //Dependiendo del indice del hijo se realizaran las operaciones
         //de prestamo y union
@@ -345,7 +345,7 @@ public class BTree {
 
                 //Si el hermano derecho tiene mas de 2 llaves toma una de ellas
                 //si no realiza una union
-                if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
+                if (rightBrother != null && rightBrother.getNumKeys() > 2) {
                     borrowFromNext(parent, currentNode, rightBrother, indexCurrentChild);
                 } else {
                     merge(parent, currentNode, rightBrother, indexCurrentChild + 1, 1);
@@ -359,7 +359,7 @@ public class BTree {
 
                 //Si el hermano izquierdo tiene mas de 2 llaves toma una de ellas
                 //si no realiza una union
-                if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
+                if (leftBrother != null && leftBrother.getNumKeys() > 2) {
                     borrowFromPrev(parent, currentNode, leftBrother, indexCurrentChild);
                 } else {
                     merge(parent, currentNode, leftBrother, indexCurrentChild, 0);
@@ -375,11 +375,10 @@ public class BTree {
                 // Si cualquiera de los dos hermanos tiene mas de 2 llaves se
                 //toma una de ellas, de lo contrario se realiza una union con
                 //el hermano izquierdo.
-                if (leftBrother != null && leftBrother.getNumtKeys() > 2) {
+                if (leftBrother != null && leftBrother.getNumKeys() > 2) {
                     borrowFromPrev(parent, currentNode, leftBrother, indexCurrentChild);
-                } else if (rightBrother != null && rightBrother.getNumtKeys() > 2) {
+                } else if (rightBrother != null && rightBrother.getNumKeys() > 2) {
                     borrowFromNext(parent, currentNode, rightBrother, indexCurrentChild);
-                    System.out.println("Balanceo realizado");
                 } else {
                     merge(parent, currentNode, leftBrother, indexCurrentChild, 0);
                 }
@@ -388,8 +387,7 @@ public class BTree {
 
         //Despues de realizar las operaciones en el nodo hijo se valida que 
         //el nodo padre no quede con menos de 2 llaves
-        if (parent != root && parent.getNumtKeys() < 2) {
-            System.out.println("Balance recursivo");
+        if (parent != root && parent.getNumKeys() < 2) {
             checkMinKeys(parent);
         }
     }
@@ -400,7 +398,7 @@ public class BTree {
      * @param child -> Nodo hijo
      * @return -> Indice del nodo hijo en el array de hijos del padre
      */
-    private int getIndexChild(BTreeNode parent, BTreeNode child) {
+    private int getIndexChild(BTreeNode<T> parent, BTreeNode<T> child) {
         for (int i = 0; i < 6; i++) {
             if (parent.getChild(i) == child) {
                 return i;
@@ -416,7 +414,7 @@ public class BTree {
      * @param rightBrother -> hermano derecho de donde se tomara una llave
      * @param indexCurrentNode -> Indice del nodo actual
      */
-    private void borrowFromNext(BTreeNode parent, BTreeNode currentNode, BTreeNode rightBrother, int indexCurrentNode) {
+    private void borrowFromNext(BTreeNode<T> parent, BTreeNode<T> currentNode, BTreeNode<T> rightBrother, int indexCurrentNode) {
         //Se mueve el dato del padre al nodo actual, se mueve el primer dato
         //del hijo derecho al padre
         currentNode.setKey(parent.getKey(indexCurrentNode), 1);
@@ -436,11 +434,11 @@ public class BTree {
         removeFromLeaf(rightBrother, 0);
     }
 
-    private void borrowFromPrev(BTreeNode parent, BTreeNode currentNode, BTreeNode leftBrother, int indexCurrentNode) {
+    private void borrowFromPrev(BTreeNode<T> parent, BTreeNode<T> currentNode, BTreeNode<T> leftBrother, int indexCurrentNode) {
         //Se mueve el dato del padre al nodo actual, se mueve el ultimo dato
         //del hermano izquierdo al nodo padre
         insercionOrdenada(currentNode, parent.getKey(indexCurrentNode - 1));
-        parent.setKey(leftBrother.getKey(leftBrother.getNumtKeys() - 1), indexCurrentNode - 1);
+        parent.setKey(leftBrother.getKey(leftBrother.getNumKeys() - 1), indexCurrentNode - 1);
 
         //Si no es hoja tambien se mueven los punteros a los hijos
         if (!currentNode.isLeaf()) {
@@ -448,11 +446,11 @@ public class BTree {
                 currentNode.setChild(currentNode.getChild(i), i + 1);
             }
             
-            currentNode.setChild(leftBrother.getChild(leftBrother.getNumtKeys()), 0);
-            leftBrother.setChild(null, leftBrother.getNumtKeys());
+            currentNode.setChild(leftBrother.getChild(leftBrother.getNumKeys()), 0);
+            leftBrother.setChild(null, leftBrother.getNumKeys());
         }
         
-        removeFromLeaf(leftBrother, leftBrother.getNumtKeys() - 1);
+        removeFromLeaf(leftBrother, leftBrother.getNumKeys() - 1);
     }
 
     /**
@@ -463,15 +461,15 @@ public class BTree {
      * @param indexCurrentNode -> Indice del nodo actual en el padre
      * @param type -> 0 si es hermano izquierdo y 1 si es hermano derecho
      */
-    private void merge(BTreeNode parent, BTreeNode currentNode, BTreeNode sibling, int indexCurrentNode, int type) {
+    private void merge(BTreeNode<T> parent, BTreeNode<T> currentNode, BTreeNode<T> sibling, int indexCurrentNode, int type) {
         //Se crea un nuevo nodo vacio
-        BTreeNode mergedNode = new BTreeNode(currentNode.isLeaf());
+        BTreeNode<T> mergedNode = new BTreeNode<T>(currentNode.isLeaf());
 
         //Se insertan de manera ordenada los datos del nodo actual, el dato del padre
         //y los datos del hermano con el que se va a unir
         insercionOrdenada(mergedNode, currentNode.getKey(0));
         insercionOrdenada(mergedNode, parent.getKey(indexCurrentNode - 1));
-        for (int i = 0; i < sibling.getNumtKeys(); i++) {
+        for (int i = 0; i < sibling.getNumKeys(); i++) {
             insercionOrdenada(mergedNode, sibling.getKey(i));
         }
         
@@ -480,12 +478,12 @@ public class BTree {
 
         //Se mueven las llaves para llenar el espacio que dejo el dato que
         //se bajo al hijo
-        for (int i = indexCurrentNode - 1; i <= parent.getNumtKeys(); i++) {
+        for (int i = indexCurrentNode - 1; i <= parent.getNumKeys(); i++) {
             parent.setKey(parent.getKey(i + 1), i);
         }
 
         //Se actualizan los punteros a los hijos
-        for (int i = indexCurrentNode; i <= parent.getNumtKeys(); i++) {
+        for (int i = indexCurrentNode; i <= parent.getNumKeys(); i++) {
             parent.setChild(parent.getChild(i + 1), i);
         }
 
@@ -514,7 +512,7 @@ public class BTree {
         }
     }
 
-    public void printTree(BTreeNode currentNode, int contador) {
+    public void printTree(BTreeNode<T> currentNode, int contador) {
         StringBuilder tree = new StringBuilder();
         tree.append(contador).append(" -> [");
 
@@ -541,9 +539,9 @@ public class BTree {
         }
     }
 
-    private void traverse(BTreeNode currentNode) {
+    private void traverse(BTreeNode<T> currentNode) {
         int i;
-        for (i = 0; i < currentNode.getNumtKeys(); i++) {
+        for (i = 0; i < currentNode.getNumKeys(); i++) {
             if (!currentNode.isLeaf()) {
                 traverse(currentNode.getChild(i));
             }
@@ -555,7 +553,7 @@ public class BTree {
         }
     }
 
-    public BTreeNode getRoot() {
+    public BTreeNode<T> getRoot() {
         return root;
     }
 

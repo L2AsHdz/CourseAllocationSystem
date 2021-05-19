@@ -18,11 +18,11 @@ import courseallocationsystem.model.Usuario;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
-        avlTreeTest();
+        bTreeTest();
     }
     
     private static void bTreeTest() {
-        BTree arbolB = new BTree();
+        BTree<Horario, Integer> arbolB = new BTree();
         
         arbolB.add(new Horario(50));
         arbolB.add(new Horario(100));

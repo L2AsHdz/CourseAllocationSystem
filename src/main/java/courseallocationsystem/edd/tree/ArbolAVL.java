@@ -236,15 +236,15 @@ public class ArbolAVL<T extends Entidad, I> {
         return actual;
     }
     
-    public void printTree(TreeNode<T> currentNode, int padre) {
+    public void printTree(TreeNode<T> currentNode, I padre) {
         System.out.println(padre + "\t->" + currentNode.getDato().getId());
         
         if (currentNode.getLeft() != null) {
-            printTree(currentNode.getLeft(), (Integer)currentNode.getDato().getId());
+            printTree(currentNode.getLeft(), (I)currentNode.getDato().getId());
         }
         
         if (currentNode.getRight() != null) {
-            printTree(currentNode.getRight(), (Integer)currentNode.getDato().getId());
+            printTree(currentNode.getRight(), (I)currentNode.getDato().getId());
         }
     }
 }

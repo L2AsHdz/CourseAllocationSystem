@@ -74,6 +74,11 @@ public class CourseAllocationSystem {
         arbolB.remove(290);
         arbolB.remove(200);
         arbolB.remove(75);
+        arbolB.add(new Horario(40));
+        
+        arbolB.remove(100);
+        arbolB.remove(260);
+        arbolB.remove(240);
         
         
         System.out.println("");

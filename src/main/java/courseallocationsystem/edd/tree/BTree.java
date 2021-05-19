@@ -252,6 +252,7 @@ public class BTree {
                 removeFromLeaf(currentNode, indexKey);
             } else {
                 //TODO: Remover dato de nodo que no sea hoja
+                removeFromNonLeaf(currentNode, indexKey);
             }
 
             if (currentNode != root && currentNode.getNumtKeys() < 2) {
@@ -296,6 +297,29 @@ public class BTree {
             currentNode.setKey(currentNode.getKey(i), i - 1);
         }
         currentNode.decreaseNumKeys();
+    }
+    
+    private void removeFromNonLeaf(BTreeNode currentNode, int index) {
+        BTreeNode rightmost = findRightmostNode(currentNode.getChild(index));
+        
+        System.out.println("El mas a la derecha");
+        printTree(rightmost, 0);
+        
+        currentNode.setKey(rightmost.getKey(rightmost.getNumtKeys() - 1), index);
+        removeFromLeaf(rightmost, rightmost.getNumtKeys() - 1);
+        
+        System.out.println(rightmost.getNumtKeys());
+        if (rightmost.getNumtKeys() < 2) {
+            checkMinKeys(rightmost);
+        }
+    }
+    
+    private BTreeNode findRightmostNode(BTreeNode currentNode) {
+        BTreeNode node = currentNode;
+        while (!node.isLeaf()) {
+            node = node.getChild(node.getNumtKeys());
+        }
+        return node;
     }
 
     /**

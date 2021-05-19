@@ -1,36 +1,45 @@
 package courseallocationsystem.edd.tree;
 
+import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.TreeNode;
 import courseallocationsystem.model.Entidad;
 
 /**
  *
+ * @param <T>
+ * @param <I>
  * @date 6/04/2021
  * @time 13:40:48
  * @author asael
  */
-public class ArbolAVL {
-
-    private TreeNode<Entidad> root;
+public class ArbolAVL<T extends Entidad, I> {
     
-    private TreeNode<Entidad> rightRotation(TreeNode<Entidad> oldRoot) {
-        TreeNode<Entidad> newRoot = oldRoot.getLeft();
+    IdentifierComparator<I> comparator;
+
+    private TreeNode<T> root;
+
+    public ArbolAVL() {
+        comparator = new IdentifierComparator();
+    }
+    
+    private TreeNode<T> rightRotation(TreeNode<T> oldRoot) {
+        TreeNode<T> newRoot = oldRoot.getLeft();
         oldRoot.setLeft(newRoot.getRight());
         newRoot.setRight(oldRoot);
 
         return newRoot;
     }
 
-    private TreeNode<Entidad> leftRotation(TreeNode<Entidad> oldRoot) {
-        TreeNode<Entidad> newRoot = oldRoot.getRight();
+    private TreeNode<T> leftRotation(TreeNode<T> oldRoot) {
+        TreeNode<T> newRoot = oldRoot.getRight();
         oldRoot.setRight(newRoot.getLeft());
         newRoot.setLeft(oldRoot);
 
         return newRoot;
     }
 
-    private TreeNode<Entidad> rightDoubleRotation(TreeNode<Entidad> oldRoot) {
-        TreeNode<Entidad> newRoot;
+    private TreeNode<T> rightDoubleRotation(TreeNode<T> oldRoot) {
+        TreeNode<T> newRoot;
         oldRoot.setLeft(leftRotation(oldRoot.getLeft()));
         newRoot = rightRotation(oldRoot);
 
@@ -38,15 +47,15 @@ public class ArbolAVL {
 
     }
 
-    private TreeNode<Entidad> leftDoubleRotation(TreeNode<Entidad> oldRoot) {
-        TreeNode<Entidad> newRoot;
+    private TreeNode<T> leftDoubleRotation(TreeNode<T> oldRoot) {
+        TreeNode<T> newRoot;
         oldRoot.setRight(rightRotation(oldRoot.getRight()));
         newRoot = leftRotation(oldRoot);
 
         return newRoot;
     }
 
-    public void inOrden(TreeNode<Entidad> root) {
+    public void inOrden(TreeNode<T> root) {
         if (root != null) {
             inOrden(root.getLeft());
             System.out.print(root.getDato().getId() + ", ");
@@ -54,7 +63,7 @@ public class ArbolAVL {
         }
     }
 
-    public void preOrden(TreeNode<Entidad> root) {
+    public void preOrden(TreeNode<T> root) {
         if (root != null) {
             System.out.print(root.getDato().getId() + ", ");
             preOrden(root.getLeft());
@@ -62,7 +71,7 @@ public class ArbolAVL {
         }
     }
 
-    public void postOrden(TreeNode<Entidad> root) {
+    public void postOrden(TreeNode<T> root) {
         if (root != null) {
             postOrden(root.getLeft());
             postOrden(root.getRight());
@@ -70,11 +79,11 @@ public class ArbolAVL {
         }
     }
 
-    public TreeNode<Entidad> getRaiz() {
+    public TreeNode<T> getRaiz() {
         return root;
     }
 
-    public int getBalanceFactor(TreeNode<Entidad> root) {
+    public int getBalanceFactor(TreeNode<T> root) {
         if (root == null) {
             return 0;
         } else if (root.getRight() == null & root.getLeft() != null) {
@@ -88,37 +97,37 @@ public class ArbolAVL {
         }
     }
 
-    private int getHeight(TreeNode<Entidad> root) {
+    private int getHeight(TreeNode<T> root) {
         int Altder = ((root.getRight() == null) ? 0 : 1 + getHeight(root.getRight()));
         int Altizq = ((root.getLeft() == null) ? 0 : 1 + getHeight(root.getLeft()));
         return Math.max(Altder, Altizq);
-    }/*
+    }
 
-    private TreeNode<Entidad> insert(TreeNode<Entidad> nuevo, TreeNode<Entidad> root) {
-        TreeNode<Entidad> newRoot = root;
+    private TreeNode<T> insert(TreeNode<T> nuevo, TreeNode<T> root) {
+        TreeNode<T> newRoot = root;
 
-        if (nuevo.getDato().getId() < root.getDato().getId()) {
+        if (comparator.compare(nuevo.getDato(), root.getDato()) < 0) {
             if (root.getLeft() == null) {
                 root.setLeft(nuevo);
             } else {
                 root.setLeft(insert(nuevo, root.getLeft()));
 
                 if (getBalanceFactor(root) == -2) {
-                    if (nuevo.getDato().getId() < root.getLeft().getDato().getId()) {
+                    if (comparator.compare(nuevo.getDato(), root.getLeft().getDato()) < 0) {
                         newRoot = rightRotation(root);
                     } else {
                         newRoot = rightDoubleRotation(root);
                     }
                 }
             }
-        } else if (nuevo.getDato().getId() > root.getDato().getId()) {
+        } else if (comparator.compare(nuevo.getDato(), root.getDato()) > 0) {
             if (root.getRight() == null) {
                 root.setRight(nuevo);
             } else {
                 root.setRight(insert(nuevo, root.getRight()));
 
                 if (getBalanceFactor(root) == 2) {
-                    if (nuevo.getDato().getId() > root.getRight().getDato().getId()) {
+                    if (comparator.compare(nuevo.getDato(), root.getRight().getDato()) > 0) {
                         newRoot = leftRotation(root);
                     } else {
                         newRoot = leftDoubleRotation(root);
@@ -132,8 +141,8 @@ public class ArbolAVL {
         return newRoot;
     }
 
-    public void add(Entidad o) {
-        TreeNode<Entidad> nuevo = new TreeNode(o);
+    public void add(T o) {
+        TreeNode<T> nuevo = new TreeNode(o);
 
         if (root == null) {
             root = nuevo;
@@ -142,38 +151,38 @@ public class ArbolAVL {
         }
     }
     
-    private TreeNode<Entidad> get(int id, TreeNode<Entidad> root) {
+    private TreeNode<T> get(I id, TreeNode<T> root) {
         
         if (root == null) {
             return null;
-        } else if (root.getDato().getId() == id) {
+        } else if (comparator.compare(root.getDato(), id) == 0) {
             return root;
-        } else if (id < root.getDato().getId()) {
+        } else if (comparator.compare(root.getDato(), id) > 0) {
             return get(id, root.getLeft());
         } else {
             return get(id, root.getRight());
         }
     }
     
-    public Entidad get(int id) {
+    public T get(I id) {
         return get(id, root).getDato();
     }
     
-    private TreeNode<Entidad> remove(int id, TreeNode<Entidad> root) {
-        TreeNode<Entidad> actual = root;
+    private TreeNode<T> remove(I id, TreeNode<T> root) {
+        TreeNode<T> actual = root;
         
         if (actual == null) {
             return actual;
         }
         
-        if (id < actual.getDato().getId()) {
+        if (comparator.compare(actual.getDato(), id) > 0) {
             actual.setLeft(remove(id, actual.getLeft()));
-        } else if (id > actual.getDato().getId()) {
+        } else if (comparator.compare(actual.getDato(), id) < 0) {
             actual.setRight(remove(id, actual.getRight()));
         } else {
             
             if (actual.getLeft() == null | actual.getRight() == null) {
-                TreeNode<Entidad> aux = null;
+                TreeNode<T> aux = null;
                 if (aux == actual.getLeft()) {
                     aux = actual.getRight();
                 } else {
@@ -186,9 +195,9 @@ public class ArbolAVL {
                     actual = aux;
                 }
             } else {
-                TreeNode<Entidad> reemplazo = getReemplazo(actual.getLeft());
+                TreeNode<T> reemplazo = getReemplazo(actual.getLeft());
                 actual.setDato(reemplazo.getDato());
-                actual.setLeft(remove(reemplazo.getDato().getId(), actual.getLeft()));
+                actual.setLeft(remove((I)reemplazo.getDato().getId(), actual.getLeft()));
             }
         }
         
@@ -213,17 +222,29 @@ public class ArbolAVL {
         return actual;
     }
     
-    public Entidad remove(int id) {
+    public T remove(I id) {
         return remove(id, root).getDato();
     }
 
-    private TreeNode<Entidad> getReemplazo(TreeNode<Entidad> root) {
-        TreeNode<Entidad> actual = root;
+    private TreeNode<T> getReemplazo(TreeNode<T> root) {
+        TreeNode<T> actual = root;
         
         while (actual.getRight()!= null) {
             actual = actual.getRight();
         }
         
         return actual;
-    }*/
+    }
+    
+    public void printTree(TreeNode<T> currentNode, int padre) {
+        System.out.println(padre + "\t->" + currentNode.getDato().getId());
+        
+        if (currentNode.getLeft() != null) {
+            printTree(currentNode.getLeft(), (Integer)currentNode.getDato().getId());
+        }
+        
+        if (currentNode.getRight() != null) {
+            printTree(currentNode.getRight(), (Integer)currentNode.getDato().getId());
+        }
+    }
 }

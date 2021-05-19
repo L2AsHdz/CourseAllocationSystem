@@ -2,8 +2,10 @@ package courseallocationsystem;
 
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
+import courseallocationsystem.edd.tree.ArbolAVL;
 import courseallocationsystem.edd.tree.BTree;
 import courseallocationsystem.model.Edificio;
+import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
 import courseallocationsystem.model.Usuario;
 
@@ -16,7 +18,7 @@ import courseallocationsystem.model.Usuario;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
-        circularListTest();
+        avlTreeTest();
     }
     
     private static void bTreeTest() {
@@ -118,5 +120,24 @@ public class CourseAllocationSystem {
         System.out.println();
         listE.sort();
         listE.show();
+    }
+    
+    private static void avlTreeTest() {
+        ArbolAVL<Estudiante, Integer> arbol = new ArbolAVL();
+        arbol.add(new Estudiante("asael", "aqui", 50));
+        arbol.add(new Estudiante("asael", "aqui", 25));
+        arbol.add(new Estudiante("asael", "aqui", 100));
+        arbol.add(new Estudiante("asael", "aqui", 150));
+        arbol.add(new Estudiante("asael", "aqui", 200));
+        arbol.add(new Estudiante("asael", "aqui", 75));
+        arbol.add(new Estudiante("asael", "aqui", 125));
+        arbol.add(new Estudiante("asael", "aqui", 175));
+        arbol.add(new Estudiante("asael", "aqui", 225));
+        
+        arbol.remove(100);
+        arbol.remove(25);
+        arbol.inOrden(arbol.getRaiz());
+        System.out.println();
+        arbol.printTree(arbol.getRaiz(), 0);
     }
 }

@@ -33,5 +33,9 @@ public class IdentifierComparator<I> implements Comparator<I> {
     public int compare(Entidad<I> entidad, I id) {
         return compare(entidad.getId(), id);
     }
+    
+    public int compare(Entidad<I> e1, Entidad<I> e2) {
+        return compare(e1.getId(), e2.getId());
+    }
 
 }

@@ -1,27 +1,33 @@
 package courseallocationsystem.edd.list;
 
+import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.Nodo;
 import courseallocationsystem.model.Entidad;
 
 /**
  *
  * 
+ * @param <T>
+ * @param <I>
  * @date 5/04/2021
  * @time 11:38:47
  * @author asael
  */
-public class CircularList {
+public class CircularList<T extends Entidad, I> {
+    
+    IdentifierComparator<I> comparator;
 
-    private Nodo<Entidad> primero;
-    private Nodo<Entidad> ultimo;
+    private Nodo<T> primero;
+    private Nodo<T> ultimo;
     private int size;
 
     public CircularList() {
         this.size = 0;
+        comparator = new IdentifierComparator();
     }
 
-    public void add(Entidad i) {
-        Nodo<Entidad> nuevo = new Nodo(i);
+    public void add(T i) {
+        Nodo<T> nuevo = new Nodo(i);
 
         if (primero == null) {
             nuevo.setNext(nuevo);
@@ -37,12 +43,12 @@ public class CircularList {
         size++;
         ultimo = nuevo;
     }
-    /*
-    public Entidad get(int id) {
-        Nodo<Entidad> actual = primero;
+    
+    public T get(I id) {
+        Nodo<T> actual = primero;
 
         do {
-            if (actual.getDato().getId() == id) {
+            if (comparator.compare(actual.getDato(), id) == 0) {
                 return actual.getDato();
             }
             actual = actual.getNext();
@@ -51,10 +57,10 @@ public class CircularList {
         return null;
     }
 
-    public Entidad remove(int id) {
-        Nodo<Entidad> actual = primero;
+    public T remove(I id) {
+        Nodo<T> actual = primero;
 
-        if (actual.getDato().getId() == id) {
+        if (comparator.compare(actual.getDato(), id) == 0) {
             primero = actual.getNext();
             primero.setPrev(ultimo);
             ultimo.setNext(primero);
@@ -65,7 +71,7 @@ public class CircularList {
             return actual.getDato();
         } else {
             do {
-                if (actual.getDato().getId() == id) {
+                if (comparator.compare(actual.getDato(), id) == 0) {
                     if (actual == ultimo) {
                         ultimo = actual.getPrev();
                         primero.setPrev(ultimo);
@@ -85,7 +91,7 @@ public class CircularList {
     }
 
     public void show() {
-        Nodo<Entidad> actual = primero;
+        Nodo<T> actual = primero;
 
         if (actual == null) {
             System.out.println("Lista vacia");
@@ -99,16 +105,16 @@ public class CircularList {
     }
 
     public void sort() {
-        Nodo<Entidad> actual;
-        Nodo<Entidad> next;
-        Entidad temp;
+        Nodo<T> actual;
+        Nodo<T> next;
+        T temp;
         
         if (size > 1) {
             for (int i = 0; i < size; i++) {
                 actual = primero;
                 next = actual.getNext();
                 for (int j = 0; j < (size - 1); j++) {
-                    if (actual.getDato().getId() > next.getDato().getId()) {
+                    if (comparator.compare(actual.getDato(), next.getDato()) > 0) {
                         temp = actual.getDato();
                         actual.setDato(next.getDato());
                         next.setDato(temp);
@@ -129,7 +135,7 @@ public class CircularList {
         return primero == null;
     }
 
-    public Nodo<Entidad> getPrimero() {
+    public Nodo<T> getPrimero() {
         return primero;
-    }*/
+    }
 }

@@ -14,13 +14,14 @@ import courseallocationsystem.model.Entidad;
  */
 public class List<T extends Entidad, I> {
     
-    IdentifierComparator<I> comparator = new IdentifierComparator();
+    IdentifierComparator<I> comparator;
     
     private Nodo<T> inicio;
     private int size;
 
     public List() {
         this.size = 0;
+        comparator = new IdentifierComparator();
     }
     
     public void add(T t) {
@@ -82,6 +83,29 @@ public class List<T extends Entidad, I> {
         }
         
         return null;
+    }
+    
+    public void sort() {
+        Nodo<T> actual;
+        Nodo<T> next;
+        T temp;
+        
+        if (size > 1) {
+            for (int i = 0; i < size; i++) {
+                actual = inicio;
+                next = actual.getNext();
+                for (int j = 0; j < (size - 1); j++) {
+                    if (comparator.compare(actual.getDato(), next.getDato()) > 0) {
+                        temp = actual.getDato();
+                        actual.setDato(next.getDato());
+                        next.setDato(temp);
+                    }
+                    actual = next;
+                    next = next.getNext();
+                }
+            }
+            System.out.println("Lista ordenada");
+        }
     }
     
     public void show() {

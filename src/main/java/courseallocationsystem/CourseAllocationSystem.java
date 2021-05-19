@@ -1,7 +1,9 @@
 package courseallocationsystem;
 
+import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.tree.BTree;
+import courseallocationsystem.model.Edificio;
 import courseallocationsystem.model.Horario;
 import courseallocationsystem.model.Usuario;
 
@@ -14,10 +16,10 @@ import courseallocationsystem.model.Usuario;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
-        testList();
+        circularListTest();
     }
     
-    private static void testBTree() {
+    private static void bTreeTest() {
         BTree arbolB = new BTree();
         
         arbolB.add(new Horario(50));
@@ -92,12 +94,29 @@ public class CourseAllocationSystem {
         arbolB.showTree();
     }
     
-    private static void testList() {
+    private static void listTest() {
         List<Usuario, Integer> listU = new List();
         
         listU.add(new Usuario("asael", "123", "estudiante", 201730192));
         listU.add(new Usuario("abner", "123", "estudiante", 201730191));
         
         listU.show();
+        System.out.println();
+        listU.sort();
+        listU.show();
+    }
+    
+    
+    private static void circularListTest() {
+        CircularList<Edificio, String> listE = new CircularList();
+        
+        listE.add(new Edificio("E1"));
+        listE.add(new Edificio("T1"));
+        listE.add(new Edificio("M1"));
+        
+        listE.show();
+        System.out.println();
+        listE.sort();
+        listE.show();
     }
 }

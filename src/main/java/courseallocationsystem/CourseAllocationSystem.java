@@ -1,9 +1,10 @@
 package courseallocationsystem;
 
-import static controller.FileController.readFile;
+import static courseallocationsystem.controller.FileController.readFile;
 import courseallocationsystem.analizadores.Lexer;
 import courseallocationsystem.analizadores.Parser;
 import courseallocationsystem.controller.LoginController;
+import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
@@ -31,10 +32,9 @@ import java.util.Scanner;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
-        CircularList<Usuario, Integer> users = new CircularList();
-        users.add(new Usuario("admin", "123", "super", 11111));
+        Data data = new Data();
         LoginView view = new LoginView();
-        LoginController controller = new LoginController(view, users);
+        LoginController controller = new LoginController(view, data);
         
         controller.iniciar();
     }

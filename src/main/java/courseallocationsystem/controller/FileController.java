@@ -1,4 +1,4 @@
-package controller;
+package courseallocationsystem.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;

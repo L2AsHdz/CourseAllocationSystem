@@ -1,10 +1,16 @@
 package courseallocationsystem.controller;
 
-import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.model.Usuario;
+import courseallocationsystem.datos.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import courseallocationsystem.view.LoginView;
+import courseallocationsystem.view.SuperView;
+import courseallocationsystem.view.ColaboradorView;
+import courseallocationsystem.view.EstudianteView;
+import courseallocationsystem.controller.superU.SuperController;
+import courseallocationsystem.controller.colaborador.ColaboradorController;
+import courseallocationsystem.controller.estudiante.EstudianteController;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,11 +22,11 @@ import javax.swing.JOptionPane;
 public class LoginController implements ActionListener {
 
     private final LoginView login;
-    private final CircularList<Usuario, Integer> users;
-
-    public LoginController(LoginView login, CircularList<Usuario, Integer> users) {
+    private final Data data;
+    
+    public LoginController(LoginView login, Data data) {
         this.login = login;
-        this.users = users;
+        this.data = data;
         
         this.login.getBtnLogin().addActionListener(this);
     }
@@ -35,14 +41,29 @@ public class LoginController implements ActionListener {
         String userId = login.getTxtUser().getText();
         String pass = new String(login.getTxtPass().getPassword());
 
-        if (users.get(Integer.parseInt(userId)) == null) {
+        if (data.getUsuarios().get(Integer.parseInt(userId)) == null) {
             JOptionPane.showMessageDialog(null, "Usuario " + userId + " no existe", "Error login", JOptionPane.WARNING_MESSAGE);
             login.getTxtUser().requestFocus();
         } else {
-            Usuario user = users.get(Integer.parseInt(userId));
+            Usuario user = data.getUsuarios().get(Integer.parseInt(userId));
             if (user.getPassword().equals(pass)) {
-                //Redirigir a nueva Interfaz
-                System.out.println("Logeando");
+                switch (user.getTipo()) {
+                    case "super" -> {
+                        SuperView view = new SuperView();
+                        SuperController controller = new SuperController(view, data);
+                        controller.iniciar();
+                    }
+                    case "colaborador" -> {
+                        ColaboradorView view = new ColaboradorView();
+                        ColaboradorController controller = new ColaboradorController(view, data);
+                        controller.iniciar();
+                    }
+                    case "estudiante" -> {
+                        EstudianteView view = new EstudianteView();
+                        EstudianteController controller = new EstudianteController(view, data);
+                        controller.iniciar();
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error login", JOptionPane.WARNING_MESSAGE);
                 login.getTxtPass().requestFocus();

@@ -2,12 +2,14 @@ package courseallocationsystem;
 
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
+import courseallocationsystem.edd.table.HashTable;
 import courseallocationsystem.edd.tree.ArbolAVL;
 import courseallocationsystem.edd.tree.BTree;
 import courseallocationsystem.model.Edificio;
 import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
 import courseallocationsystem.model.Usuario;
+import java.util.Scanner;
 
 /**
  *
@@ -18,7 +20,7 @@ import courseallocationsystem.model.Usuario;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
-        bTreeTest();
+        hashTableTest();
     }
     
     private static void bTreeTest() {
@@ -108,7 +110,6 @@ public class CourseAllocationSystem {
         listU.show();
     }
     
-    
     private static void circularListTest() {
         CircularList<Edificio, String> listE = new CircularList();
         
@@ -139,5 +140,29 @@ public class CourseAllocationSystem {
         arbol.inOrden(arbol.getRaiz());
         System.out.println();
         arbol.printTree(arbol.getRaiz(), 0);
+    }
+    
+    private static void hashTableTest() {
+        HashTable<Horario, Integer> table = new HashTable(5, 0.60f);
+        
+        Scanner scan = new Scanner(System.in);
+        
+        String op = "1";
+        while (!op.equals("0")) {
+            System.out.println("1. para agregar, 2. para eliminar");
+            op = scan.nextLine();
+            switch (op) {
+                case "1" -> {
+                    op = scan.nextLine();
+                    table.add(new Horario(Integer.parseInt(op)));
+                }
+                
+                case "2" -> {
+                    op = scan.nextLine();
+                    table.remove(Integer.parseInt(op));
+                }
+            }
+            table.print();
+        }
     }
 }

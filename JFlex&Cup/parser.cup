@@ -1,1 +1,27 @@
- 
+package package courseallocationsystem.analizadores;
+
+parser code {:
+
+    private CircularList<Usuario, Integer> usuarios = new CircularList();
+    private CircularList<Edificio, String> edificios = new CircularList();
+    private List<Salon, Integer> salones = new List();
+    private CircularList<Curso, Integer> cursos = new CircularList();
+
+    private ArbolAVL<Catedratico, Integer> catedraticos = new ArbolAVL();
+    private BTree<Horario, Integer> horarios = new BTree();
+    private CircularList<Asignacion, Integer> asignaciones = new CircularList();
+
+    private Captcha tempCaptcha = new Captcha();
+
+    public List<Captcha> getCaptchas() {
+        return this.captchasList;
+    }
+
+    public void syntax_error(Symbol s) {
+        String ss =  (String) s.value;
+        StringBuilder descripcion = new StringBuilder("Se esperaba: ");
+        expected_token_ids().forEach(x -> descripcion.append(symbl_name_from_id(x)).append(", "));
+        System.out.println(ss);
+    }
+
+:}

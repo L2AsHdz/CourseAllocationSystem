@@ -3,6 +3,7 @@ package courseallocationsystem;
 import static controller.FileController.readFile;
 import courseallocationsystem.analizadores.Lexer;
 import courseallocationsystem.analizadores.Parser;
+import courseallocationsystem.controller.LoginController;
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
@@ -16,6 +17,7 @@ import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
 import courseallocationsystem.model.Salon;
 import courseallocationsystem.model.Usuario;
+import courseallocationsystem.view.LoginView;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -29,6 +31,15 @@ import java.util.Scanner;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
+        CircularList<Usuario, Integer> users = new CircularList();
+        users.add(new Usuario("admin", "123", "super", 11111));
+        LoginView view = new LoginView();
+        LoginController controller = new LoginController(view, users);
+        
+        controller.iniciar();
+    }
+    
+    public void readEntradaTest() {
         String entrada = readFile("entrada.txt");
         StringReader reader = new StringReader(entrada);
         Lexer lexer = null;

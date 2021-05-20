@@ -1,9 +1,13 @@
-package package courseallocationsystem.analizadores;
+package courseallocationsystem.analizadores;
 
+import java.util.ArrayList;
+import java.util.List;
+import java_cup.runtime.Symbol;
+import static courseallocationsystem.analizadores.Sym.*;
 
 %%
 
-%class StorageLexer
+%class Lexer
 %public
 %cup
 %unicode
@@ -11,9 +15,18 @@ package package courseallocationsystem.analizadores;
 %column
 
 %{
+    private List<String> errores = new ArrayList();
+
+    public List<String> getErrores() {
+        return this.errores;
+    }
 
     private Symbol symbol(int type){
         return new Symbol(type, yytext());
+    }
+
+    private void addLexicError() {
+        errores.add("Caracter invalido " + yytext() + ", linea: " + yyline + 1 + ", columna: " + yycolumn + 1);
     }
 
 %}
@@ -24,9 +37,9 @@ package package courseallocationsystem.analizadores;
 
 ENTERO = (0|([1-9][0-9]*))
 NAME_ED = (\w){ENTERO}
-LITERAL = [\w][\w ]*
+LITERAL = [^"\""]*
 
-%LITERALS
+%state LITERALS
 
 %%
 
@@ -48,6 +61,7 @@ LITERAL = [\w][\w ]*
     ","                         { return symbol(COMMA); }
     ";"                         { return symbol(SEMI); }
     "\""                        { yybegin(LITERALS); return symbol(QUOTE_MARK); }
+    (\s)+                       { /** Ignorar */}
 }
 
 <LITERALS> {
@@ -58,3 +72,5 @@ LITERAL = [\w][\w ]*
 
 <YYINITIAL> {ENTERO}            { return symbol(ENTERO); }
 <YYINITIAL> {NAME_ED}           { return symbol(NAME_ED); }
+
+[^]                             { addLexicError(); }

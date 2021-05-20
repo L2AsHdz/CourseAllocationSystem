@@ -11,18 +11,18 @@ public class Horario extends Entidad<Integer> {
     private String periodo;
     private String dia;
     private int codCurso;
-    private int codSalon;
-    private int codEdificio;
+    private String codSalon;
+    private String codEdificio;
     private int idCatedratico;
 
     public Horario() {
     }
 
-    public Horario(int id) {
+    public Horario(Integer id) {
         super(id);
     }
 
-    public Horario(String periodo, String dia, int codCurso, int codSalon, int codEdificio, int idCatedratico, int id) {
+    public Horario(String periodo, String dia, int codCurso, String codSalon, String codEdificio, int idCatedratico, int id) {
         super(id);
         this.periodo = periodo;
         this.dia = dia;
@@ -56,19 +56,19 @@ public class Horario extends Entidad<Integer> {
         this.codCurso = codCurso;
     }
 
-    public int getCodSalon() {
+    public String getCodSalon() {
         return codSalon;
     }
 
-    public void setCodSalon(int codSalon) {
+    public void setCodSalon(String codSalon) {
         this.codSalon = codSalon;
     }
 
-    public int getCodEdificio() {
+    public String getCodEdificio() {
         return codEdificio;
     }
 
-    public void setCodEdificio(int codEdificio) {
+    public void setCodEdificio(String codEdificio) {
         this.codEdificio = codEdificio;
     }
 

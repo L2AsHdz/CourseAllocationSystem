@@ -6,7 +6,7 @@ import courseallocationsystem.model.Entidad;
 
 /**
  *
- * 
+ *
  * @param <T>
  * @param <I>
  * @date 5/04/2021
@@ -14,7 +14,7 @@ import courseallocationsystem.model.Entidad;
  * @author asael
  */
 public class CircularList<T extends Entidad, I> {
-    
+
     IdentifierComparator<I> comparator;
 
     private Nodo<T> primero;
@@ -43,16 +43,18 @@ public class CircularList<T extends Entidad, I> {
         size++;
         ultimo = nuevo;
     }
-    
+
     public T get(I id) {
         Nodo<T> actual = primero;
 
-        do {
-            if (comparator.compare(actual.getDato(), id) == 0) {
-                return actual.getDato();
-            }
-            actual = actual.getNext();
-        } while (actual != primero);
+        if (actual != null) {
+            do {
+                if (comparator.compare(actual.getDato(), id) == 0) {
+                    return actual.getDato();
+                }
+                actual = actual.getNext();
+            } while (actual != primero);
+        }
 
         return null;
     }
@@ -66,7 +68,9 @@ public class CircularList<T extends Entidad, I> {
             ultimo.setNext(primero);
             size--;
 
-            if (actual == actual.getNext()) primero = null;
+            if (actual == actual.getNext()) {
+                primero = null;
+            }
 
             return actual.getDato();
         } else {
@@ -108,7 +112,7 @@ public class CircularList<T extends Entidad, I> {
         Nodo<T> actual;
         Nodo<T> next;
         T temp;
-        
+
         if (size > 1) {
             for (int i = 0; i < size; i++) {
                 actual = primero;

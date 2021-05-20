@@ -6,7 +6,7 @@ package courseallocationsystem.model;
  * @time 04:46:07
  * @author asael
  */
-public class Salon extends Entidad<Integer> {
+public class Salon extends Entidad<String> {
     
     private int cantEstudiantes;
     private String edificio;
@@ -14,7 +14,7 @@ public class Salon extends Entidad<Integer> {
     public Salon() {
     }
 
-    public Salon(int cantEstudiantes, String edificio, Integer id) {
+    public Salon(int cantEstudiantes, String edificio, String id) {
         super(id);
         this.cantEstudiantes = cantEstudiantes;
         this.edificio = edificio;

@@ -15,4 +15,9 @@ public class Edificio extends Entidad<String>{
     public Edificio(String nombre) {
         super(nombre);
     }
+
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId()};
+    }
 }

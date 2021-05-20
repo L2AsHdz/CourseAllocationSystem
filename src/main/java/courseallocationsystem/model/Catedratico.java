@@ -35,4 +35,9 @@ public class Catedratico extends Entidad<Integer> {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId().toString(), nombre, direccion};
+    }
 }

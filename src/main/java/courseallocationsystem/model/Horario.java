@@ -10,10 +10,10 @@ public class Horario extends Entidad<Integer> {
     
     private String periodo;
     private String dia;
-    private int codCurso;
+    private Integer codCurso;
     private String codSalon;
     private String codEdificio;
-    private int idCatedratico;
+    private Integer idCatedratico;
 
     public Horario() {
     }
@@ -78,5 +78,11 @@ public class Horario extends Entidad<Integer> {
 
     public void setIdCatedratico(int idCatedratico) {
         this.idCatedratico = idCatedratico;
+    }
+
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId().toString(), periodo, dia, codCurso.toString(),
+        codSalon, codEdificio, idCatedratico.toString()};
     }
 }

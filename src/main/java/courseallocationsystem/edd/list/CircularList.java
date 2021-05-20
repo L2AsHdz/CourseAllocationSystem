@@ -3,6 +3,7 @@ package courseallocationsystem.edd.list;
 import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.Nodo;
 import courseallocationsystem.model.Entidad;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -141,5 +142,24 @@ public class CircularList<T extends Entidad, I> {
 
     public Nodo<T> getPrimero() {
         return primero;
+    }
+    
+    public DefaultTableModel toTable(String[] titulos) {
+        Nodo<T> actual = primero;
+        DefaultTableModel model = new DefaultTableModel();
+        
+        for (String t : titulos) {
+            model.addColumn(t);
+        }
+        
+        if (actual == null) {
+            return model;
+        } else {
+            do {
+                model.addRow(actual.getDato().toArray());
+                actual = actual.getNext();
+            } while (actual != primero);
+            return model;
+        }
     }
 }

@@ -8,9 +8,9 @@ package courseallocationsystem.model;
  */
 public class Asignacion extends Entidad<String> {
 
-    private int codHorario;
-    private float zona;
-    private float notaFinal;
+    private Integer codHorario;
+    private Float zona;
+    private Float notaFinal;
 
     public Asignacion() {
     }
@@ -44,5 +44,10 @@ public class Asignacion extends Entidad<String> {
 
     public void setNotaFinal(float notaFinal) {
         this.notaFinal = notaFinal;
+    }
+
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId(), codHorario.toString(), zona.toString(), notaFinal.toString()};
     }
 }

@@ -45,4 +45,9 @@ public class Usuario extends Entidad<Integer> {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+    
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId().toString(), nombre, password, tipo};
+    }
 }

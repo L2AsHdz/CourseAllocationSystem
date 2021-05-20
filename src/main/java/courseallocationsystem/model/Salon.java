@@ -8,7 +8,7 @@ package courseallocationsystem.model;
  */
 public class Salon extends Entidad<String> {
     
-    private int cantEstudiantes;
+    private Integer cantEstudiantes;
     private String edificio;
 
     public Salon() {
@@ -34,5 +34,10 @@ public class Salon extends Entidad<String> {
 
     public void setEdificio(String edificio) {
         this.edificio = edificio;
+    }
+
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId().toString(), edificio, cantEstudiantes.toString()};
     }
 }

@@ -25,4 +25,6 @@ public abstract class Entidad<I> {
     public void setId(I id) {
         this.id = id;
     }
+    
+    public abstract String[] toArray();
 }

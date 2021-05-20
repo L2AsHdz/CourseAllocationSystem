@@ -9,8 +9,8 @@ package courseallocationsystem.model;
 public class Curso extends Entidad<Integer> {
     
     private String nombre;
-    private int semestre;
-    private int noCreditos;
+    private Integer semestre;
+    private Integer noCreditos;
 
     public Curso() {
     }
@@ -44,5 +44,10 @@ public class Curso extends Entidad<Integer> {
 
     public void setNoCreditos(int noCreditos) {
         this.noCreditos = noCreditos;
+    }
+
+    @Override
+    public String[] toArray() {
+        return new String[]{super.getId().toString(), nombre, semestre.toString(), noCreditos.toString()};
     }
 }

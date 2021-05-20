@@ -3,7 +3,7 @@ package courseallocationsystem;
 import static courseallocationsystem.controller.FileController.readFile;
 import courseallocationsystem.analizadores.Lexer;
 import courseallocationsystem.analizadores.Parser;
-import courseallocationsystem.controller.LoginController;
+import courseallocationsystem.controller.login.LoginController;
 import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
@@ -42,7 +42,7 @@ public class CourseAllocationSystem {
     public void readEntradaTest() {
         String entrada = readFile("entrada.txt");
         StringReader reader = new StringReader(entrada);
-        Lexer lexer = null;
+        Lexer lexer;
         Parser parser = null;
 
         try {

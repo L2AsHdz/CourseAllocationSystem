@@ -1,4 +1,4 @@
-package courseallocationsystem.controller;
+package courseallocationsystem.controller.login;
 
 import courseallocationsystem.model.Usuario;
 import courseallocationsystem.datos.Data;
@@ -52,16 +52,19 @@ public class LoginController implements ActionListener {
                         SuperView view = new SuperView();
                         SuperController controller = new SuperController(view, data);
                         controller.iniciar();
+                        login.dispose();
                     }
                     case "colaborador" -> {
                         ColaboradorView view = new ColaboradorView();
                         ColaboradorController controller = new ColaboradorController(view, data);
                         controller.iniciar();
+                        login.dispose();
                     }
                     case "estudiante" -> {
                         EstudianteView view = new EstudianteView();
                         EstudianteController controller = new EstudianteController(view, data);
                         controller.iniciar();
+                        login.dispose();
                     }
                 }
             } else {

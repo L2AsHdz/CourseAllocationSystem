@@ -1,0 +1,9 @@
+Estudiante(464198670, "Juan Perez", "GUATEMALA");
+Catedratico(100,"Prof100","Cidad");
+Curso (777,"compiladores1", 5, 4);
+Edificio ("T3");
+Salon("T3", 30, 300);
+Usuario(1, "Colaborador1", "12345", colaborador);
+Usuario(464198670, "Juanito", "12345", estudiante);
+Horario(31,"7:10am-8:00am","lunes",777,30,T3,100);
+Asignar (464198670, 31, 36, 25);

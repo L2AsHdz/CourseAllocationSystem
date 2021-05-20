@@ -5,6 +5,7 @@
  */
 package courseallocationsystem.view;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -50,6 +51,11 @@ public class LoginView extends javax.swing.JFrame {
         btnLogin.setText("Iniciar Sesion");
 
         txtPass.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txtPass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPassKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,6 +93,12 @@ public class LoginView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtPassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPassKeyReleased
+        if (KeyEvent.VK_ENTER == evt.getKeyCode() && !txtPass.getText().isEmpty()) {
+            this.btnLogin.doClick();
+        }
+    }//GEN-LAST:event_txtPassKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;

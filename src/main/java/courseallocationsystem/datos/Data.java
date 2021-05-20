@@ -22,14 +22,14 @@ import courseallocationsystem.model.Usuario;
  */
 public class Data {
 
-    private final CircularList<Usuario, Integer> usuarios;
-    private final CircularList<Edificio, String> edificios;
-    private final List<Salon, String> salones;
-    private final CircularList<Curso, Integer> cursos;
-    private final HashTable<Estudiante, Integer> estudiantes;
-    private final ArbolAVL<Catedratico, Integer> catedraticos;
-    private final BTree<Horario, Integer> horarios;
-    private final CircularList<Asignacion, String> asignaciones;
+    private CircularList<Usuario, Integer> usuarios;
+    private CircularList<Edificio, String> edificios;
+    private List<Salon, String> salones;
+    private CircularList<Curso, Integer> cursos;
+    private HashTable<Estudiante, Integer> estudiantes;
+    private ArbolAVL<Catedratico, Integer> catedraticos;
+    private BTree<Horario, Integer> horarios;
+    private CircularList<Asignacion, String> asignaciones;
 
     public Data() {
         this.asignaciones = new CircularList();
@@ -74,6 +74,38 @@ public class Data {
 
     public CircularList<Asignacion, String> getAsignaciones() {
         return asignaciones;
+    }
+
+    public void setUsuarios(CircularList<Usuario, Integer> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public void setEdificios(CircularList<Edificio, String> edificios) {
+        this.edificios = edificios;
+    }
+
+    public void setSalones(List<Salon, String> salones) {
+        this.salones = salones;
+    }
+
+    public void setCursos(CircularList<Curso, Integer> cursos) {
+        this.cursos = cursos;
+    }
+
+    public void setEstudiantes(HashTable<Estudiante, Integer> estudiantes) {
+        this.estudiantes = estudiantes;
+    }
+
+    public void setCatedraticos(ArbolAVL<Catedratico, Integer> catedraticos) {
+        this.catedraticos = catedraticos;
+    }
+
+    public void setHorarios(BTree<Horario, Integer> horarios) {
+        this.horarios = horarios;
+    }
+
+    public void setAsignaciones(CircularList<Asignacion, String> asignaciones) {
+        this.asignaciones = asignaciones;
     }
 
 }

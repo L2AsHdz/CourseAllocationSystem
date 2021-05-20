@@ -1,7 +1,9 @@
 package courseallocationsystem.controller.superU;
 
+import courseallocationsystem.controller.inputfile.InputFileController;
 import courseallocationsystem.datos.Data;
 import courseallocationsystem.view.SuperView;
+import courseallocationsystem.view.inputfile.InputFileView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,6 +38,11 @@ public class SuperController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object s = ae.getSource();
+        if (s == view.getItmRead()) {
+            InputFileView inputView = new InputFileView();
+            InputFileController controller = new InputFileController(inputView, data);
+            controller.iniciar(view.getPnlDesk());
+        }
     }
 }

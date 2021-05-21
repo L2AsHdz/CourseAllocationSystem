@@ -45,6 +45,8 @@ public class EstudianteView extends javax.swing.JPanel {
         btnActualizar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
+        btnVerImage = new javax.swing.JButton();
 
         tblEstudiante.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,6 +77,16 @@ public class EstudianteView extends javax.swing.JPanel {
 
         btnBorrar.setText("Borrar");
 
+        lblError.setForeground(new java.awt.Color(153, 0, 0));
+        lblError.setText("jLabel1");
+
+        btnVerImage.setText("Ver imagen");
+        btnVerImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerImageActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,19 +111,26 @@ public class EstudianteView extends javax.swing.JPanel {
                                         .addComponent(lblNombre)
                                         .addGap(28, 28, 28)
                                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(btnActualizar)
+                                            .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(87, 87, 87)
+                                        .addComponent(btnBorrar)
+                                        .addGap(51, 51, 51)
+                                        .addComponent(btnLimpiar)
+                                        .addGap(30, 30, 30)
+                                        .addComponent(btnVerImage)))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(btnAgregar)
-                                .addGap(97, 97, 97)
-                                .addComponent(btnActualizar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                                .addComponent(btnBorrar)
-                                .addGap(81, 81, 81)
-                                .addComponent(btnLimpiar)
-                                .addGap(152, 152, 152)))))
+                                .addGap(152, 683, Short.MAX_VALUE)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblError)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,8 +150,11 @@ public class EstudianteView extends javax.swing.JPanel {
                     .addComponent(btnAgregar)
                     .addComponent(btnLimpiar)
                     .addComponent(btnBorrar)
-                    .addComponent(btnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnVerImage))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addComponent(lblError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -142,10 +164,15 @@ public class EstudianteView extends javax.swing.JPanel {
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnVerImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerImageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerImageActionPerformed
+
     public void limpiar() {
         getTxtCarnet().setText("");
         getTxtNombre().setText("");
         getTxtDireccion().setText("");
+        lblError.setText("");
     }
 
 
@@ -154,9 +181,11 @@ public class EstudianteView extends javax.swing.JPanel {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnVerImage;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCarnet;
     private javax.swing.JLabel lblDireccion;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JTable tblEstudiante;
     private javax.swing.JTextField txtCarnet;
@@ -180,22 +209,6 @@ public class EstudianteView extends javax.swing.JPanel {
         return btnLimpiar;
     }
 
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
-    }
-
-    public JLabel getLblCarnet() {
-        return lblCarnet;
-    }
-
-    public JLabel getLblDireccion() {
-        return lblDireccion;
-    }
-
-    public JLabel getLblNombre() {
-        return lblNombre;
-    }
-
     public JTable getTblEstudiante() {
         return tblEstudiante;
     }
@@ -212,5 +225,11 @@ public class EstudianteView extends javax.swing.JPanel {
         return txtNombre;
     }
 
+    public JButton getBtnVerImage() {
+        return btnVerImage;
+    }
 
+    public JLabel getLblError() {
+        return lblError;
+    }
 }

@@ -6,8 +6,8 @@
 package courseallocationsystem.view.jpanels;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -42,11 +42,13 @@ public class UsuarioView extends javax.swing.JPanel {
         lblPassword = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
         lblTipo = new javax.swing.JLabel();
-        txtTipo = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
         btnActualizar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        btnVerImage = new javax.swing.JButton();
+        cbTipoUser = new javax.swing.JComboBox<>();
+        lblError = new javax.swing.JLabel();
 
         lblIdentificador.setText("Identificador");
 
@@ -79,50 +81,64 @@ public class UsuarioView extends javax.swing.JPanel {
             }
         });
 
+        btnVerImage.setText("Ver imagen");
+        btnVerImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerImageActionPerformed(evt);
+            }
+        });
+
+        cbTipoUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "colaborador", "estudiante" }));
+        cbTipoUser.setSelectedIndex(-1);
+
+        lblError.setForeground(new java.awt.Color(153, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnActualizar)
+                        .addGap(62, 62, 62)
+                        .addComponent(btnBorrar)
+                        .addGap(59, 59, 59)
+                        .addComponent(btnLimpiar)
+                        .addGap(51, 51, 51)
+                        .addComponent(btnVerImage))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblIdentificador)
-                            .addComponent(lblNombre))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap(158, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblIdentificador)
+                                    .addComponent(lblNombre))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(91, 91, 91)
+                                .addComponent(btnAgregar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(124, 124, 124)
+                        .addGap(142, 142, 142)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPassword)
-                            .addComponent(lblTipo)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnActualizar)
-                                .addGap(88, 88, 88))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addComponent(btnAgregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 283, Short.MAX_VALUE)))
-                        .addComponent(btnBorrar)
-                        .addGap(22, 22, 22)))
+                            .addComponent(lblTipo))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                            .addComponent(cbTipoUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(0, 111, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                        .addComponent(btnLimpiar)
-                        .addGap(149, 149, 149))))
+                        .addComponent(lblError)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,15 +159,18 @@ public class UsuarioView extends javax.swing.JPanel {
                             .addComponent(lblPassword))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTipo))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                            .addComponent(lblTipo)
+                            .addComponent(cbTipoUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnLimpiar)
                     .addComponent(btnBorrar)
-                    .addComponent(btnActualizar))
-                .addGap(69, 69, 69)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnVerImage))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addComponent(lblError)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -161,13 +180,20 @@ public class UsuarioView extends javax.swing.JPanel {
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnVerImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerImageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerImageActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnVerImage;
+    private javax.swing.JComboBox<String> cbTipoUser;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblIdentificador;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblPassword;
@@ -176,28 +202,8 @@ public class UsuarioView extends javax.swing.JPanel {
     private javax.swing.JTextField txtIdentificador;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPassword;
-    private javax.swing.JTextField txtTipo;
     // End of variables declaration//GEN-END:variables
 
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
-    }
-
-    public JLabel getLblIdentificador() {
-        return lblIdentificador;
-    }
-
-    public JLabel getLblNombre() {
-        return lblNombre;
-    }
-
-    public JLabel getLblPassword() {
-        return lblPassword;
-    }
-
-    public JLabel getLblTipo() {
-        return lblTipo;
-    }
 
     public JTable getTblUsuario() {
         return tblUsuario;
@@ -215,8 +221,12 @@ public class UsuarioView extends javax.swing.JPanel {
         return txtPassword;
     }
 
-    public JTextField getTxtTipo() {
-        return txtTipo;
+    public JComboBox<String> getCbTipoUser() {
+        return cbTipoUser;
+    }
+
+    public JButton getBtnVerImage() {
+        return btnVerImage;
     }
 
     public JButton getBtnActualizar() {
@@ -235,11 +245,16 @@ public class UsuarioView extends javax.swing.JPanel {
         return btnLimpiar;
     }
 
+    public JLabel getLblError() {
+        return lblError;
+    }
+
     public void limpiar() {
         getTxtIdentificador().setText("");
         getTxtNombre().setText("");
         getTxtPassword().setText("");
-        getTxtTipo().setText("");
+        cbTipoUser.setSelectedIndex(-1);
+        lblError.setText("");
     }
 
 

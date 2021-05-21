@@ -1,7 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.model.Edificio;
+import courseallocationsystem.datos.Data;
 
 /**
  *
@@ -10,15 +9,16 @@ import courseallocationsystem.model.Edificio;
  * @author asael
  */
 public class SalonValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateSalon(CircularList<Edificio, String> edificios,
-            String nameEdificio, int codSalon) {
+    public static String validateSalon(String nameEdificio, int codSalon) {
         String error = "";
         
-        if (edificios.get(nameEdificio) == null) {
+        if (data.getEdificios() == null) {
             error = "El edificio con nombre " + nameEdificio + " no existe en el sistema";
         } else {
-            if (edificios.get(nameEdificio).getSalones().get(codSalon) != null) {
+            if (data.getEdificios().get(nameEdificio).getSalones().get(codSalon) != null) {
                 error = "El salon " + codSalon + " ya existe en el edificio " + nameEdificio;
             }
         }

@@ -67,6 +67,7 @@ public class CircularList<T extends Entidad, I> {
             do {
                 if (comparator.compare(actual.getDato(), t) == 0) {
                     actual.setDato(t);
+                    System.out.println("Se actualizo el dato");
                     return actual.getDato();
                 }
                 actual = actual.getNext();

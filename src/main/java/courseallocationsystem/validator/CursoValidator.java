@@ -1,7 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.model.Curso;
+import courseallocationsystem.datos.Data;
 
 /**
  *
@@ -10,12 +9,13 @@ import courseallocationsystem.model.Curso;
  * @author asael
  */
 public class CursoValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateCurso(CircularList<Curso, Integer> cursos,
-            int id) {
+    public static String validateCurso(int id) {
         String error = "";
         
-        if (cursos.get(id) != null) {
+        if (data.getCursos().get(id) != null) {
             error = "El curos con codigo " + id + " ya existe en el sistema";
         }
         

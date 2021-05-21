@@ -1,9 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.edd.table.HashTable;
-import courseallocationsystem.model.Estudiante;
-import courseallocationsystem.model.Usuario;
+import courseallocationsystem.datos.Data;
 
 /**
  *
@@ -12,17 +9,18 @@ import courseallocationsystem.model.Usuario;
  * @author asael
  */
 public class UserValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateUser(CircularList<Usuario, Integer> usuarios,
-            HashTable<Estudiante, Integer> estudiantes, int id, String tipo) {
+    public static String validateUser(int id, String tipo) {
         String error = "";
         
         if (tipo.equals("estudiante")) {
-            if (estudiantes.get(id) == null) {
+            if (data.getEstudiantes().get(id) == null) {
                 error = "El estudiante con carnet " + id + " no existe en el sistema";
             }
         }
-        if (usuarios.get(id) != null) {
+        if (data.getUsuarios().get(id) != null) {
             error = "El usuario con el id " + id + " ya existe en el sistema ";
         }
         

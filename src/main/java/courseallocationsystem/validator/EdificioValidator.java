@@ -1,7 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.model.Edificio;
+import courseallocationsystem.datos.Data;
 
 /**
  *
@@ -10,12 +9,13 @@ import courseallocationsystem.model.Edificio;
  * @author asael
  */
 public class EdificioValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateEdificio(CircularList<Edificio, String> edificios,
-            String name) {
+    public static String validateEdificio(String name) {
         String error = "";
         
-        if (edificios.get(name) != null) {
+        if (data.getEdificios().get(name) != null) {
             error = "El edificio con nombre " + name + " ya existe en el sistema";
         }
         

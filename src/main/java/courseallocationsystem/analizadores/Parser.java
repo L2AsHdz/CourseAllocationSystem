@@ -5,8 +5,8 @@
 
 package courseallocationsystem.analizadores;
 
+import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
 import courseallocationsystem.edd.tree.ArbolAVL;
 import courseallocationsystem.edd.tree.BTree;
@@ -204,15 +204,16 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
 
+    private Data data = Data.getData();
     private ArrayList<String> errores = new ArrayList();
     private ArrayList<String> mensajes = new ArrayList();
 
-    private CircularList<Usuario, Integer> usuarios = new CircularList();
-    private CircularList<Edificio, String> edificios = new CircularList();
-    private CircularList<Curso, Integer> cursos = new CircularList();
-    private HashTable<Estudiante, Integer> estudiantes = new HashTable(37, 0.55f);
-    private ArbolAVL<Catedratico, Integer> catedraticos = new ArbolAVL();
-    private BTree<Horario, Integer> horarios = new BTree();
+    private CircularList<Usuario, Integer> usuarios = data.getUsuarios();
+    private CircularList<Edificio, String> edificios = data.getEdificios();
+    private CircularList<Curso, Integer> cursos = data.getCursos();
+    private HashTable<Estudiante, Integer> estudiantes = data.getEstudiantes();
+    private ArbolAVL<Catedratico, Integer> catedraticos = data.getCatedraticos();
+    private BTree<Horario, Integer> horarios = data.getHorarios();
 
     public ArrayList<String> getErrores(){
         return this.errores;
@@ -415,7 +416,7 @@ class CUP$Parser$actions {
 		String t = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
             Integer id = Integer.parseInt(i);
-            String error = UserValidator.validateUser(usuarios, estudiantes, id, t);
+            String error = UserValidator.validateUser(id, t);
             if (error.isEmpty()) {
                 usuarios.add(new Usuario(name, pass, t, id));
                 mensajes.add("Usuario " + id + " - " + name + " agregado correctamente");
@@ -466,7 +467,7 @@ class CUP$Parser$actions {
 		String dir = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
             Integer id = Integer.parseInt(i);
-            String error = EstudianteValidator.validateEstudiante(estudiantes, id);
+            String error = EstudianteValidator.validateEstudiante(id);
             if (error.isEmpty()) {
                 estudiantes.add(new Estudiante(name, dir, id));
                 mensajes.add("Estudiante " + id +" - " + name + " agregado correctamente");
@@ -486,7 +487,7 @@ class CUP$Parser$actions {
 		int nameright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String name = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-            String error = EdificioValidator.validateEdificio(edificios, name);
+            String error = EdificioValidator.validateEdificio(name);
             if (error.isEmpty()) {
                 edificios.add(new Edificio(name));
                 mensajes.add("Edificio " + name + " agregador correctamente");
@@ -513,7 +514,7 @@ class CUP$Parser$actions {
 		String c = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
             Integer id = Integer.parseInt(i);
-            String error = SalonValidator.validateSalon(edificios, s, id);
+            String error = SalonValidator.validateSalon(s, id);
             if (error.isEmpty()) {
                 edificios.get(s).getSalones().add(new Salon(Integer.parseInt(c), s, id));
                 mensajes.add("Salon " + id + " agregado al edificio " + s);
@@ -540,7 +541,7 @@ class CUP$Parser$actions {
 		String dir = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
             Integer id = Integer.parseInt(i);
-            String error = CatedraticoValidator.validateCatedratico(catedraticos, id);
+            String error = CatedraticoValidator.validateCatedratico(id);
 
             if (error.isEmpty()) {
                 catedraticos.add(new Catedratico(name, dir, id));
@@ -571,7 +572,7 @@ class CUP$Parser$actions {
 		String n = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
             Integer id = Integer.parseInt(i);
-            String error = CursoValidator.validateCurso(cursos, id);
+            String error = CursoValidator.validateCurso(id);
             if (error.isEmpty()) {
                 cursos.add(new Curso(name, Integer.parseInt(s), Integer.parseInt(n), id));
                 mensajes.add("Curso " + id + " - " + name + " agregado correctamente");
@@ -613,7 +614,7 @@ class CUP$Parser$actions {
             Integer idCurso = Integer.parseInt(iCur);
             Integer idCatedra = Integer.parseInt(iCated);
             Integer idSalon = Integer.parseInt(idS);
-            String error = HorarioValidator.validateHorario(horarios, cursos, edificios, catedraticos, id, idCurso, idCatedra, idSalon, iEd);
+            String error = HorarioValidator.validateHorario(    id, idCurso, idCatedra, idSalon, iEd);
             if (error.isEmpty()) {
                 horarios.add(new Horario(p, d, idCurso, idSalon, iEd, idCatedra, id));
                 mensajes.add("Horario con codigo " + id + " agregado correctamente");
@@ -644,7 +645,7 @@ class CUP$Parser$actions {
 		
             Integer idEstudiante = Integer.parseInt(iEst);
             Integer idHorario = Integer.parseInt(iHo);
-            String error = AsignacionValidator.validateAsignacion(horarios, idEstudiante, idHorario);
+            String error = AsignacionValidator.validateAsignacion(idEstudiante, idHorario);
             if (error.isEmpty()) {
                 horarios.get(idHorario).getAsignaciones().add(new Asignacion(idEstudiante, idHorario, Integer.parseInt(z), Integer.parseInt(f)));
                 mensajes.add("Estudiante " + idEstudiante + " asignado en el horario " + idHorario);

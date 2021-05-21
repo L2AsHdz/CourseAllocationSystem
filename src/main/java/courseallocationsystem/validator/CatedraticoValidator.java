@@ -1,7 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.tree.ArbolAVL;
-import courseallocationsystem.model.Catedratico;
+import courseallocationsystem.datos.Data;
 import java.util.Objects;
 
 /**
@@ -11,12 +10,13 @@ import java.util.Objects;
  * @author asael
  */
 public class CatedraticoValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateCatedratico(ArbolAVL<Catedratico, Integer> catedraticos,
-            int id) {
+    public static String validateCatedratico(int id) {
         String error = "";
         
-        if (!Objects.isNull(catedraticos.get(id))) {
+        if (!Objects.isNull(data.getCatedraticos().get(id))) {
             error = "El catedratico con identificacion " + id + " ya existe en el sistema";
         }
         

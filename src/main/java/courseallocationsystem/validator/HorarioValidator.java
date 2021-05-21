@@ -1,12 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.edd.tree.ArbolAVL;
-import courseallocationsystem.edd.tree.BTree;
-import courseallocationsystem.model.Catedratico;
-import courseallocationsystem.model.Curso;
-import courseallocationsystem.model.Edificio;
-import courseallocationsystem.model.Horario;
+import courseallocationsystem.datos.Data;
 import java.util.Objects;
 
 /**
@@ -16,24 +10,22 @@ import java.util.Objects;
  * @author asael
  */
 public class HorarioValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateHorario(BTree<Horario, Integer> horarios,
-            CircularList<Curso, Integer> cursos,
-            CircularList<Edificio, String> edificios,
-            ArbolAVL<Catedratico, Integer> catedraticos,
-            int idHorario, int idCurso, int idCatedratico, int idSalon, String edificio) {
+    public static String validateHorario(int idHorario, int idCurso, int idCatedratico, int idSalon, String edificio) {
         String error = "";
         
-        if (!Objects.isNull(horarios.get(idHorario))) {
+        if (!Objects.isNull(data.getHorarios().get(idHorario))) {
             error = "El horario con codigo " + idHorario + " ya existe en el sistema";
         } else {
-            if (Objects.isNull(cursos.get(idCurso))) {
+            if (Objects.isNull(data.getCursos().get(idCurso))) {
                 error = "El curso con codigo " + idCurso + " no existe en el sistema";
-            } else if (edificios.get(edificio) != null) {
-                if (Objects.isNull(edificios.get(edificio).getSalones().get(idSalon))) {
+            } else if (data.getEdificios().get(edificio) != null) {
+                if (Objects.isNull(data.getEdificios().get(edificio).getSalones().get(idSalon))) {
                     error = "El salon con codigo " + idSalon + " no existe en el edificio " + edificio;
                 }
-            } else if (Objects.isNull(catedraticos.get(idCatedratico))) {
+            } else if (Objects.isNull(data.getCatedraticos().get(idCatedratico))) {
                 error = "El catedratico con identificacion " + idCatedratico + " no existe en el sistema";
             }
         }

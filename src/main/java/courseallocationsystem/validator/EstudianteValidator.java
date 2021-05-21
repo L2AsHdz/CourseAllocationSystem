@@ -1,7 +1,6 @@
 package courseallocationsystem.validator;
 
-import courseallocationsystem.edd.table.HashTable;
-import courseallocationsystem.model.Estudiante;
+import courseallocationsystem.datos.Data;
 
 /**
  *
@@ -10,12 +9,13 @@ import courseallocationsystem.model.Estudiante;
  * @author asael
  */
 public class EstudianteValidator {
+    
+    private static Data data = Data.getData();
 
-    public static String validateEstudiante(HashTable<Estudiante, Integer> estudiantes,
-            int id) {
+    public static String validateEstudiante(int id) {
         String error = "";
     
-        if (estudiantes.get(id) != null) {
+        if (data.getEstudiantes().get(id) != null) {
             error = "El estudiante con el carnet " + id + " ya existe en el sistema";
         }
         

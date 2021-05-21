@@ -2,6 +2,7 @@ package courseallocationsystem.edd.table;
 
 import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.model.Entidad;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -53,6 +54,17 @@ public class HashTable<T extends Entidad, I> {
         }
     }
     
+    public T update(T t) {
+        Integer index = get((I)t.getId(), generateIndex((I)t.getId(), 0), 0);
+        
+        if (index == null) {
+            return null;
+        } else {
+            datos[index] = t;
+            return (T) datos[index];
+        }
+    }
+    
     public T remove(I id) {
         Integer index = get(id, generateIndex(id, 0), 0);
         
@@ -75,6 +87,22 @@ public class HashTable<T extends Entidad, I> {
                 System.out.println("[" + i + "][----------]");
             }
         }
+    }
+    
+    public DefaultTableModel toTable(String[] titulos) {
+        DefaultTableModel model = new DefaultTableModel();
+        
+        for (String t : titulos) {
+            model.addColumn(t);
+        }
+        
+        for (Object dato1 : datos) {
+            T dato = (T) dato1;
+            if (dato != null) {
+                model.addRow(dato.toArray());
+            }
+        }
+        return model;
     }
     
     private Integer get(I id, int index, int increase) {

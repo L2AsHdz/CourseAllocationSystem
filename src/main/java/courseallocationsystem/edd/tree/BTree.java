@@ -3,6 +3,7 @@ package courseallocationsystem.edd.tree;
 import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.BTreeNode;
 import courseallocationsystem.model.Entidad;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,12 +16,14 @@ import courseallocationsystem.model.Entidad;
 public class BTree<T extends Entidad, I> {
 
     private final IdentifierComparator<I> comparator;
+    private final DefaultTableModel model;
     
     private BTreeNode<T> root;
 
     public BTree() {
         root = new BTreeNode();
         comparator = new IdentifierComparator();
+        model = new DefaultTableModel();
     }
 
     /**
@@ -224,6 +227,37 @@ public class BTree<T extends Entidad, I> {
         } else {
             return null;
         }
+    }
+    
+    public T update(T t) {
+        if (root == null) {
+            return null;
+        }else if (root.getNumKeys() > 0) {
+            return update(root, t);
+        } else {
+            return null;
+        }
+    }
+    
+    private T update(BTreeNode<T> currentNode, T newT) {
+        T t = null;
+        for (int i = 0; i < 5; i++) {
+            T tempKey = currentNode.getKey(i);
+            if (tempKey != null) {
+                if (comparator.compare(tempKey,newT) == 0) {
+                    currentNode.setKey(newT, i);
+                    t = newT;
+                }
+            }
+        }
+
+        if (t == null) {
+            int indexChild = findChildOrIndex(currentNode, (I)newT.getId());
+            if (currentNode.getChild(indexChild) != null) {
+                t = update(currentNode.getChild(indexChild), newT);
+            }
+        }
+        return t;
     }
 
     private T search(BTreeNode<T> currentNode, I id) {
@@ -554,6 +588,34 @@ public class BTree<T extends Entidad, I> {
                 traverse(currentNode.getChild(i));
             }
             System.out.printf(" %d", currentNode.getKey(i).getId());
+        }
+
+        if (!currentNode.isLeaf()) {
+            traverse(currentNode.getChild(i));
+        }
+    }
+    
+    public void setTitles(String[] titles) {
+        for (String t : titles) {
+            model.addColumn(t);
+        }
+    }
+
+    public DefaultTableModel getModel() {
+        if (root != null) {
+            fillDefaultTableModel(root);
+            return model;
+        } else {
+            return new DefaultTableModel();
+        }
+    }
+    private void fillDefaultTableModel(BTreeNode<T> currentNode) {
+        int i;
+        for (i = 0; i < currentNode.getNumKeys(); i++) {
+            if (!currentNode.isLeaf()) {
+                traverse(currentNode.getChild(i));
+            }
+            model.addRow(currentNode.getKey(i).toArray());
         }
 
         if (!currentNode.isLeaf()) {

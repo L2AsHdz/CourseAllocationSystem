@@ -3,6 +3,7 @@ package courseallocationsystem.edd.tree;
 import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.TreeNode;
 import courseallocationsystem.model.Entidad;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,12 +15,14 @@ import courseallocationsystem.model.Entidad;
  */
 public class ArbolAVL<T extends Entidad, I> {
     
-    IdentifierComparator<I> comparator;
+    private final IdentifierComparator<I> comparator;
+    private final DefaultTableModel model;
 
     private TreeNode<T> root;
 
     public ArbolAVL() {
         comparator = new IdentifierComparator();
+        model = new DefaultTableModel();
     }
     
     private TreeNode<T> rightRotation(TreeNode<T> oldRoot) {
@@ -61,6 +64,24 @@ public class ArbolAVL<T extends Entidad, I> {
             System.out.print(root.getDato().getId() + ", ");
             inOrden(root.getRight());
         }
+    }
+    
+    public void setTitles(String[] titulos) {
+        for (String t : titulos) {
+            model.addColumn(t);
+        }
+    }
+    
+    public void fillDefaultTableModel(TreeNode<T> root) {
+        if (root != null) {
+            fillDefaultTableModel(root.getLeft());
+            model.addRow(root.getDato().toArray());
+            fillDefaultTableModel(root.getRight());
+        }
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
     }
 
     public void preOrden(TreeNode<T> root) {
@@ -173,6 +194,32 @@ public class ArbolAVL<T extends Entidad, I> {
             } else {
                 return get(id, root).getDato();
             }
+        }
+    }
+    
+    public T update(T t) {
+        if (root == null) {
+            return null;
+        } else {
+            if (update(t, root) == null) {
+                return null;
+            } else {
+                return update(t, root).getDato();
+            } 
+        }
+    }
+    
+    private TreeNode<T> update(T t, TreeNode<T> root) {
+        
+        if (root == null) {
+            return null;
+        } else if (comparator.compare(root.getDato(), t) == 0) {
+            root.setDato(t);
+            return root;
+        } else if (comparator.compare(root.getDato(), t) > 0) {
+            return update(t, root.getLeft());
+        } else {
+            return update(t, root.getRight());
         }
     }
     

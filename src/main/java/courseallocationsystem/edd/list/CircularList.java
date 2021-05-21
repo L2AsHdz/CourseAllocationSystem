@@ -59,6 +59,22 @@ public class CircularList<T extends Entidad, I> {
 
         return null;
     }
+    
+    public T update(T t) {
+        Nodo<T> actual = primero;
+
+        if (actual != null) {
+            do {
+                if (comparator.compare(actual.getDato(), t) == 0) {
+                    actual.setDato(t);
+                    return actual.getDato();
+                }
+                actual = actual.getNext();
+            } while (actual != primero);
+        }
+
+        return null;
+    }
 
     public T remove(I id) {
         Nodo<T> actual = primero;

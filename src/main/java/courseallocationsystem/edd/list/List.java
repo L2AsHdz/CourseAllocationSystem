@@ -3,6 +3,7 @@ package courseallocationsystem.edd.list;
 import courseallocationsystem.comparator.IdentifierComparator;
 import courseallocationsystem.edd.Nodo;
 import courseallocationsystem.model.Entidad;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -54,6 +55,20 @@ public class List<T extends Entidad, I> {
         
         while (actual != null) {
             if (comparator.compare(actual.getDato(), id) == 0) {
+                return actual.getDato();
+            }
+            actual = actual.getNext();
+        }
+        
+        return null;
+    }
+    
+    public T update(T t) {
+        Nodo<T>actual = inicio;
+        
+        while (actual != null) {
+            if (comparator.compare(actual.getDato(), t) == 0) {
+                actual.setDato(t);
                 return actual.getDato();
             }
             actual = actual.getNext();
@@ -122,6 +137,25 @@ public class List<T extends Entidad, I> {
                 }
                 actual = actual.getNext();
             }
+        }
+    }
+    
+    public DefaultTableModel toTable(String[] titulos) {
+        Nodo<T>actual = inicio;
+        DefaultTableModel model = new DefaultTableModel();
+        
+        for (String t : titulos) {
+            model.addColumn(t);
+        }
+        
+        if (actual == null) {
+            return model;
+        } else {
+            while (actual != null) {
+                model.addRow(actual.getDato().toArray());
+                actual = actual.getNext();
+            }
+            return model;
         }
     }
 

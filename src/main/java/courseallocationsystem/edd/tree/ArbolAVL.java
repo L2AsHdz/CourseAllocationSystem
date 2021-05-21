@@ -165,7 +165,15 @@ public class ArbolAVL<T extends Entidad, I> {
     }
     
     public T get(I id) {
-        return (root == null) ? null : get(id, root).getDato();
+        if (root == null) {
+            return null;
+        } else {
+            if (get(id, root) == null) {
+                return null;
+            } else {
+                return get(id, root).getDato();
+            }
+        }
     }
     
     private TreeNode<T> remove(I id, TreeNode<T> root) {

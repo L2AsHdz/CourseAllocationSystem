@@ -1,8 +1,5 @@
 package courseallocationsystem;
 
-import static courseallocationsystem.controller.FileController.readFile;
-import courseallocationsystem.analizadores.Lexer;
-import courseallocationsystem.analizadores.Parser;
 import courseallocationsystem.controller.login.LoginController;
 import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.CircularList;
@@ -10,17 +7,11 @@ import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
 import courseallocationsystem.edd.tree.ArbolAVL;
 import courseallocationsystem.edd.tree.BTree;
-import courseallocationsystem.model.Asignacion;
 import courseallocationsystem.model.Catedratico;
-import courseallocationsystem.model.Curso;
 import courseallocationsystem.model.Edificio;
-import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
-import courseallocationsystem.model.Salon;
 import courseallocationsystem.model.Usuario;
 import courseallocationsystem.view.LoginView;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -37,48 +28,9 @@ public class CourseAllocationSystem {
         LoginController controller = new LoginController(view, data);
         
         controller.iniciar();
+//        avlTreeTest();
     }
     
-    public void readEntradaTest() {
-        String entrada = readFile("entrada.txt");
-        StringReader reader = new StringReader(entrada);
-        Lexer lexer;
-        Parser parser = null;
-
-        try {
-            lexer = new Lexer(reader);
-            parser = new Parser(lexer);
-            parser.parse();
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-
-        ArrayList<String> errores = parser.getErrores();
-
-        if (errores.isEmpty()) {
-            CircularList<Usuario, Integer> users = parser.getUsuarios();
-            CircularList<Edificio, String> edificios = parser.getEdificios();
-            CircularList<Curso, Integer> cursos = parser.getCursos();
-            HashTable<Estudiante, Integer> estudiantes = parser.getEstudiantes();
-            ArbolAVL<Catedratico, Integer> catedraticos = parser.getCatedraticos();
-            BTree<Horario, Integer> horarios = parser.getHorarios();
-            System.out.println("\nUsuarios");
-            users.show();
-            System.out.println("\nEdificios");
-            edificios.show();
-            System.out.println("\n\nCursos");
-            cursos.show();
-            System.out.println("\nEstudiantes");
-            estudiantes.print();
-            System.out.println("\nCatedraticos");
-            catedraticos.printTree(catedraticos.getRaiz(), 0);
-            System.out.println("\nHorarios");
-            horarios.printTree(horarios.getRoot(), 0);
-        } else {
-            errores.forEach(e -> System.out.println(e));
-        }
-    }
-
     private static void bTreeTest() {
         BTree<Horario, Integer> arbolB = new BTree();
 
@@ -178,19 +130,25 @@ public class CourseAllocationSystem {
     }
 
     private static void avlTreeTest() {
-        ArbolAVL<Estudiante, Integer> arbol = new ArbolAVL();
-        arbol.add(new Estudiante("asael", "aqui", 50));
-        arbol.add(new Estudiante("asael", "aqui", 25));
-        arbol.add(new Estudiante("asael", "aqui", 100));
-        arbol.add(new Estudiante("asael", "aqui", 150));
-        arbol.add(new Estudiante("asael", "aqui", 200));
-        arbol.add(new Estudiante("asael", "aqui", 75));
-        arbol.add(new Estudiante("asael", "aqui", 125));
-        arbol.add(new Estudiante("asael", "aqui", 175));
-        arbol.add(new Estudiante("asael", "aqui", 225));
+        ArbolAVL<Catedratico, Integer> arbol = new ArbolAVL();
+        
+        arbol.add(new Catedratico("cat-1","direccion-1",111));
+        arbol.add(new Catedratico("cat-2","direccion-2",222));
+        arbol.add(new Catedratico("cat-3","direccion-3",333));
+        arbol.add(new Catedratico("cat-4","direccion-4",444));
+        arbol.add(new Catedratico("cat-5","direccion-5",555));
+        arbol.add(new Catedratico("cat-6","direccion-6",666));
+        arbol.add(new Catedratico("cat-7","direccion-7",777));
+        arbol.add(new Catedratico("cat-8","direccion-8",888));
+        arbol.add(new Catedratico("cat-9","direccion-9",999));
 
-        arbol.remove(100);
-        arbol.remove(25);
+        try {
+            arbol.get(666);
+            System.out.println("Ya existe");
+        } catch(NullPointerException e) {
+            System.out.println("No existe");
+        }
+        System.out.println(arbol.get(999).getDireccion());
         arbol.inOrden(arbol.getRaiz());
         System.out.println();
         arbol.printTree(arbol.getRaiz(), 0);

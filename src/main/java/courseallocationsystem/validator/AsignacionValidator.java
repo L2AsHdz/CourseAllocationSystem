@@ -2,6 +2,7 @@ package courseallocationsystem.validator;
 
 import courseallocationsystem.edd.tree.BTree;
 import courseallocationsystem.model.Horario;
+import java.util.Objects;
 
 /**
  *
@@ -15,10 +16,10 @@ public class AsignacionValidator {
             int idEstudiante, int idHorario) {
         String error = "";
         
-        if (horarios.get(idHorario) == null) {
+        if (Objects.isNull(horarios.get(idHorario))) {
             error = "El horario con codigo " + idHorario + " no existe en el sistema";
         } else {
-            if (horarios.get(idHorario).getAsignaciones().get(idEstudiante) != null) {
+            if (!Objects.isNull(horarios.get(idHorario).getAsignaciones().get(idEstudiante))) {
                 error  = "El estudiante con carnet " + idEstudiante + " ya tiene una asignacion en este horario";
             }
         }

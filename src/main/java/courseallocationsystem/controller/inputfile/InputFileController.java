@@ -27,7 +27,6 @@ public class InputFileController implements ActionListener {
 
         this.view.getBtnBuscar().addActionListener(this);
         this.view.getBtnIniciar().addActionListener(this);
-        this.view.getBtnContinuar().addActionListener(this);
     }
 
     public void iniciar(JPanel parent) {
@@ -56,11 +55,12 @@ public class InputFileController implements ActionListener {
             }
             view.getTxtInfo().setText(content);
             view.getLblNameFile().setText(path);
-        } else if (s == view.getBtnContinuar()) {
-
+            view.getBtnIniciar().setEnabled(true);
         } else if (s == view.getBtnIniciar()) {
             String content = view.getTxtInfo().getText();
             setData(content);
+            view.getBtnIniciar().setEnabled(false);
+            view.getLblNameFile().setText("*Aun no se ha seleccionado ningun archivo*");
         }
     }
 
@@ -72,9 +72,10 @@ public class InputFileController implements ActionListener {
 
         if (errores.isEmpty()) {
             view.getTxtInfo().setText("");
+            analyzer.getMensajes().forEach(m -> view.getTxtInfo().append(m + "\n"));
             System.out.println("Analisis realizado con exito");
         } else {
-            errores.forEach(e -> System.out.println(e));
+            errores.forEach(e -> view.getTxtInfo().append(e + "\n"));
         }
     }
 

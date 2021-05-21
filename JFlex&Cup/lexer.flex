@@ -36,7 +36,7 @@ import static courseallocationsystem.analizadores.Sym.*;
 %eofval}
 
 ENTERO = (0|([1-9][0-9]*))
-NAME_ED = (\w){ENTERO}
+NAME_ED = (\w)+{ENTERO}+
 LITERAL = [^"\""]*
 
 %state LITERALS

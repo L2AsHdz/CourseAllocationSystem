@@ -3,17 +3,14 @@ package courseallocationsystem.analyzer;
 import courseallocationsystem.analizadores.Lexer;
 import courseallocationsystem.analizadores.Parser;
 import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
 import courseallocationsystem.edd.tree.ArbolAVL;
 import courseallocationsystem.edd.tree.BTree;
-import courseallocationsystem.model.Asignacion;
 import courseallocationsystem.model.Catedratico;
 import courseallocationsystem.model.Curso;
 import courseallocationsystem.model.Edificio;
 import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
-import courseallocationsystem.model.Salon;
 import courseallocationsystem.model.Usuario;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ import java.util.ArrayList;
  */
 public class InputFileAnalyzer {
 
-    private String inputText;
+    private final String inputText;
     private Lexer lexer;
     private Parser parser;
 
@@ -43,6 +40,10 @@ public class InputFileAnalyzer {
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
+    }
+    
+    public ArrayList<String> getMensajes() {
+        return parser.getMensajes();
     }
     
     public ArrayList<String> getErrores() {

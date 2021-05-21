@@ -36,7 +36,6 @@ public class InputFileView extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtInfo = new javax.swing.JTextArea();
         btnIniciar = new javax.swing.JButton();
-        btnContinuar = new javax.swing.JButton();
 
         lblNameFile.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         lblNameFile.setText("*No se ha seleccionado ningun archivo*");
@@ -51,9 +50,7 @@ public class InputFileView extends javax.swing.JPanel {
 
         btnIniciar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         btnIniciar.setText("Iniciar carga de datos");
-
-        btnContinuar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        btnContinuar.setText("Continuar");
+        btnIniciar.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -62,9 +59,6 @@ public class InputFileView extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnContinuar))
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,16 +81,13 @@ public class InputFileView extends javax.swing.JPanel {
                 .addComponent(btnIniciar)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnContinuar)
-                .addContainerGap())
+                .addGap(56, 56, 56))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnContinuar;
     private javax.swing.JButton btnIniciar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNameFile;
@@ -105,10 +96,6 @@ public class InputFileView extends javax.swing.JPanel {
 
     public JButton getBtnBuscar() {
         return btnBuscar;
-    }
-
-    public JButton getBtnContinuar() {
-        return btnContinuar;
     }
 
     public JButton getBtnIniciar() {

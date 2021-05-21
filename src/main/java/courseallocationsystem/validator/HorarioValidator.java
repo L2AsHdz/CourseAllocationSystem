@@ -7,6 +7,7 @@ import courseallocationsystem.model.Catedratico;
 import courseallocationsystem.model.Curso;
 import courseallocationsystem.model.Edificio;
 import courseallocationsystem.model.Horario;
+import java.util.Objects;
 
 /**
  *
@@ -23,16 +24,16 @@ public class HorarioValidator {
             int idHorario, int idCurso, int idCatedratico, int idSalon, String edificio) {
         String error = "";
         
-        if (horarios.get(idHorario) != null) {
+        if (!Objects.isNull(horarios.get(idHorario))) {
             error = "El horario con codigo " + idHorario + " ya existe en el sistema";
         } else {
-            if (cursos.get(idCurso) == null) {
+            if (Objects.isNull(cursos.get(idCurso))) {
                 error = "El curso con codigo " + idCurso + " no existe en el sistema";
             } else if (edificios.get(edificio) != null) {
-                if (edificios.get(edificio).getSalones().get(idSalon) == null) {
+                if (Objects.isNull(edificios.get(edificio).getSalones().get(idSalon))) {
                     error = "El salon con codigo " + idSalon + " no existe en el edificio " + edificio;
                 }
-            } else if (catedraticos.get(idCatedratico) != null) {
+            } else if (Objects.isNull(catedraticos.get(idCatedratico))) {
                 error = "El catedratico con identificacion " + idCatedratico + " no existe en el sistema";
             }
         }

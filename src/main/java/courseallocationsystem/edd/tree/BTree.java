@@ -217,7 +217,9 @@ public class BTree<T extends Entidad, I> {
     }
 
     public T get(I id) {
-        if (root.getNumKeys() > 0) {
+        if (root == null) {
+            return null;
+        }else if (root.getNumKeys() > 0) {
             return search(root, id);
         } else {
             return null;
@@ -237,7 +239,9 @@ public class BTree<T extends Entidad, I> {
 
         if (t == null) {
             int indexChild = findChildOrIndex(currentNode, id);
-            t = search(currentNode.getChild(indexChild), id);
+            if (currentNode.getChild(indexChild) != null) {
+                t = search(currentNode.getChild(indexChild), id);
+            }
         }
 
         return t;

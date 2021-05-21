@@ -205,6 +205,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
     private ArrayList<String> errores = new ArrayList();
+    private ArrayList<String> mensajes = new ArrayList();
 
     private CircularList<Usuario, Integer> usuarios = new CircularList();
     private CircularList<Edificio, String> edificios = new CircularList();
@@ -215,6 +216,10 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     public ArrayList<String> getErrores(){
         return this.errores;
+    }
+
+    public ArrayList<String> getMensajes() {
+        return this.mensajes;
     }
 
     public CircularList<Usuario, Integer> getUsuarios() {
@@ -413,6 +418,7 @@ class CUP$Parser$actions {
             String error = UserValidator.validateUser(usuarios, estudiantes, id, t);
             if (error.isEmpty()) {
                 usuarios.add(new Usuario(name, pass, t, id));
+                mensajes.add("Usuario " + id + " - " + name + " agregado correctamente");
             } else {
                 errores.add(error);
             }
@@ -463,6 +469,7 @@ class CUP$Parser$actions {
             String error = EstudianteValidator.validateEstudiante(estudiantes, id);
             if (error.isEmpty()) {
                 estudiantes.add(new Estudiante(name, dir, id));
+                mensajes.add("Estudiante " + id +" - " + name + " agregado correctamente");
             } else {
                 errores.add(error);
             }
@@ -482,6 +489,7 @@ class CUP$Parser$actions {
             String error = EdificioValidator.validateEdificio(edificios, name);
             if (error.isEmpty()) {
                 edificios.add(new Edificio(name));
+                mensajes.add("Edificio " + name + " agregador correctamente");
             } else {
                 errores.add(error);
             }
@@ -508,6 +516,9 @@ class CUP$Parser$actions {
             String error = SalonValidator.validateSalon(edificios, s, id);
             if (error.isEmpty()) {
                 edificios.get(s).getSalones().add(new Salon(Integer.parseInt(c), s, id));
+                mensajes.add("Salon " + id + " agregado al edificio " + s);
+            } else {
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsSalon",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -533,6 +544,7 @@ class CUP$Parser$actions {
 
             if (error.isEmpty()) {
                 catedraticos.add(new Catedratico(name, dir, id));
+                mensajes.add("Catedratico " + id + " - " + name + " agregado correctamente");
             } else {
                 errores.add(error);
             }
@@ -562,6 +574,7 @@ class CUP$Parser$actions {
             String error = CursoValidator.validateCurso(cursos, id);
             if (error.isEmpty()) {
                 cursos.add(new Curso(name, Integer.parseInt(s), Integer.parseInt(n), id));
+                mensajes.add("Curso " + id + " - " + name + " agregado correctamente");
             } else {
                 errores.add(error);
             }
@@ -603,6 +616,7 @@ class CUP$Parser$actions {
             String error = HorarioValidator.validateHorario(horarios, cursos, edificios, catedraticos, id, idCurso, idCatedra, idSalon, iEd);
             if (error.isEmpty()) {
                 horarios.add(new Horario(p, d, idCurso, idSalon, iEd, idCatedra, id));
+                mensajes.add("Horario con codigo " + id + " agregado correctamente");
             } else {
                 errores.add(error);
             }
@@ -633,6 +647,7 @@ class CUP$Parser$actions {
             String error = AsignacionValidator.validateAsignacion(horarios, idEstudiante, idHorario);
             if (error.isEmpty()) {
                 horarios.get(idHorario).getAsignaciones().add(new Asignacion(idEstudiante, idHorario, Integer.parseInt(z), Integer.parseInt(f)));
+                mensajes.add("Estudiante " + idEstudiante + " asignado en el horario " + idHorario);
             } else {
                 errores.add(error);
             }

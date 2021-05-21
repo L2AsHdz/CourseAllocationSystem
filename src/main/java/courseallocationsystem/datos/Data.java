@@ -37,6 +37,8 @@ public class Data {
         this.usuarios = new CircularList();
         
         this.usuarios.add(new Usuario("admin", "123", "super", 00000));
+        this.usuarios.add(new Usuario("admin", "123", "colaborador", 11111));
+        this.usuarios.add(new Usuario("admin", "123", "estudiante", 22222));
     }
     
     public static Data getData() {

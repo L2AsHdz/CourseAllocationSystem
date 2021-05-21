@@ -1,9 +1,18 @@
 package courseallocationsystem.controller.superU;
 
+import courseallocationsystem.controller.CursosController;
+import courseallocationsystem.controller.EdificiosController;
+import courseallocationsystem.controller.SalonesController;
+import courseallocationsystem.controller.UsuariosController;
 import courseallocationsystem.controller.inputfile.InputFileController;
-import courseallocationsystem.datos.Data;
+import courseallocationsystem.controller.login.LoginController;
+import courseallocationsystem.view.LoginView;
 import courseallocationsystem.view.SuperView;
 import courseallocationsystem.view.inputfile.InputFileView;
+import courseallocationsystem.view.jpanels.CursoView;
+import courseallocationsystem.view.jpanels.EdificioView;
+import courseallocationsystem.view.jpanels.SalonView;
+import courseallocationsystem.view.jpanels.UsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,12 +24,10 @@ import java.awt.event.ActionListener;
  */
 public class SuperController implements ActionListener {
 
-    private SuperView view;
-    private Data data;
+    private final SuperView view;
 
     public SuperController(SuperView view) {
         this.view = view;
-        this.data = Data.getData();
         
         this.view.getItmCambiarU().addActionListener(this);
         this.view.getItmCursos().addActionListener(this);
@@ -43,6 +50,27 @@ public class SuperController implements ActionListener {
             InputFileView inputView = new InputFileView();
             InputFileController controller = new InputFileController(inputView);
             controller.iniciar(view.getPnlDesk());
+        } else if (s == view.getItmCursos()) {
+            CursoView cursoView  = new CursoView();
+            CursosController cursosController = new CursosController(cursoView);
+            cursosController.iniciar(view.getPnlDesk());
+        } else  if (s == view.getItmEdificios()) {
+            EdificioView edificioView = new EdificioView();
+            EdificiosController edificiosController = new EdificiosController(edificioView);
+            edificiosController.iniciar(view.getPnlDesk());
+        } else if (s == view.getItmCambiarU()) {
+            LoginView login = new LoginView();
+            LoginController controller = new LoginController(login);
+            controller.iniciar();
+            view.dispose();
+        } else if (s == view.getItmSalones()) {
+            SalonView salonView = new SalonView();
+            SalonesController salonesController = new SalonesController(salonView);
+            salonesController.iniciar(view.getPnlDesk());
+        } else if (s == view.getItmsUsers()) {
+            UsuarioView usuarioView = new UsuarioView();
+            UsuariosController usuariosController = new UsuariosController(usuarioView);
+            usuariosController.iniciar(view.getPnlDesk());
         }
     }
 }

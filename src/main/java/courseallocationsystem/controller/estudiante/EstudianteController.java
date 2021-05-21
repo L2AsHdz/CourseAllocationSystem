@@ -1,7 +1,8 @@
 package courseallocationsystem.controller.estudiante;
 
-import courseallocationsystem.datos.Data;
+import courseallocationsystem.controller.login.LoginController;
 import courseallocationsystem.view.EstudianteView;
+import courseallocationsystem.view.LoginView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,14 +14,12 @@ import java.awt.event.ActionListener;
  */
 public class EstudianteController implements ActionListener {
 
-    private EstudianteView view;
-    private final Data data;
+    private final EstudianteView view;
 
     public EstudianteController(EstudianteView view) {
         this.view = view;
-        this.data = Data.getData();
         
-        
+        this.view.getItmCambiarU().addActionListener(this);
     }
     
     public void iniciar() {
@@ -31,7 +30,13 @@ public class EstudianteController implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object s = ae.getSource();
+        if (s == view.getItmCambiarU()) {
+            LoginView login = new LoginView();
+            LoginController controller = new LoginController(login);
+            controller.iniciar();
+            view.dispose();
+        }
     }
 
 }

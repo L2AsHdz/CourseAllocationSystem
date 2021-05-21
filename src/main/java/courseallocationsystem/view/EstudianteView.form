@@ -11,8 +11,15 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Reportes"/>
+            <Property name="text" type="java.lang.String" value="Sesion"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="itmCambiarU">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cambiar usuario"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>

@@ -16,9 +16,9 @@ public class ColaboradorController implements ActionListener {
     private final ColaboradorView view;
     private final Data data;
 
-    public ColaboradorController(ColaboradorView view, Data data) {
+    public ColaboradorController(ColaboradorView view) {
         this.view = view;
-        this.data = data;
+        this.data = Data.getData();
         
         this.view.getItmAsignaciones().addActionListener(this);
         this.view.getItmCambiarU().addActionListener(this);

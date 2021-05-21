@@ -18,9 +18,9 @@ public class SuperController implements ActionListener {
     private SuperView view;
     private Data data;
 
-    public SuperController(SuperView view, Data data) {
+    public SuperController(SuperView view) {
         this.view = view;
-        this.data = data;
+        this.data = Data.getData();
         
         this.view.getItmCambiarU().addActionListener(this);
         this.view.getItmCursos().addActionListener(this);
@@ -41,7 +41,7 @@ public class SuperController implements ActionListener {
         Object s = ae.getSource();
         if (s == view.getItmRead()) {
             InputFileView inputView = new InputFileView();
-            InputFileController controller = new InputFileController(inputView, data);
+            InputFileController controller = new InputFileController(inputView);
             controller.iniciar(view.getPnlDesk());
         }
     }

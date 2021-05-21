@@ -24,9 +24,9 @@ public class LoginController implements ActionListener {
     private final LoginView login;
     private final Data data;
     
-    public LoginController(LoginView login, Data data) {
+    public LoginController(LoginView login) {
         this.login = login;
-        this.data = data;
+        this.data = Data.getData();
         
         this.login.getBtnLogin().addActionListener(this);
     }
@@ -50,19 +50,19 @@ public class LoginController implements ActionListener {
                 switch (user.getTipo()) {
                     case "super" -> {
                         SuperView view = new SuperView();
-                        SuperController controller = new SuperController(view, data);
+                        SuperController controller = new SuperController(view);
                         controller.iniciar();
                         login.dispose();
                     }
                     case "colaborador" -> {
                         ColaboradorView view = new ColaboradorView();
-                        ColaboradorController controller = new ColaboradorController(view, data);
+                        ColaboradorController controller = new ColaboradorController(view);
                         controller.iniciar();
                         login.dispose();
                     }
                     case "estudiante" -> {
                         EstudianteView view = new EstudianteView();
-                        EstudianteController controller = new EstudianteController(view, data);
+                        EstudianteController controller = new EstudianteController(view);
                         controller.iniciar();
                         login.dispose();
                     }

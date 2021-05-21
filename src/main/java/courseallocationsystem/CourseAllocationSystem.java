@@ -1,7 +1,6 @@
 package courseallocationsystem;
 
 import courseallocationsystem.controller.login.LoginController;
-import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
@@ -23,12 +22,9 @@ import java.util.Scanner;
 public class CourseAllocationSystem {
 
     public static void main(String[] args) {
-        Data data = new Data();
         LoginView view = new LoginView();
-        LoginController controller = new LoginController(view, data);
-        
+        LoginController controller = new LoginController(view);
         controller.iniciar();
-//        avlTreeTest();
     }
     
     private static void bTreeTest() {

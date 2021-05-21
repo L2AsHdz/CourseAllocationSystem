@@ -18,12 +18,12 @@ import javax.swing.JPanel;
  */
 public class InputFileController implements ActionListener {
 
-    private InputFileView view;
+    private final InputFileView view;
     private Data data;
 
-    public InputFileController(InputFileView view, Data data) {
+    public InputFileController(InputFileView view) {
         this.view = view;
-        this.data = data;
+        this.data = Data.getData();
 
         this.view.getBtnBuscar().addActionListener(this);
         this.view.getBtnIniciar().addActionListener(this);

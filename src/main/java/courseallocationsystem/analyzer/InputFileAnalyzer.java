@@ -2,6 +2,7 @@ package courseallocationsystem.analyzer;
 
 import courseallocationsystem.analizadores.Lexer;
 import courseallocationsystem.analizadores.Parser;
+import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.CircularList;
 import courseallocationsystem.edd.table.HashTable;
 import courseallocationsystem.edd.tree.ArbolAVL;
@@ -25,31 +26,34 @@ public class InputFileAnalyzer {
 
     private final String inputText;
     private Lexer lexer;
+    private final Data data;
     private Parser parser;
 
     public InputFileAnalyzer(String inputText) {
         this.inputText = inputText;
+        data = Data.getData();
     }
-    
+
     public void analyze() {
         try {
             StringReader reader = new StringReader(inputText);
             lexer = new Lexer(reader);
             parser = new Parser(lexer);
             parser.parse();
+            setData();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
     }
-    
+
     public ArrayList<String> getMensajes() {
         return parser.getMensajes();
     }
-    
+
     public ArrayList<String> getErrores() {
         return parser.getErrores();
     }
-    
+
     public CircularList<Usuario, Integer> getUsuarios() {
         return parser.getUsuarios();
     }
@@ -72,5 +76,16 @@ public class InputFileAnalyzer {
 
     public BTree<Horario, Integer> getHorarios() {
         return parser.getHorarios();
+    }
+
+    private void setData() {
+        if (parser.getErrores().isEmpty()) {
+            data.setCatedraticos(parser.getCatedraticos());
+            data.setCursos(parser.getCursos());
+            data.setEdificios(parser.getEdificios());
+            data.setEstudiantes(parser.getEstudiantes());
+            data.setHorarios(parser.getHorarios());
+            data.setUsuarios(parser.getUsuarios());
+        }
     }
 }

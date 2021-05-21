@@ -1,17 +1,14 @@
 package courseallocationsystem.datos;
 
 import courseallocationsystem.edd.list.CircularList;
-import courseallocationsystem.edd.list.List;
 import courseallocationsystem.edd.table.HashTable;
 import courseallocationsystem.edd.tree.ArbolAVL;
 import courseallocationsystem.edd.tree.BTree;
-import courseallocationsystem.model.Asignacion;
 import courseallocationsystem.model.Catedratico;
 import courseallocationsystem.model.Curso;
 import courseallocationsystem.model.Edificio;
 import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
-import courseallocationsystem.model.Salon;
 import courseallocationsystem.model.Usuario;
 
 /**
@@ -28,8 +25,10 @@ public class Data {
     private HashTable<Estudiante, Integer> estudiantes;
     private ArbolAVL<Catedratico, Integer> catedraticos;
     private BTree<Horario, Integer> horarios;
+    
+    private static Data data = null;
 
-    public Data() {
+    private Data() {
         this.horarios = new BTree();
         this.catedraticos = new ArbolAVL();
         this.estudiantes = new HashTable(37, 0.55f);
@@ -38,6 +37,13 @@ public class Data {
         this.usuarios = new CircularList();
         
         this.usuarios.add(new Usuario("admin", "123", "super", 00000));
+    }
+    
+    public static Data getData() {
+        if (data == null) {
+            data = new Data();
+        }
+        return data;
     }
 
     public CircularList<Usuario, Integer> getUsuarios() {

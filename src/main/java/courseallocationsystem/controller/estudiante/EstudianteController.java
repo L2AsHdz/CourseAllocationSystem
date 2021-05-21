@@ -14,11 +14,11 @@ import java.awt.event.ActionListener;
 public class EstudianteController implements ActionListener {
 
     private EstudianteView view;
-    private Data data;
+    private final Data data;
 
-    public EstudianteController(EstudianteView view, Data data) {
+    public EstudianteController(EstudianteView view) {
         this.view = view;
-        this.data = data;
+        this.data = Data.getData();
         
         
     }

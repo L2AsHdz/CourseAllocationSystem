@@ -1,6 +1,7 @@
 package courseallocationsystem.controller;
 
 import courseallocationsystem.datos.Data;
+import courseallocationsystem.imagegenerator.tree.AVLTreeImageGenerator;
 import courseallocationsystem.model.Catedratico;
 import courseallocationsystem.validator.CatedraticoValidator;
 import courseallocationsystem.view.jpanels.CatedraticoView;
@@ -25,6 +26,7 @@ public class CatedraticosController implements ActionListener {
         this.view.getBtnAgregar().addActionListener(this);
         this.view.getBtnActualizar().addActionListener(this);
         this.view.getBtnBorrar().addActionListener(this);
+        this.view.getBtnVerImage().addActionListener(this);
     }
 
     public void iniciar(JPanel parent) {
@@ -47,6 +49,10 @@ public class CatedraticosController implements ActionListener {
             actualizar();
         } else if (e == view.getBtnBorrar()) {
             borrar();
+        } else if (e == view.getBtnVerImage()) {
+            AVLTreeImageGenerator<Catedratico, Integer> cateGen = 
+                    new AVLTreeImageGenerator(data.getCatedraticos(), "catedraticos");
+            cateGen.generate();
         }
     }
 

@@ -28,12 +28,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itmEdificios">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Manejo de edificios"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="itmSalones">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Manejo de salones"/>
+                <Property name="text" type="java.lang.String" value="Manejo de edificios y salones"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itmCursos">

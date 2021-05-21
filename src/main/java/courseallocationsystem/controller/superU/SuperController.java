@@ -2,7 +2,6 @@ package courseallocationsystem.controller.superU;
 
 import courseallocationsystem.controller.CursosController;
 import courseallocationsystem.controller.EdificiosController;
-import courseallocationsystem.controller.SalonesController;
 import courseallocationsystem.controller.UsuariosController;
 import courseallocationsystem.controller.inputfile.InputFileController;
 import courseallocationsystem.controller.login.LoginController;
@@ -11,7 +10,6 @@ import courseallocationsystem.view.SuperView;
 import courseallocationsystem.view.inputfile.InputFileView;
 import courseallocationsystem.view.jpanels.CursoView;
 import courseallocationsystem.view.jpanels.EdificioView;
-import courseallocationsystem.view.jpanels.SalonView;
 import courseallocationsystem.view.jpanels.UsuarioView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +31,6 @@ public class SuperController implements ActionListener {
         this.view.getItmCursos().addActionListener(this);
         this.view.getItmEdificios().addActionListener(this);
         this.view.getItmRead().addActionListener(this);
-        this.view.getItmSalones().addActionListener(this);
         this.view.getItmsUsers().addActionListener(this);
     }
     
@@ -63,10 +60,6 @@ public class SuperController implements ActionListener {
             LoginController controller = new LoginController(login);
             controller.iniciar();
             view.dispose();
-        } else if (s == view.getItmSalones()) {
-            SalonView salonView = new SalonView();
-            SalonesController salonesController = new SalonesController(salonView);
-            salonesController.iniciar(view.getPnlDesk());
         } else if (s == view.getItmsUsers()) {
             UsuarioView usuarioView = new UsuarioView();
             UsuariosController usuariosController = new UsuariosController(usuarioView);

@@ -47,6 +47,8 @@ public class CursoView extends javax.swing.JPanel {
         btnActualizar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
+        btnVerImagen = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
 
         tblCurso.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -79,6 +81,15 @@ public class CursoView extends javax.swing.JPanel {
 
         btnBorrar.setText("Borrar");
 
+        btnVerImagen.setText("Ver imagen");
+        btnVerImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerImagenActionPerformed(evt);
+            }
+        });
+
+        lblError.setForeground(new java.awt.Color(153, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -98,13 +109,13 @@ public class CursoView extends javax.swing.JPanel {
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(lblSemestre)
                             .addGap(18, 18, 18)
-                            .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btnActualizar)
+                                .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAgregar)
-                        .addGap(105, 105, 105)
-                        .addComponent(btnActualizar)
-                        .addGap(18, 18, 18)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGap(211, 211, 211)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(91, 91, 91)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,11 +128,17 @@ public class CursoView extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBorrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLimpiar)))
-                .addContainerGap(120, Short.MAX_VALUE))
+                        .addGap(56, 56, 56)
+                        .addComponent(btnLimpiar)
+                        .addGap(45, 45, 45)
+                        .addComponent(btnVerImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(100, 100, 100))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblError)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,8 +160,11 @@ public class CursoView extends javax.swing.JPanel {
                     .addComponent(btnAgregar)
                     .addComponent(btnLimpiar)
                     .addComponent(btnBorrar)
-                    .addComponent(btnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnVerImagen))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addComponent(lblError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -154,15 +174,21 @@ public class CursoView extends javax.swing.JPanel {
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnVerImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerImagenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerImagenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnVerImagen;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblCreditos;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblSemestre;
     private javax.swing.JTable tblCurso;
@@ -188,24 +214,8 @@ public class CursoView extends javax.swing.JPanel {
         return btnLimpiar;
     }
 
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
-    }
-
-    public JLabel getLblCodigo() {
-        return lblCodigo;
-    }
-
-    public JLabel getLblCreditos() {
-        return lblCreditos;
-    }
-
-    public JLabel getLblNombre() {
-        return lblNombre;
-    }
-
-    public JLabel getLblSemestre() {
-        return lblSemestre;
+    public JButton getBtnVerImagen() {
+        return btnVerImagen;
     }
 
     public JTable getTblCurso() {
@@ -222,6 +232,10 @@ public class CursoView extends javax.swing.JPanel {
 
     public JTextField getTxtNombre() {
         return txtNombre;
+    }
+
+    public JLabel getLblError() {
+        return lblError;
     }
 
     public JTextField getTxtSemestre() {

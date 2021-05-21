@@ -66,7 +66,6 @@ public class EdificiosController implements ActionListener {
         } else if (e == view.getBtnEditSalon()) {
             codigo = view.getTxtCodSalon().getText();
             capacidad = view.getTxtCapacidad().getText();
-            codigo = view.getTxtCodSalon().getText();
             
             List<Salon, Integer> salones = data.getEdificios().get(nombre).getSalones();
             if (salones.get(Integer.parseInt(codigo)) == null) {
@@ -123,7 +122,9 @@ public class EdificiosController implements ActionListener {
     }
     
     private void mostrarSalones(String edificio) {
-        DefaultTableModel model = data.getEdificios().get(edificio).getSalones().toTable(new String[]{"Codigo", "Edificio", "Capacidad"});
+        List<Salon, Integer> salones = data.getEdificios().get(edificio).getSalones();
+        salones.sort();
+        DefaultTableModel model = salones.toTable(new String[]{"Codigo", "Edificio", "Capacidad"});
         view.getTblEdificio().setModel(model);
     }
 }

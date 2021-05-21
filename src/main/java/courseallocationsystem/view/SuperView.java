@@ -38,7 +38,6 @@ public class SuperView extends javax.swing.JFrame {
         asdasda = new javax.swing.JMenu();
         itmsUsers = new javax.swing.JMenuItem();
         itmEdificios = new javax.swing.JMenuItem();
-        itmSalones = new javax.swing.JMenuItem();
         itmCursos = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         itmCambiarU = new javax.swing.JMenuItem();
@@ -80,11 +79,8 @@ public class SuperView extends javax.swing.JFrame {
         itmsUsers.setText("Manejo de usuarios");
         asdasda.add(itmsUsers);
 
-        itmEdificios.setText("Manejo de edificios");
+        itmEdificios.setText("Manejo de edificios y salones");
         asdasda.add(itmEdificios);
-
-        itmSalones.setText("Manejo de salones");
-        asdasda.add(itmSalones);
 
         itmCursos.setText("Manejo de cursos");
         asdasda.add(itmCursos);
@@ -119,7 +115,6 @@ public class SuperView extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmCursos;
     private javax.swing.JMenuItem itmEdificios;
     private javax.swing.JMenuItem itmRead;
-    private javax.swing.JMenuItem itmSalones;
     private javax.swing.JMenuItem itmsUsers;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -142,10 +137,6 @@ public class SuperView extends javax.swing.JFrame {
 
     public JMenuItem getItmRead() {
         return itmRead;
-    }
-
-    public JMenuItem getItmSalones() {
-        return itmSalones;
     }
 
     public JMenuItem getItmsUsers() {

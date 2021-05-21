@@ -1,7 +1,9 @@
 package courseallocationsystem.controller;
 
+import courseallocationsystem.codegenerator.list.EdificiosGraphvizCodeGenerator;
 import courseallocationsystem.datos.Data;
 import courseallocationsystem.edd.list.List;
+import courseallocationsystem.imagegenerator.list.EdificiosImageGenerator;
 import courseallocationsystem.model.Edificio;
 import courseallocationsystem.model.Salon;
 import courseallocationsystem.validator.SalonValidator;
@@ -84,7 +86,9 @@ public class EdificiosController implements ActionListener {
             }
             mostrarSalones(nombre);
         } else if (e == view.getBtnVerImage()) {
-            
+            EdificiosImageGenerator edificiosImgGen = 
+                    new EdificiosImageGenerator(data.getEdificios());
+            edificiosImgGen.generate();
         } else if (e == view.getBtnVerSalones()) {
             nombre = view.getTxtNombre().getText();
             mostrarSalones(nombre);

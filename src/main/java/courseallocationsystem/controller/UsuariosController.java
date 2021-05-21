@@ -1,6 +1,7 @@
 package courseallocationsystem.controller;
 
 import courseallocationsystem.datos.Data;
+import courseallocationsystem.imagegenerator.list.CircularListImageGenerator;
 import courseallocationsystem.model.Usuario;
 import courseallocationsystem.validator.UserValidator;
 import courseallocationsystem.view.jpanels.UsuarioView;
@@ -27,6 +28,7 @@ public class UsuariosController implements ActionListener {
         this.view.getBtnAgregar().addActionListener(this);
         this.view.getBtnActualizar().addActionListener(this);
         this.view.getBtnBorrar().addActionListener(this);
+        this.view.getBtnVerImage().addActionListener(this);
         data = Data.getData();
     }
 
@@ -50,6 +52,10 @@ public class UsuariosController implements ActionListener {
             actualizar();
         } else if (e == view.getBtnBorrar()) {
             borrar();
+        } else if (e == view.getBtnVerImage()) {
+            CircularListImageGenerator<Usuario, Integer> userImgGen = 
+                    new CircularListImageGenerator(data.getUsuarios(), "usuarios");
+            userImgGen.generate();
         }
     }
 

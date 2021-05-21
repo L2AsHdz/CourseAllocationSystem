@@ -1,42 +1,52 @@
 package courseallocationsystem.controller;
 
+import courseallocationsystem.datos.Data;
+import courseallocationsystem.imagegenerator.tree.HorariosImageGenerator;
 import courseallocationsystem.view.jpanels.HorarioView;
 
-import javax.management.ObjectName;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
 
 public class HorariosController implements ActionListener {
-    HorarioView horarioView;
+    
+    private final HorarioView view;
+    private final Data data = Data.getData();
 
     public HorariosController(HorarioView horarioView) {
-        this.horarioView = horarioView;
+        this.view = horarioView;
 
-        this.horarioView.getBtnAgregar().addActionListener(this);
-        this.horarioView.getBtnActualizar().addActionListener(this);
-        this.horarioView.getBtnBorrar().addActionListener(this);
+        this.view.getBtnAgregar().addActionListener(this);
+        this.view.getBtnActualizar().addActionListener(this);
+        this.view.getBtnBorrar().addActionListener(this);
+        this.view.getBtnVerImage().addActionListener(this);
     }
 
     public void iniciar(JPanel parent) {
         parent.removeAll();
         parent.repaint();
-        horarioView.setSize(parent.getSize());
-        horarioView.setVisible(true);
-        parent.add(horarioView);
+        view.setSize(parent.getSize());
+        view.setVisible(true);
+        parent.add(view);
         parent.validate();
-        horarioView.limpiar();
+        view.limpiar();
+        updateTable();
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         Object e = actionEvent.getSource();
-        if (e == horarioView.getBtnAgregar()) {
+        if (e == view.getBtnAgregar()) {
             agregar();
-        } else if (e == horarioView.getBtnActualizar()) {
+        } else if (e == view.getBtnActualizar()) {
             actualizar();
-        } else if (e == horarioView.getBtnBorrar()) {
+        } else if (e == view.getBtnBorrar()) {
             borrar();
+        } else if (e == view.getBtnVerImage()) {
+            HorariosImageGenerator horarioGen = new HorariosImageGenerator(data.getHorarios());
+            horarioGen.generate();
+            data.getHorarios().printTree(data.getHorarios().getRoot(), 0);
         }
     }
 
@@ -50,5 +60,13 @@ public class HorariosController implements ActionListener {
 
     private void borrar() {
 
+    }
+
+    private void updateTable() {
+        data.getCatedraticos().setTitles(new String[]{"Id", "Periodo", "Dia", "Cod Curso",
+        "Cod Salon", "Cod Edificio", "Id Catedratico"});
+        data.getHorarios().fillDefaultTableModel(data.getHorarios().getRoot());
+        DefaultTableModel model = data.getHorarios().getModel();
+        view.getTblHorario().setModel(model);
     }
 }

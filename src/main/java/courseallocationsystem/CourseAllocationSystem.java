@@ -25,6 +25,7 @@ public class CourseAllocationSystem {
         LoginView view = new LoginView();
         LoginController controller = new LoginController(view);
         controller.iniciar();
+//        bTreeTest();
     }
     
     private static void bTreeTest() {

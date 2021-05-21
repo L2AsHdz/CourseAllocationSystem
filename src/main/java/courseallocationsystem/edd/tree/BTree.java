@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class BTree<T extends Entidad, I> {
 
     private final IdentifierComparator<I> comparator;
-    private final DefaultTableModel model;
+    private DefaultTableModel model;
     
     private BTreeNode<T> root;
 
@@ -596,6 +596,7 @@ public class BTree<T extends Entidad, I> {
     }
     
     public void setTitles(String[] titles) {
+        model = new DefaultTableModel();
         for (String t : titles) {
             model.addColumn(t);
         }
@@ -609,7 +610,8 @@ public class BTree<T extends Entidad, I> {
             return new DefaultTableModel();
         }
     }
-    private void fillDefaultTableModel(BTreeNode<T> currentNode) {
+    
+    public void fillDefaultTableModel(BTreeNode<T> currentNode) {
         int i;
         for (i = 0; i < currentNode.getNumKeys(); i++) {
             if (!currentNode.isLeaf()) {

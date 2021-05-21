@@ -1,6 +1,7 @@
 package courseallocationsystem.controller;
 
 import courseallocationsystem.datos.Data;
+import courseallocationsystem.imagegenerator.table.HashTableImageGenerator;
 import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.validator.EstudianteValidator;
 import courseallocationsystem.view.jpanels.EstudianteView;
@@ -24,6 +25,7 @@ public class EstudiantesController implements ActionListener {
         this.view.getBtnAgregar().addActionListener(this);
         this.view.getBtnActualizar().addActionListener(this);
         this.view.getBtnBorrar().addActionListener(this);
+        this.view.getBtnVerImage().addActionListener(this);
     }
 
     public void iniciar(JPanel parent) {
@@ -46,6 +48,10 @@ public class EstudiantesController implements ActionListener {
             actuaizar();
         } else if (e == view.getBtnBorrar()) {
             borrar();
+        } else if (e == view.getBtnVerImage()) {
+            HashTableImageGenerator<Estudiante, Integer> estuGen = 
+                    new HashTableImageGenerator(data.getEstudiantes(), "estudiantes");
+            estuGen.generate();
         }
     }
 

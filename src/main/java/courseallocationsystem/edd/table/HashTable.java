@@ -140,4 +140,12 @@ public class HashTable<T extends Entidad, I> {
             datos = newHashTable.datos;
         }
     }
+
+    public int getNumDatos() {
+        return numDatos;
+    }
+
+    public Object[] getDatos() {
+        return datos;
+    }
 }

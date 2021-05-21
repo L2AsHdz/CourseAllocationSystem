@@ -40,6 +40,18 @@ public class EdificioView extends javax.swing.JPanel {
         btnBorrar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
+        btnVerImage = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        lblNombre1 = new javax.swing.JLabel();
+        txtCodSalon = new javax.swing.JTextField();
+        lblNombre2 = new javax.swing.JLabel();
+        txtCapacidad = new javax.swing.JTextField();
+        btnAddSalon = new javax.swing.JButton();
+        btnEditSalon = new javax.swing.JButton();
+        btnEliminarSalon = new javax.swing.JButton();
+        btnVerSalones = new javax.swing.JButton();
+        btnVerEdificios = new javax.swing.JButton();
 
         tblEdificio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -51,9 +63,9 @@ public class EdificioView extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblEdificio);
 
-        lblNombre.setText("Nombre");
+        lblNombre.setText("Nombre edificio");
 
-        btnBorrar.setText("Borrar");
+        btnBorrar.setText("Eliminar");
 
         btnAgregar.setText("Agregar");
 
@@ -64,42 +76,116 @@ public class EdificioView extends javax.swing.JPanel {
             }
         });
 
+        lblError.setForeground(new java.awt.Color(153, 0, 51));
+
+        btnVerImage.setText("Ver imagen");
+        btnVerImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerImageActionPerformed(evt);
+            }
+        });
+
+        lblNombre1.setText("Codigo salon");
+
+        lblNombre2.setText("Capacidad de alumnos");
+
+        btnAddSalon.setText("Agregar");
+
+        btnEditSalon.setText("Modificar");
+
+        btnEliminarSalon.setText("Eliminar");
+
+        btnVerSalones.setText("Ver salones");
+
+        btnVerEdificios.setText("Ver edificios");
+        btnVerEdificios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerEdificiosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblNombre2)
+                                            .addComponent(lblNombre1))
+                                        .addGap(34, 34, 34)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtCodSalon, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(78, 78, 78)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(btnEliminarSalon)
+                                            .addComponent(btnAddSalon))
+                                        .addGap(56, 56, 56)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnEditSalon)
+                                                .addGap(30, 30, 30)
+                                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(btnVerImage))))
+                                .addGap(50, 50, 50))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNombre)
+                                .addGap(46, 46, 46)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(btnAgregar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBorrar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnVerSalones)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnVerEdificios))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblError)
+                        .addGap(0, 904, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(179, Short.MAX_VALUE)
-                .addComponent(btnAgregar)
-                .addGap(147, 147, 147)
-                .addComponent(btnBorrar)
-                .addGap(132, 132, 132)
-                .addComponent(btnLimpiar)
-                .addGap(173, 173, 173))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(247, 247, 247)
-                .addComponent(lblNombre)
-                .addGap(88, 88, 88)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(134, 134, 134)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombre)
                     .addComponent(btnBorrar)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnVerSalones)
+                    .addComponent(btnVerEdificios))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombre1)
+                    .addComponent(txtCodSalon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAddSalon)
+                    .addComponent(btnVerImage))
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNombre2)
+                    .addComponent(txtCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarSalon)
                     .addComponent(btnLimpiar)
-                    .addComponent(btnAgregar))
-                .addGap(71, 71, 71)
+                    .addComponent(btnEditSalon))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addComponent(lblError)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -109,14 +195,34 @@ public class EdificioView extends javax.swing.JPanel {
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnVerImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerImageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerImageActionPerformed
+
+    private void btnVerEdificiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEdificiosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerEdificiosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddSalon;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
+    private javax.swing.JButton btnEditSalon;
+    private javax.swing.JButton btnEliminarSalon;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnVerEdificios;
+    private javax.swing.JButton btnVerImage;
+    private javax.swing.JButton btnVerSalones;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblNombre1;
+    private javax.swing.JLabel lblNombre2;
     private javax.swing.JTable tblEdificio;
+    private javax.swing.JTextField txtCapacidad;
+    private javax.swing.JTextField txtCodSalon;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
@@ -132,14 +238,6 @@ public class EdificioView extends javax.swing.JPanel {
         return btnLimpiar;
     }
 
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
-    }
-
-    public JLabel getLblNombre() {
-        return lblNombre;
-    }
-
     public JTable getTblEdificio() {
         return tblEdificio;
     }
@@ -148,8 +246,46 @@ public class EdificioView extends javax.swing.JPanel {
         return txtNombre;
     }
 
+    public JLabel getLblError() {
+        return lblError;
+    }
+
+    public JButton getBtnVerImage() {
+        return btnVerImage;
+    }
+
     public void limpiar() {
         getTxtNombre().setText("");
+        txtCapacidad.setText("");
+        txtCodSalon.setText("");
+    }
+
+    public JButton getBtnAddSalon() {
+        return btnAddSalon;
+    }
+
+    public JButton getBtnEditSalon() {
+        return btnEditSalon;
+    }
+
+    public JButton getBtnVerEdificios() {
+        return btnVerEdificios;
+    }
+
+    public JButton getBtnEliminarSalon() {
+        return btnEliminarSalon;
+    }
+
+    public JButton getBtnVerSalones() {
+        return btnVerSalones;
+    }
+
+    public JTextField getTxtCapacidad() {
+        return txtCapacidad;
+    }
+
+    public JTextField getTxtCodSalon() {
+        return txtCodSalon;
     }
 
 

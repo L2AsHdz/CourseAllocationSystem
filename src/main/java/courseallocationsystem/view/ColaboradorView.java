@@ -42,6 +42,7 @@ public class ColaboradorView extends javax.swing.JFrame {
         itmCambiarU = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CourseAllocationSystem");
 
         javax.swing.GroupLayout pnlDeskLayout = new javax.swing.GroupLayout(pnlDesk);
         pnlDesk.setLayout(pnlDeskLayout);

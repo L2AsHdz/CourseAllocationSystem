@@ -45,6 +45,8 @@ public class CatedraticoView extends javax.swing.JPanel {
         btnActualizar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
+        btnVerImage = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
 
         tblCatedratico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -56,7 +58,7 @@ public class CatedraticoView extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblCatedratico);
 
-        lblIdentificador.setText("Identificador");
+        lblIdentificador.setText("Identificacion");
 
         lblDireccion.setText("Direccion");
 
@@ -75,6 +77,15 @@ public class CatedraticoView extends javax.swing.JPanel {
 
         btnBorrar.setText("Borrar");
 
+        btnVerImage.setText("Ver imagen");
+        btnVerImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerImageActionPerformed(evt);
+            }
+        });
+
+        lblError.setForeground(new java.awt.Color(153, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,34 +96,42 @@ public class CatedraticoView extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblDireccion)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblIdentificador)
-                                    .addGap(35, 35, 35)
-                                    .addComponent(txtIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(148, 148, 148)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblDireccion)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblIdentificador)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(txtIdentificador, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
                                 .addComponent(btnAgregar)
-                                .addGap(108, 108, 108)
+                                .addGap(62, 62, 62)
                                 .addComponent(btnActualizar)
-                                .addGap(57, 57, 57)))
-                        .addGap(55, 55, 55)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGap(109, 109, 109)
+                                .addComponent(btnBorrar)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
                                 .addComponent(lblNombre)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnBorrar)
-                                .addGap(109, 109, 109)
-                                .addComponent(btnLimpiar)))
-                        .addGap(0, 114, Short.MAX_VALUE)))
+                                .addGap(47, 47, 47)
+                                .addComponent(btnLimpiar)
+                                .addGap(44, 44, 44)
+                                .addComponent(btnVerImage, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 85, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblError)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,8 +151,11 @@ public class CatedraticoView extends javax.swing.JPanel {
                     .addComponent(btnAgregar)
                     .addComponent(btnLimpiar)
                     .addComponent(btnBorrar)
-                    .addComponent(btnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnVerImage))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(lblError)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -143,14 +165,20 @@ public class CatedraticoView extends javax.swing.JPanel {
         limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnVerImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerImageActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerImageActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnVerImage;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblDireccion;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblIdentificador;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JTable tblCatedratico;
@@ -175,22 +203,6 @@ public class CatedraticoView extends javax.swing.JPanel {
         return btnLimpiar;
     }
 
-    public JScrollPane getjScrollPane1() {
-        return jScrollPane1;
-    }
-
-    public JLabel getLblDireccion() {
-        return lblDireccion;
-    }
-
-    public JLabel getLblIdentificador() {
-        return lblIdentificador;
-    }
-
-    public JLabel getLblNombre() {
-        return lblNombre;
-    }
-
     public JTable getTblCatedratico() {
         return tblCatedratico;
     }
@@ -207,10 +219,19 @@ public class CatedraticoView extends javax.swing.JPanel {
         return txtNombre;
     }
 
+    public JButton getBtnVerImage() {
+        return btnVerImage;
+    }
+
+    public JLabel getLblError() {
+        return lblError;
+    }
+
     public void limpiar() {
         getTxtIdentificador().setText("");
         getTxtNombre().setText("");
         getTxtDireccion().setText("");
+        lblError.setText("");
     }
 
 

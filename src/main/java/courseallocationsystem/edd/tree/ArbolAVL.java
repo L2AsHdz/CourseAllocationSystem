@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class ArbolAVL<T extends Entidad, I> {
     
     private final IdentifierComparator<I> comparator;
-    private final DefaultTableModel model;
+    private DefaultTableModel model;
 
     private TreeNode<T> root;
 
@@ -67,6 +67,7 @@ public class ArbolAVL<T extends Entidad, I> {
     }
     
     public void setTitles(String[] titulos) {
+        model = new DefaultTableModel();
         for (String t : titulos) {
             model.addColumn(t);
         }

@@ -13,6 +13,14 @@ import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
 import courseallocationsystem.model.Salon;
 import courseallocationsystem.model.Usuario;
+import courseallocationsystem.validator.AsignacionValidator;
+import courseallocationsystem.validator.CatedraticoValidator;
+import courseallocationsystem.validator.CursoValidator;
+import courseallocationsystem.validator.EdificioValidator;
+import courseallocationsystem.validator.EstudianteValidator;
+import courseallocationsystem.validator.HorarioValidator;
+import courseallocationsystem.validator.SalonValidator;
+import courseallocationsystem.validator.UserValidator;
 import java.util.ArrayList;
 import java_cup.runtime.Symbol;
 
@@ -22,12 +30,10 @@ parser code {:
 
     private CircularList<Usuario, Integer> usuarios = new CircularList();
     private CircularList<Edificio, String> edificios = new CircularList();
-    private List<Salon, String> salones = new List();
     private CircularList<Curso, Integer> cursos = new CircularList();
     private HashTable<Estudiante, Integer> estudiantes = new HashTable(37, 0.55f);
     private ArbolAVL<Catedratico, Integer> catedraticos = new ArbolAVL();
     private BTree<Horario, Integer> horarios = new BTree();
-    private CircularList<Asignacion, String> asignaciones = new CircularList();
 
     public ArrayList<String> getErrores(){
         return this.errores;
@@ -35,10 +41,6 @@ parser code {:
 
     public CircularList<Usuario, Integer> getUsuarios() {
         return this.usuarios;
-    }
-
-    public List<Salon, String> getSalones() {
-        return this.salones;
     }
 
     public CircularList<Edificio, String> getEdificios() {
@@ -59,10 +61,6 @@ parser code {:
 
     public BTree<Horario, Integer> getHorarios() {
         return this.horarios;
-    }
-
-    public CircularList<Asignacion, String> getAsignaciones() {
-        return this.asignaciones;
     }
 
     public void syntax_error(Symbol s) {
@@ -109,20 +107,13 @@ startEntidad
 ;
 
 paramsUser
-    ::= ENTERO:id COMMA QUOTE_MARK LITERAL:name QUOTE_MARK COMMA QUOTE_MARK LITERAL:pass QUOTE_MARK COMMA typeUser:t {:
-            Integer idI = Integer.parseInt(id);
-            if (t.equals("estudiante")) {
-                if (estudiantes.get(idI) == null) {
-                    errores.add("Estudiante " + id + " no existe. " + idleft + ":" + idright);
-                } else {
-                    if (usuarios.get(idI) != null) {
-                        errores.add("Usuario " + id + " ya existe. " + idleft + ":" + idright);
-                    } else {
-                        usuarios.add(new Usuario(name, pass, t, idI));
-                    }
-                }
+    ::= ENTERO:i COMMA QUOTE_MARK LITERAL:name QUOTE_MARK COMMA QUOTE_MARK LITERAL:pass QUOTE_MARK COMMA typeUser:t {:
+            Integer id = Integer.parseInt(i);
+            String error = UserValidator.validateUser(usuarios, estudiantes, id, t);
+            if (error.isEmpty()) {
+                usuarios.add(new Usuario(name, pass, t, id));
             } else {
-                usuarios.add(new Usuario(name, pass, t, idI));
+                errores.add(error);
             }
         :}
 ;
@@ -132,35 +123,34 @@ typeUser
     |   USR_ESTUDIANTE:t        {:RESULT = t;:}
 ;
 paramsEstudiante
-    ::= ENTERO:id COMMA QUOTE_MARK LITERAL:name QUOTE_MARK COMMA QUOTE_MARK LITERAL:dir QUOTE_MARK {:
-            if (estudiantes.get(Integer.parseInt(id)) != null) {
-                errores.add("Estudiante " + id + " ya existe. " + idleft + ":" + idright);
+    ::= ENTERO:i COMMA QUOTE_MARK LITERAL:name QUOTE_MARK COMMA QUOTE_MARK LITERAL:dir QUOTE_MARK {:
+            Integer id = Integer.parseInt(i);
+            String error = EstudianteValidator.validateEstudiante(estudiantes, id);
+            if (error.isEmpty()) {
+                estudiantes.add(new Estudiante(name, dir, id));
             } else {
-                estudiantes.add(new Estudiante(name, dir, Integer.parseInt(id)));
+                errores.add(error);
             }
         :}
 ;
 
 paramsEdificio
     ::= QUOTE_MARK LITERAL:name QUOTE_MARK {:
-            if (edificios.get(name) != null) {
-                errores.add("Edificio " + name + " ya existe. " + nameleft + ":" + nameright);
-            } else {
+            String error = EdificioValidator.validateEdificio(edificios, name);
+            if (error.isEmpty()) {
                 edificios.add(new Edificio(name));
+            } else {
+                errores.add(error);
             }
         :}
 ;
 
 paramsSalon
-    ::= QUOTE_MARK LITERAL:s QUOTE_MARK COMMA ENTERO:id COMMA ENTERO:c {:
-            if (salones.get(id + "-" + s) != null) {
-                errores.add("Salon ya existe.");
-            } else {
-                if (edificios.get(s) == null) {
-                    errores.add("Edificio " + s + " no existe");
-                } else {
-                    salones.add(new Salon(Integer.parseInt(c), s, id + "-" + s));
-                }
+    ::= QUOTE_MARK LITERAL:s QUOTE_MARK COMMA ENTERO:i COMMA ENTERO:c {:
+            Integer id = Integer.parseInt(i);
+            String error = SalonValidator.validateSalon(edificios, s, id);
+            if (error.isEmpty()) {
+                edificios.get(s).getSalones().add(new Salon(Integer.parseInt(c), s, id));
             }
         :}
 ;
@@ -168,10 +158,12 @@ paramsSalon
 paramsCatedratico
     ::= ENTERO:i COMMA QUOTE_MARK LITERAL:name QUOTE_MARK COMMA QUOTE_MARK LITERAL:dir QUOTE_MARK {:
             Integer id = Integer.parseInt(i);
-            if (catedraticos.get(id) != null) {
-                errores.add("Catedratico ya existe");
+            String error = CatedraticoValidator.validateCatedratico(catedraticos, id);
+
+            if (error.isEmpty()) {
+                catedraticos.add(new Catedratico(name, dir, id));
             } else {
-                catedraticos.add(new Catedratico(name, dir, id  ));
+                errores.add(error);
             }
         :}
 ;
@@ -179,48 +171,39 @@ paramsCatedratico
 paramsCurso
     ::= ENTERO:i COMMA QUOTE_MARK LITERAL:name QUOTE_MARK COMMA ENTERO:s COMMA ENTERO:n {:
             Integer id = Integer.parseInt(i);
-            if (cursos.get(id) != null) {
-                errores.add("Curso " + id + "ya esta agregado");
-            } else {
+            String error = CursoValidator.validateCurso(cursos, id);
+            if (error.isEmpty()) {
                 cursos.add(new Curso(name, Integer.parseInt(s), Integer.parseInt(n), id));
+            } else {
+                errores.add(error);
             }
         :}
 ;
 
 paramsHorario
-    ::= ENTERO:i COMMA QUOTE_MARK LITERAL:p QUOTE_MARK COMMA QUOTE_MARK LITERAL:d QUOTE_MARK COMMA ENTERO:iCur COMMA ENTERO:idSalon COMMA NAME_ED:iEd COMMA ENTERO:iCated {:
+    ::= ENTERO:i COMMA QUOTE_MARK LITERAL:p QUOTE_MARK COMMA QUOTE_MARK LITERAL:d QUOTE_MARK COMMA ENTERO:iCur COMMA ENTERO:idS COMMA NAME_ED:iEd COMMA ENTERO:iCated {:
             Integer id = Integer.parseInt(i);
             Integer idCurso = Integer.parseInt(iCur);
             Integer idCatedra = Integer.parseInt(iCated);
-
-            if (horarios.get(id) != null) {
-                errores.add("Horario " + id + " ya existe");
+            Integer idSalon = Integer.parseInt(idS);
+            String error = HorarioValidator.validateHorario(horarios, cursos, edificios, catedraticos, id, idCurso, idCatedra, idSalon, iEd);
+            if (error.isEmpty()) {
+                horarios.add(new Horario(p, d, idCurso, idSalon, iEd, idCatedra, id));
             } else {
-                if (cursos.get(idCurso) == null) {
-                    errores.add("Curso " + idCurso + " no existe");
-                } else if (salones.get(idSalon + "-" + iEd) == null) {
-                    errores.add("Salon " + idSalon + " no existe");
-                } else if (edificios.get(iEd) == null) {
-                    errores.add("Edifio " + iEd + " no existe");
-                } else if (catedraticos.get(idCatedra) == null) {
-                    errores.add("Catedratico " + idCatedra + " no existe");
-                } else {
-                    horarios.add(new Horario(p, d, idCurso, idSalon + "-" + iEd, iEd, idCatedra, id));
-                }
+                errores.add(error);
             }
         :}
 ;
 
 paramsAsignar
     ::= ENTERO:iEst COMMA ENTERO:iHo COMMA ENTERO:z COMMA ENTERO:f {:
-            if (horarios.get(Integer.parseInt(iHo)) == null) {
-                errores.add("Horario " + iHo + " no existe");
+            Integer idEstudiante = Integer.parseInt(iEst);
+            Integer idHorario = Integer.parseInt(iHo);
+            String error = AsignacionValidator.validateAsignacion(horarios, idEstudiante, idHorario);
+            if (error.isEmpty()) {
+                horarios.get(idHorario).getAsignaciones().add(new Asignacion(idEstudiante, idHorario, Integer.parseInt(z), Integer.parseInt(f)));
             } else {
-                if (asignaciones.get(iEst + "-" + iHo) != null) {
-                    errores.add("Asignacion " + iEst + " ya existe" );
-                } else {
-                    asignaciones.add(new Asignacion(iEst + "-" + iHo, Integer.parseInt(iHo), Integer.parseInt(z), Integer.parseInt(f)));
-                }
+                errores.add(error);
             }
         :}
 ;

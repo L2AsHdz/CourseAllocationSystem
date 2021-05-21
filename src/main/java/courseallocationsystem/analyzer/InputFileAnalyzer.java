@@ -53,10 +53,6 @@ public class InputFileAnalyzer {
         return parser.getUsuarios();
     }
 
-    public List<Salon, String> getSalones() {
-        return parser.getSalones();
-    }
-
     public CircularList<Edificio, String> getEdificios() {
         return parser.getEdificios();
     }
@@ -75,9 +71,5 @@ public class InputFileAnalyzer {
 
     public BTree<Horario, Integer> getHorarios() {
         return parser.getHorarios();
-    }
-
-    public CircularList<Asignacion, String> getAsignaciones() {
-        return parser.getAsignaciones();
     }
 }

@@ -18,6 +18,14 @@ import courseallocationsystem.model.Estudiante;
 import courseallocationsystem.model.Horario;
 import courseallocationsystem.model.Salon;
 import courseallocationsystem.model.Usuario;
+import courseallocationsystem.validator.AsignacionValidator;
+import courseallocationsystem.validator.CatedraticoValidator;
+import courseallocationsystem.validator.CursoValidator;
+import courseallocationsystem.validator.EdificioValidator;
+import courseallocationsystem.validator.EstudianteValidator;
+import courseallocationsystem.validator.HorarioValidator;
+import courseallocationsystem.validator.SalonValidator;
+import courseallocationsystem.validator.UserValidator;
 import java.util.ArrayList;
 import java_cup.runtime.Symbol;
 import java_cup.runtime.XMLElement;
@@ -200,12 +208,10 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     private CircularList<Usuario, Integer> usuarios = new CircularList();
     private CircularList<Edificio, String> edificios = new CircularList();
-    private List<Salon, String> salones = new List();
     private CircularList<Curso, Integer> cursos = new CircularList();
     private HashTable<Estudiante, Integer> estudiantes = new HashTable(37, 0.55f);
     private ArbolAVL<Catedratico, Integer> catedraticos = new ArbolAVL();
     private BTree<Horario, Integer> horarios = new BTree();
-    private CircularList<Asignacion, String> asignaciones = new CircularList();
 
     public ArrayList<String> getErrores(){
         return this.errores;
@@ -213,10 +219,6 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     public CircularList<Usuario, Integer> getUsuarios() {
         return this.usuarios;
-    }
-
-    public List<Salon, String> getSalones() {
-        return this.salones;
     }
 
     public CircularList<Edificio, String> getEdificios() {
@@ -237,10 +239,6 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     public BTree<Horario, Integer> getHorarios() {
         return this.horarios;
-    }
-
-    public CircularList<Asignacion, String> getAsignaciones() {
-        return this.asignaciones;
     }
 
     public void syntax_error(Symbol s) {
@@ -398,9 +396,9 @@ class CUP$Parser$actions {
           case 12: // paramsUser ::= ENTERO COMMA QUOTE_MARK LITERAL QUOTE_MARK COMMA QUOTE_MARK LITERAL QUOTE_MARK COMMA typeUser 
             {
               Object RESULT =null;
-		int idleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-10)).left;
-		int idright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-10)).right;
-		String id = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-10)).value;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-10)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-10)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-10)).value;
 		int nameleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-7)).left;
 		int nameright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-7)).right;
 		String name = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-7)).value;
@@ -411,19 +409,12 @@ class CUP$Parser$actions {
 		int tright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		String t = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            Integer idI = Integer.parseInt(id);
-            if (t.equals("estudiante")) {
-                if (estudiantes.get(idI) == null) {
-                    errores.add("Estudiante " + id + " no existe. " + idleft + ":" + idright);
-                } else {
-                    if (usuarios.get(idI) != null) {
-                        errores.add("Usuario " + id + " ya existe. " + idleft + ":" + idright);
-                    } else {
-                        usuarios.add(new Usuario(name, pass, t, idI));
-                    }
-                }
+            Integer id = Integer.parseInt(i);
+            String error = UserValidator.validateUser(usuarios, estudiantes, id, t);
+            if (error.isEmpty()) {
+                usuarios.add(new Usuario(name, pass, t, id));
             } else {
-                usuarios.add(new Usuario(name, pass, t, idI));
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsUser",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-10)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -458,9 +449,9 @@ class CUP$Parser$actions {
           case 15: // paramsEstudiante ::= ENTERO COMMA QUOTE_MARK LITERAL QUOTE_MARK COMMA QUOTE_MARK LITERAL QUOTE_MARK 
             {
               Object RESULT =null;
-		int idleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).left;
-		int idright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).right;
-		String id = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-8)).value;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-8)).value;
 		int nameleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-5)).left;
 		int nameright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-5)).right;
 		String name = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-5)).value;
@@ -468,10 +459,12 @@ class CUP$Parser$actions {
 		int dirright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String dir = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-            if (estudiantes.get(Integer.parseInt(id)) != null) {
-                errores.add("Estudiante " + id + " ya existe. " + idleft + ":" + idright);
+            Integer id = Integer.parseInt(i);
+            String error = EstudianteValidator.validateEstudiante(estudiantes, id);
+            if (error.isEmpty()) {
+                estudiantes.add(new Estudiante(name, dir, id));
             } else {
-                estudiantes.add(new Estudiante(name, dir, Integer.parseInt(id)));
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsEstudiante",4, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -486,10 +479,11 @@ class CUP$Parser$actions {
 		int nameright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		String name = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-            if (edificios.get(name) != null) {
-                errores.add("Edificio " + name + " ya existe. " + nameleft + ":" + nameright);
-            } else {
+            String error = EdificioValidator.validateEdificio(edificios, name);
+            if (error.isEmpty()) {
                 edificios.add(new Edificio(name));
+            } else {
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsEdificio",5, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -503,21 +497,17 @@ class CUP$Parser$actions {
 		int sleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-5)).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-5)).right;
 		String s = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-5)).value;
-		int idleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
-		int idright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
-		String id = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int ileft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
+		int iright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
+		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
 		int cleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		String c = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            if (salones.get(id + "-" + s) != null) {
-                errores.add("Salon ya existe.");
-            } else {
-                if (edificios.get(s) == null) {
-                    errores.add("Edificio " + s + " no existe");
-                } else {
-                    salones.add(new Salon(Integer.parseInt(c), s, id + "-" + s));
-                }
+            Integer id = Integer.parseInt(i);
+            String error = SalonValidator.validateSalon(edificios, s, id);
+            if (error.isEmpty()) {
+                edificios.get(s).getSalones().add(new Salon(Integer.parseInt(c), s, id));
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsSalon",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -539,10 +529,12 @@ class CUP$Parser$actions {
 		String dir = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
             Integer id = Integer.parseInt(i);
-            if (catedraticos.get(id) != null) {
-                errores.add("Catedratico ya existe");
+            String error = CatedraticoValidator.validateCatedratico(catedraticos, id);
+
+            if (error.isEmpty()) {
+                catedraticos.add(new Catedratico(name, dir, id));
             } else {
-                catedraticos.add(new Catedratico(name, dir, id  ));
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsCatedratico",7, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -567,10 +559,11 @@ class CUP$Parser$actions {
 		String n = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
             Integer id = Integer.parseInt(i);
-            if (cursos.get(id) != null) {
-                errores.add("Curso " + id + "ya esta agregado");
-            } else {
+            String error = CursoValidator.validateCurso(cursos, id);
+            if (error.isEmpty()) {
                 cursos.add(new Curso(name, Integer.parseInt(s), Integer.parseInt(n), id));
+            } else {
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsCurso",8, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-8)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -593,9 +586,9 @@ class CUP$Parser$actions {
 		int iCurleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)).left;
 		int iCurright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)).right;
 		String iCur = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-6)).value;
-		int idSalonleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)).left;
-		int idSalonright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)).right;
-		String idSalon = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-4)).value;
+		int idSleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)).left;
+		int idSright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)).right;
+		String idS = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-4)).value;
 		int iEdleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int iEdright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		String iEd = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
@@ -606,21 +599,12 @@ class CUP$Parser$actions {
             Integer id = Integer.parseInt(i);
             Integer idCurso = Integer.parseInt(iCur);
             Integer idCatedra = Integer.parseInt(iCated);
-
-            if (horarios.get(id) != null) {
-                errores.add("Horario " + id + " ya existe");
+            Integer idSalon = Integer.parseInt(idS);
+            String error = HorarioValidator.validateHorario(horarios, cursos, edificios, catedraticos, id, idCurso, idCatedra, idSalon, iEd);
+            if (error.isEmpty()) {
+                horarios.add(new Horario(p, d, idCurso, idSalon, iEd, idCatedra, id));
             } else {
-                if (cursos.get(idCurso) == null) {
-                    errores.add("Curso " + idCurso + " no existe");
-                } else if (salones.get(idSalon + "-" + iEd) == null) {
-                    errores.add("Salon " + idSalon + " no existe");
-                } else if (edificios.get(iEd) == null) {
-                    errores.add("Edifio " + iEd + " no existe");
-                } else if (catedraticos.get(idCatedra) == null) {
-                    errores.add("Catedratico " + idCatedra + " no existe");
-                } else {
-                    horarios.add(new Horario(p, d, idCurso, idSalon + "-" + iEd, iEd, idCatedra, id));
-                }
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsHorario",9, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-16)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -644,14 +628,13 @@ class CUP$Parser$actions {
 		int fright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		String f = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            if (horarios.get(Integer.parseInt(iHo)) == null) {
-                errores.add("Horario " + iHo + " no existe");
+            Integer idEstudiante = Integer.parseInt(iEst);
+            Integer idHorario = Integer.parseInt(iHo);
+            String error = AsignacionValidator.validateAsignacion(horarios, idEstudiante, idHorario);
+            if (error.isEmpty()) {
+                horarios.get(idHorario).getAsignaciones().add(new Asignacion(idEstudiante, idHorario, Integer.parseInt(z), Integer.parseInt(f)));
             } else {
-                if (asignaciones.get(iEst + "-" + iHo) != null) {
-                    errores.add("Asignacion " + iEst + " ya existe" );
-                } else {
-                    asignaciones.add(new Asignacion(iEst + "-" + iHo, Integer.parseInt(iHo), Integer.parseInt(z), Integer.parseInt(f)));
-                }
+                errores.add(error);
             }
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("paramsAsignar",10, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-6)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

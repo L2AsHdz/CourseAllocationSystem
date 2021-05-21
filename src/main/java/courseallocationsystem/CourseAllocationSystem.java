@@ -58,18 +58,14 @@ public class CourseAllocationSystem {
         if (errores.isEmpty()) {
             CircularList<Usuario, Integer> users = parser.getUsuarios();
             CircularList<Edificio, String> edificios = parser.getEdificios();
-            List<Salon, String> salones = parser.getSalones();
             CircularList<Curso, Integer> cursos = parser.getCursos();
             HashTable<Estudiante, Integer> estudiantes = parser.getEstudiantes();
             ArbolAVL<Catedratico, Integer> catedraticos = parser.getCatedraticos();
             BTree<Horario, Integer> horarios = parser.getHorarios();
-            CircularList<Asignacion, String> asignaciones = parser.getAsignaciones();
             System.out.println("\nUsuarios");
             users.show();
             System.out.println("\nEdificios");
             edificios.show();
-            System.out.println("\nSalones");
-            salones.show();
             System.out.println("\n\nCursos");
             cursos.show();
             System.out.println("\nEstudiantes");
@@ -78,8 +74,6 @@ public class CourseAllocationSystem {
             catedraticos.printTree(catedraticos.getRaiz(), 0);
             System.out.println("\nHorarios");
             horarios.printTree(horarios.getRoot(), 0);
-            System.out.println("\nAsignaciones");
-            asignaciones.show();
         } else {
             errores.forEach(e -> System.out.println(e));
         }

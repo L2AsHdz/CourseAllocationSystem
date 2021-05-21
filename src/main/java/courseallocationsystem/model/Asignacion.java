@@ -6,7 +6,7 @@ package courseallocationsystem.model;
  * @time 04:51:12
  * @author asael
  */
-public class Asignacion extends Entidad<String> {
+public class Asignacion extends Entidad<Integer> {
 
     private Integer codHorario;
     private Float zona;
@@ -15,7 +15,7 @@ public class Asignacion extends Entidad<String> {
     public Asignacion() {
     }
 
-    public Asignacion(String carnetEstudiante, int codHorario, float zona, float notaFinal) {
+    public Asignacion(int carnetEstudiante, int codHorario, float zona, float notaFinal) {
         super(carnetEstudiante);
         this.codHorario = codHorario;
         this.zona = zona;
@@ -48,6 +48,6 @@ public class Asignacion extends Entidad<String> {
 
     @Override
     public String[] toArray() {
-        return new String[]{super.getId(), codHorario.toString(), zona.toString(), notaFinal.toString()};
+        return new String[]{super.getId().toString(), codHorario.toString(), zona.toString(), notaFinal.toString()};
     }
 }

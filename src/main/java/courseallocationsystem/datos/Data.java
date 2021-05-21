@@ -24,20 +24,16 @@ public class Data {
 
     private CircularList<Usuario, Integer> usuarios;
     private CircularList<Edificio, String> edificios;
-    private List<Salon, String> salones;
     private CircularList<Curso, Integer> cursos;
     private HashTable<Estudiante, Integer> estudiantes;
     private ArbolAVL<Catedratico, Integer> catedraticos;
     private BTree<Horario, Integer> horarios;
-    private CircularList<Asignacion, String> asignaciones;
 
     public Data() {
-        this.asignaciones = new CircularList();
         this.horarios = new BTree();
         this.catedraticos = new ArbolAVL();
         this.estudiantes = new HashTable(37, 0.55f);
         this.cursos = new CircularList();
-        this.salones = new List();
         this.edificios = new CircularList();
         this.usuarios = new CircularList();
         
@@ -50,10 +46,6 @@ public class Data {
 
     public CircularList<Edificio, String> getEdificios() {
         return edificios;
-    }
-
-    public List<Salon, String> getSalones() {
-        return salones;
     }
 
     public CircularList<Curso, Integer> getCursos() {
@@ -72,20 +64,12 @@ public class Data {
         return horarios;
     }
 
-    public CircularList<Asignacion, String> getAsignaciones() {
-        return asignaciones;
-    }
-
     public void setUsuarios(CircularList<Usuario, Integer> usuarios) {
         this.usuarios = usuarios;
     }
 
     public void setEdificios(CircularList<Edificio, String> edificios) {
         this.edificios = edificios;
-    }
-
-    public void setSalones(List<Salon, String> salones) {
-        this.salones = salones;
     }
 
     public void setCursos(CircularList<Curso, Integer> cursos) {
@@ -103,9 +87,4 @@ public class Data {
     public void setHorarios(BTree<Horario, Integer> horarios) {
         this.horarios = horarios;
     }
-
-    public void setAsignaciones(CircularList<Asignacion, String> asignaciones) {
-        this.asignaciones = asignaciones;
-    }
-
 }
